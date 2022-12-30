@@ -6,16 +6,16 @@ import './main.scss';
 
 const Main: React.FC = () => {
     return (
-        <div className='main-wrapper'>
-            <div className='main-body-wrapper'>
-                <header>
+        <div className='w-full md:w-4/6 lg:w-1/2 h-full flex flex-col bg-gradient-to-br bg-background-2'>
+            <div className='px-4 sm:w-3/4 md:w-5/6 flex flex-col h-[56rem] overflow-auto self-center justify-end'>
+                <header className=' pb-4 '>
                     <Header />
                 </header>
-                <main>
+                <main className='w-full h-[90%]'>
                     <Card />
                 </main>
             </div>
-            <footer>
+            <footer className='w-full'>
                 <Footer />
             </footer>
         </div>

@@ -7,7 +7,9 @@ const Header: React.FC = () => {
         <div className='header_grid-wrapper'>
             <div className='header-right'>
                 <Link to='home'>
-                    <button className='primary-button'>HOME</button>
+                    <button className='bg-violet-900 rounded-lg  py-1 px-2 text-orange-200 shadow-md'>
+                        HOME
+                    </button>
                 </Link>
             </div>
             <div className='header-left'>

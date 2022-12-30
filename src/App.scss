@@ -1,29 +1,11 @@
 
 @import './utils/utils.scss';
 
-.App{
-    width: 100vw;
-    height: 100vh;
-    background-color: $background;
-    display: flex;
-    justify-content: center;
-    align-items: center ;
-}
-
-.primary-button{
-    background-color: $primary-button;
-    border-radius: .5rem;
-    font-size: small;
-    border: 1px solid #300c4e;
-    padding: 0.25rem 0.5rem;
-    color: $text-color;
-    box-shadow: $custom-shadow;
-}
-
 p,h1,h2,h3,a{
-    color: $text-color;
+    @apply text-text-color
 }
 
 a{
     border-bottom: 2px solid rgba($color: #000000, $alpha: .5);
 }
+
