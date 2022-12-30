@@ -1,0 +1,16 @@
+@import '../../utils/utils.scss';
+.main-wrapper{
+    width: 70%;
+    height: 100%;
+    background-color: $secondary-background;
+    .main-body-wrapper{
+        width: 100%;
+        height: calc(100% - $footer-heigt);
+        padding: 5rem 5rem 0 5rem;
+
+        main{
+            width: 100%;
+            height: 100%;
+        }
+    }
+}
