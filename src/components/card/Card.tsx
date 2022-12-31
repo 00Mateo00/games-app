@@ -6,7 +6,7 @@ const card: React.FC = () => {
      */
     return (
         <div className='relative flex justify-center items-center w-full h-[calc(100%-2.5rem)] sm:h-[calc(100%-3.5rem)] lg:h-[calc(100%-5rem)] lg:py-8'>
-            <div className='group/edit lg:hover:absolute lg:hover:top-0 w-full lg:w-4/5 lg:hover:w-full h-full lg:h-full lg:hover:h-[102.5%] rounded-md border border-background-primaryButton border-opacity-50 grid grid-rows-[3fr_1fr] lg:grid-rows-[8fr_3fr] lg:hover:grid-rows-[8fr_4fr] overflow-hidden'>
+            <div className='group/edit lg:hover:absolute lg:hover:top-0 w-full lg:w-4/5 lg:hover:w-full h-full lg:h-full lg:hover:h-[102.5%] rounded-md border border-background-primaryButton border-opacity-50 lg:hover:border-0 lg:shadow-none lg:hover:shadow-card grid grid-rows-[3fr_1fr] lg:grid-rows-[8fr_3fr] lg:hover:grid-rows-[8fr_4fr] overflow-hidden'>
                 <img
                     src={Image}
                     alt='GameName'

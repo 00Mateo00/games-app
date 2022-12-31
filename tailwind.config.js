@@ -14,6 +14,9 @@ module.exports = {
                 },
                 'text-color': '#f7c8b2',
             },
+            boxShadow: {
+                'card': '10px 10px 5px 0px rgba(0,0,0,0.5)',
+            }
         },
     },
     plugins: [],
