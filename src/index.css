@@ -2,6 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+    font-family: 'WorldsAtWar-BB';
+    src:url('./fonts/WorldsAtWar-BB.ttf.woff') format('woff'),
+        url('./fonts/WorldsAtWar-BB.ttf.svg#WorldsAtWar-BB') format('svg'),
+        url('./fonts/WorldsAtWar-BB.ttf.eot'),
+        url('./fonts/WorldsAtWar-BB.ttf.eot?#iefix') format('embedded-opentype'); 
+    font-weight: normal;
+    font-style: normal;
+}
+
 *{
     margin: 0;
     padding: 0;

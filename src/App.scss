@@ -1,8 +1,18 @@
 
 @import './utils/utils.scss';
 
-p,h1,h2,h3,a{
-    @apply text-text-color
+p,h1,h2,h3,a, button{
+    @apply text-text-color;
+    font-family: 'WorldsAtWar-BB';
+}
+
+p,a, button{
+    font-size: 1.0625rem;
+    letter-spacing: 0.125rem;
+}
+
+h1{
+    font-size: 3rem;
 }
 
 a{
