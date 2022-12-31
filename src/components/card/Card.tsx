@@ -2,11 +2,9 @@ import React from 'react';
 import Image from '../../assets/card-Images/tetris.png';
 
 const card: React.FC = () => {
-    /* group/edit w-full lg:w-4/5 lg:hover:w-full m-auto  h-[calc(100%-2.5rem)] sm:h-[calc(100%-3.5rem)] lg:h-[calc(90%-5rem)] lg:hover:h-[calc(100%-5rem)] rounded-2xl grid grid-rows-[3fr_1fr] lg:grid-rows-[8fr_3fr] overflow-hidden
-     */
     return (
         <div className='relative flex justify-center items-center w-full h-[calc(100%-2.5rem)] sm:h-[calc(100%-3.5rem)] lg:h-[calc(100%-5rem)] lg:py-8'>
-            <div className='group/edit lg:hover:absolute lg:hover:top-0 w-full lg:w-4/5 lg:hover:w-full h-full lg:h-full lg:hover:h-[102.5%] rounded-md border border-background-primaryButton border-opacity-50 lg:hover:border-0 lg:shadow-none lg:hover:shadow-card grid grid-rows-[3fr_1fr] lg:grid-rows-[8fr_3fr] lg:hover:grid-rows-[8fr_4fr] overflow-hidden'>
+            <div className='group/edit lg:hover:absolute lg:hover:top-0 w-full lg:w-4/5 lg:hover:transform lg:hover:scale-x-105  h-full lg:h-full lg:hover:scale-y-105 rounded-md border border-background-primaryButton border-opacity-50 lg:hover:border-0 lg:shadow-none lg:hover:shadow-card grid grid-rows-[3fr_1fr] lg:grid-rows-[8fr_3fr] lg:hover:grid-rows-[8fr_4fr] lg:transition-all  delay-75 duration-1000 overflow-hidden'>
                 <img
                     src={Image}
                     alt='GameName'
@@ -24,7 +22,7 @@ const card: React.FC = () => {
                             PLAY
                         </button>
                     </div>
-                    <div className='w-full bg-orange-600 flex justify-center items-center'>
+                    <div className='w-full lg:transform lg:scale-x-0 lg:group-hover/edit:scale-x-100 lg:transition-all  delay-75 duration-1000  bg-orange-600 flex justify-center items-center'>
                         <div>
                             <button>easy</button>
                             <button>medium</button>
