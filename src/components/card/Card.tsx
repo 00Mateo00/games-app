@@ -1,7 +1,19 @@
 import React from 'react';
-/* import Image from '../../assets/card-Images/tetris.png'; src={Image} */
+import Image from '../../assets/card-Images/tetris.png';
 
 const card: React.FC = () => {
-    return <div className=''></div>;
+    return (
+        <div className='w-full h-[calc(100%-2.5rem)] sm:h-[calc(100%-3.5rem)] lg:h-[calc(100%-5rem)] rounded-2xl grid grid-rows-[3fr_1fr] lg:grid-rows-[8fr_3fr]'>
+            <img
+                src={Image}
+                alt='GameName'
+                className='w-full h-full rounded-[1rem_1rem_0_0] overflow-hidden object-cover object-[50%_10%]'
+            ></img>
+            <div className='w-full h-full md:p-5 grid grid-rows-[3fr_1fr] md:grid-rows-none md:grid-cols-[6fr_5fr] bg-background-card rounded-[0_0_1rem_1rem]'>
+                <div className='w-full bg-yellow-500 flex justify-center items-center'></div>
+                <div className='w-full bg-orange-600 flex justify-center items-center'></div>
+            </div>
+        </div>
+    );
 };
 export default card;
