@@ -12,9 +12,9 @@ const card: React.FC = () => {
                     className=' w-full h-2/3 object-cover object-[50%_25%]'
                 />
                 <div className='w-full h-1/3 flex justify-center items-center bg-background-card'>
-                    <div className='grid w-[90%] h-[90%] bg-slate-400 lg:grid-cols-[5fr_4fr]'>
+                    <div className='grid w-[90%] h-[90%] lg:grid-cols-[5fr_4fr]'>
                         <div
-                            className='lg:pl-5 w-full h-full bg-yellow-500 flex flex-col
+                            className='lg:pl-5 w-full h-full flex flex-col
                         items-start justify-center'
                         >
                             <h1 className='self-center lg:self-start'>
@@ -29,7 +29,7 @@ const card: React.FC = () => {
                                 PLAY
                             </button>
                         </div>
-                        <div className='w-full h-full flex lg:flex-col justify-around lg:justify-center items-center bg-red-500'>
+                        <div className='w-full h-full flex lg:flex-col justify-around lg:justify-center items-center'>
                             <div>
                                 <div>
                                     <button>easy</button>
