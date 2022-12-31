@@ -1,23 +1,23 @@
 import React from 'react';
-import Footer from '../footer/Footer';
-import Header from '../header/Header';
-import Card from '../card/Card';
-import './main.scss';
+import Imagen from '../../assets/card-Images/tetris.png';
 
 const Main: React.FC = () => {
     return (
-        <div className='w-full md:w-4/6 lg:w-1/2 h-full flex flex-col bg-gradient-to-br bg-background-2'>
-            <div className='px-4 sm:w-3/4 md:w-5/6 flex flex-col h-[56rem] overflow-auto self-center justify-end'>
-                <header className=' pb-4 '>
-                    <Header />
-                </header>
-                <main className='w-full h-[90%]'>
-                    <Card />
-                </main>
+        <div className='w-full md:w-5/6 h-full lg:w-4/6 xl:w-3/5 2xl:w-1/2 overflow-auto bg-background-1'>
+            <div className='w-full h-[calc(100%-7rem)] pt-10 flex justify-center'>
+                <div className='w-[90%] h-full'>
+                    <header className='w-full h-10 sm:h-14 lg:h-20 bg-gray-800'></header>
+                    <div className='w-full h-[calc(100%-2.5rem)] sm:h-[calc(100%-3.5rem)] lg:h-[calc(100%-5rem)] rounded-lg grid grid-rows-[3fr_1fr] lg:grid-rows-[8fr_3fr]'>
+                        <img
+                            src={Imagen}
+                            alt='GameName'
+                            className='w-full h-full rounded-[0.5rem_0.5rem_0_0] overflow-hidden object-cover object-[50%_10%]'
+                        ></img>
+                        <div className='w-full h-full bg-background-card rounded-[0_0_0.5rem_0.5rem]'></div>
+                    </div>
+                </div>
             </div>
-            <footer className='w-full'>
-                <Footer />
-            </footer>
+            <footer className='w-full h-56 bg-background-alternative'></footer>
         </div>
     );
 };
