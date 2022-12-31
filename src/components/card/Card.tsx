@@ -4,7 +4,7 @@ import Image from '../../assets/card-Images/tetris.png';
 
 const card: React.FC = () => {
     return (
-        <div className='card-wrapper bg-cyan-300 w-full h-full rounded-md overflow-hidden'>
+        <div className='card-wrapper w-full h-full rounded-md overflow-hidden'>
             <div className='h-full'>
                 <img
                     src={Image}
