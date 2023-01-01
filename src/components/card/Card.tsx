@@ -18,20 +18,20 @@ const card: React.FC = () => {
                             elit. Facere sit eos minus quos natus accusantium
                             explicabo odit velit dolorem esse!
                         </p>
-                        <button className='hidden lg:group-hover/edit:block bg-background-primaryButton rounded-xl w-10 sm:w-20 h-6 sm:h-7 flex items-center justify-center'>
+                        <button className='bg-background-primaryButton rounded-xl w-10 sm:w-20 h-6 sm:h-7 flex items-center justify-center'>
                             PLAY
                         </button>
                     </div>
                     <div className='childButton:truncate  w-full lg:transform lg:scale-x-0 lg:group-hover/edit:scale-x-100 lg:transition-all delay-75 lg:duration-[5s] bg-orange-600 flex justify-center items-center'>
                         <div>
-                            <button className='truncate'>easy</button>
-                            <button className='truncate'>medium</button>
-                            <button className='truncate'>hard</button>
+                            <button>easy</button>
+                            <button>medium</button>
+                            <button>hard</button>
                         </div>
                         <div>
-                            <button className='truncate'>settiings</button>
-                            <button className='truncate'>scores</button>
-                            <button className='truncate'>tutorial</button>
+                            <button>settiings</button>
+                            <button>scores</button>
+                            <button>tutorial</button>
                         </div>
                     </div>
                 </div>
