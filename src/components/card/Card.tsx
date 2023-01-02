@@ -2,6 +2,7 @@ import React from 'react';
 import Image from '../../assets/card-Images/tetris.png';
 
 const card: React.FC = () => {
+    // a
     const primary =
         'bg-background-primaryButton rounded-xl w-10 sm:w-20 h-6 sm:h-7 flex items-center justify-center';
     return (
