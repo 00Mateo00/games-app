@@ -12,16 +12,16 @@ const Card: React.FC = () => {
                 className='w-full h-full overflow-hidden object-cover object-[50%_10%]'
             ></img>
             <div className='grid grid-cols-[6fr_0fr] transition-all delay-75 duration-500 w-full h-full bg-purple-900 z-[1] relative before:absolute before:opacity-0 before:content-[""] before:top-0 before:left-0 before:z-[-1] before:bg-gradient-to-br before:from-violet-600 before:to-violet-800 before:transition-all before:delay-75 before:duration-500 lg:group-hover/edit:before:opacity-100 before:w-full before:h-full '>
-                <div className='w-full h-full grid grid-row-[1fr_0fr_0fr] group-hover/edit:grid-row-[1fr_1fr_0fr]'>
+                <div className='w-full h-full grid grid-rows-[1fr_0fr_0fr] group-hover/edit:grid-rows-[1fr_1fr_0fr]'>
                     <h1 className='w-full h-full flex justify-center items-center bg-red-500 transition-all'>
                         Game Name
                     </h1>
-                    <p className='truncate scale-0 w-0 h-0 group-hover/edit:w-full group-hover/edit:h-full group-hover/edit:scale-100 transition-all'>
+                    <p className='h-full w-full truncate bg-purple-200'>
                         Lorem ipsum dolor, sit amet consectetur adipisicing
                         elit. Facere sit eos minus quos natus accusantium
                         explicabo odit velit dolorem esse!
                     </p>
-                    <button className='bg-background-primaryButton rounded-xl w-0 h-0 flex items-center justify-center truncate scale-y-0 transition-all'>
+                    <button className='h-full w-full truncate bg-green-200'>
                         PLAY
                     </button>
                 </div>
