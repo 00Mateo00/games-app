@@ -9,7 +9,7 @@ function App(): JSX.Element {
                     <div className='flex h-11 w-full items-center justify-around bg-blue-500 px-16'>
                         <div className='h-full w-full bg-neutral-400'></div>
                     </div>
-                    <div className='grid auto-rows-[23rem] grid-cols-3 gap-3 py-2 px-20'>
+                    <div className='grid auto-rows-[23rem] grid-cols-3 gap-3 py-2 px-16'>
                         <div className='h-full w-full bg-amber-300 transition-all hover:scale-125'></div>
                         <div className='h-full w-full bg-amber-300 transition-all hover:scale-125'></div>
                         <div className='h-full w-full bg-amber-300 transition-all hover:scale-125'></div>
