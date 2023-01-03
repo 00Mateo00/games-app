@@ -21,16 +21,14 @@ const Main: React.FC = () => {
         );
     }
     return (
-        <div className='w-full md:w-5/6 h-max lg:w-4/6 xl:w-3/5 2xl:w-1/2 bg-gradient-to-br from-violet-200 to-violet-900'>
-            <div className='w-full h-screen pt-14 flex justify-center items-center flex-col overflow-auto'>
-                <div className='w-[90%] h-max'>
-                    <Header />
-                    <div className='grid gap-x-5 gap-y-2 justify-center items-start grid-cols-3 auto-rows-[24rem] grid-flow-row w-full h-100%'>
-                        {testDivs(12)}
-                    </div>
+        <div className='h-full w-1/2 bg-violet-500 pt-11'>
+            <div className='h-full w-full overflow-auto bg-slate-500'>
+                <Header />
+                <div className='grid auto-rows-[24rem] grid-cols-3 gap-3 py-2 px-14'>
+                    {testDivs(12)}
                 </div>
+                <Footer />
             </div>
-            <Footer />
         </div>
     );
 };
