@@ -46,6 +46,7 @@ const Card: React.FC = () => {
             </div>
         </>
     );
+    //
 
     /* <div className='group/edit lg:absolute lg:top-1/2 lg:-translate-y-[47.5%] w-full lg:w-3/4 lg:hover:scale-x-[130%]  h-full lg:h-5/6 lg:m-auto lg:hover:scale-y-[122.5%] rounded-md border border-background-primaryButton border-opacity-50 lg:hover:border-0 lg:shadow-none lg:hover:shadow-card grid grid-rows-[3fr_1fr] lg:grid-rows-[8fr_3fr] lg:hover:grid-rows-[8fr_4fr] lg:transition-all delay-75 lg:duration-500 overflow-hidden'></div> */
     return (
