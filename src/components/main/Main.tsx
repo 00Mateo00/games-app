@@ -42,16 +42,10 @@ const Main: React.FC<props> = ({ scrollRef }) => {
                 <Header />
                 <div
                     className={
-                        'relative grid min-h-[calc(100%_-_128px)] w-full auto-cols-[90%] grid-flow-col grid-rows-[32rem] content-center gap-5 py-2 pl-[10%]' +
-                        ' sm:my-0 sm:w-[90%] sm:grid-flow-row sm:auto-rows-[24rem] sm:grid-cols-[repeat(auto-fit,_18rem)] sm:place-content-center'
+                        'relative ml-[5%] grid min-h-[calc(100%_-_128px)] w-full auto-cols-[90%] grid-flow-col grid-rows-[32rem] content-center gap-5 py-2' +
+                        ' pl-0 sm:mx-auto sm:my-0 sm:ml-auto sm:w-[90%] sm:grid-flow-row sm:auto-rows-[24rem] sm:grid-cols-[repeat(auto-fit,_18rem)] sm:place-content-center'
                     }
                 >
-                    <div
-                        className={
-                            'absolute right-0 top-1/2 z-50 flex h-72 w-[15%] -translate-y-1/2 items-center justify-center' +
-                            ' sm:hidden'
-                        }
-                    ></div>
                     {getCards(13)}
                 </div>
                 <Footer />
