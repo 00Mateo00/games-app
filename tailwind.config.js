@@ -21,9 +21,16 @@ module.exports = {
         },
     },
     plugins: [
-        plugin(function({ addVariant }) {
+        plugin(function({ addVariant}) {
             addVariant('child', '& > *');
             addVariant('childButton', '& button');
-          })
+            addVariant('scrollbar','&::-webkit-scrollbar')
+            addVariant('scrollbar-button','&::-webkit-scrollbar-button')
+            addVariant('scrollbar-corner','&::-webkit-scrollbar-corner')
+            addVariant('scrollbar-thumb','&::-webkit-scrollbar-track')
+            addVariant('scrollbar-track','&::-webkit-scrollbar-track')
+            addVariant('scrollbar-track-piece','&::-webkit-scrollbar-track-piece')
+          }),
+
     ],
 };

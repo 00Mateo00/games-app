@@ -2,7 +2,7 @@ import React from 'react';
 
 const Header: React.FC = () => {
     return (
-        <header className='w-full h-11 p-2 flex justify-between items-center px-16'>
+        <header className='w-[91%] mx-auto h-20 p-2 flex justify-between items-center'>
             <div className='h-fit'>
                 <button className='bg-background-primaryButton rounded-xl w-10 sm:w-20 h-6 sm:h-7 flex items-center justify-center'>
                     HOME

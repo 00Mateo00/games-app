@@ -3,8 +3,12 @@ import Card from '../card/Card';
 import Footer from '../footer/Footer';
 import Header from '../header/Header';
 
-const Main: React.FC = () => {
-    function testDivs(n: number): JSX.Element {
+interface props {
+    scrollRef: React.MutableRefObject<HTMLDivElement | null>;
+}
+
+const Main: React.FC<props> = ({ scrollRef }) => {
+    function getCards(n: number): JSX.Element {
         return (
             <>
                 {Array(n)
@@ -21,11 +25,15 @@ const Main: React.FC = () => {
         );
     }
     return (
-        <div className='h-full w-1/2 bg-gradient-to-br from-violet-200 to-violet-900 pt-11'>
-            <div className='h-full w-full overflow-auto'>
+        <div className='h-full w-1/2 bg-gradient-to-br from-violet-200 to-violet-900'>
+            <div
+                onWheel={(e) => e.stopPropagation()}
+                ref={scrollRef}
+                className='h-full w-full overflow-auto scrollbar:hidden'
+            >
                 <Header />
-                <div className='grid auto-rows-[24rem] grid-cols-3 gap-3 py-2 px-14'>
-                    {testDivs(12)}
+                <div className='grid w-[90%] mx-auto min-h-[calc(100%_-_92px)] auto-rows-[22rem] grid-cols-3 gap-3 py-2'>
+                    {getCards(12)}
                 </div>
                 <Footer />
             </div>
