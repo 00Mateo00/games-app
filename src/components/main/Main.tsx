@@ -32,7 +32,7 @@ const Main: React.FC<props> = ({ scrollRef }) => {
                 className='h-full w-full overflow-auto scrollbar:hidden'
             >
                 <Header />
-                <div className='grid w-[90%] mx-auto min-h-[calc(100%_-_92px)] auto-rows-[22rem] grid-cols-3 gap-3 py-2'>
+                <div className='grid w-[90%] mx-auto min-h-[calc(100%_-_92px)] auto-rows-[22rem] grid-cols-3 gap-5 py-2'>
                     {getCards(12)}
                 </div>
                 <Footer />
