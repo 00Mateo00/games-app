@@ -34,15 +34,24 @@ const Main: React.FC<props> = ({ scrollRef }) => {
             <div
                 onWheel={(e) => e.stopPropagation()}
                 ref={scrollRef}
-                className='h-full w-full overflow-auto scrollbar:hidden'
+                className={
+                    'overflow-6 h-full w-full scrollbar:hidden' +
+                    ' sm:overflow-auto'
+                }
             >
                 <Header />
                 <div
                     className={
-                        'mx-auto grid min-h-[calc(100%_-_128px)] w-[90%] grid-flow-row auto-rows-[24rem] grid-cols-[repeat(auto-fit,_18rem)] place-content-center gap-5 py-2' +
-                        ' md:'
+                        'relative grid min-h-[calc(100%_-_128px)] w-full auto-cols-[90%] grid-flow-col grid-rows-[32rem] content-center gap-5 py-2 pl-[10%]' +
+                        ' sm:my-0 sm:w-[90%] sm:grid-flow-row sm:auto-rows-[24rem] sm:grid-cols-[repeat(auto-fit,_18rem)] sm:place-content-center'
                     }
                 >
+                    <div
+                        className={
+                            'absolute right-0 top-1/2 z-50 flex h-72 w-[15%] -translate-y-1/2 items-center justify-center' +
+                            ' sm:hidden'
+                        }
+                    ></div>
                     {getCards(13)}
                 </div>
                 <Footer />
