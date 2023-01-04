@@ -11,7 +11,7 @@ function App(): JSX.Element {
                     scrollRef.current.scrollTop += e.deltaY;
                 }
             }}
-            className='w-screen h-screen flex justify-center items-center bg-neutral-900 relative overflow-hidden'
+            className='relative flex h-screen w-screen items-center justify-center overflow-hidden bg-neutral-900 '
         >
             <Main scrollRef={scrollRef} />
         </div>
