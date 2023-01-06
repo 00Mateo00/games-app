@@ -18,17 +18,21 @@ const Card: React.FC<props> = (index) => {
         const leftOffset = element.currentTarget?.offsetLeft;
         const parentWidth = element.currentTarget.parentElement?.clientWidth;
 
-        if (
-            leftOffset !== undefined &&
-            parentWidth !== undefined &&
-            top !== undefined
-        ) {
-            return {
-                transform: `translate(-${leftOffset}px, -${top}px)`,
+        function absoluteValueOf(n: number): number {
+            return Math.abs(n);
+        }
+
+        if (parentWidth !== undefined) {
+            const customStyles = {
+                transform: `translate(-${leftOffset}px, -${absoluteValueOf(
+                    top
+                )}px)`,
                 width: `${parentWidth}px`,
                 height: `${window.innerHeight}px`,
                 zIndex: 100,
             };
+
+            return customStyles;
         }
 
         return {};
