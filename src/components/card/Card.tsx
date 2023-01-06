@@ -65,10 +65,14 @@ const Card: React.FC<props> = (index) => {
             >
                 <div
                     className={
-                        `grid h-full w-full grid-rows-[1fr_0fr_0fr]` +
+                        `h-full w-full` +
                         ` sm:group-hover/edit:grid-rows-[1fr_1fr_0fr]` +
                         `${transtions1}` +
-                        ` ${isCardFullSize() ? 'grid-rows-[1fr_1fr_1fr]' : ''}`
+                        ` ${
+                            isCardFullSize()
+                                ? 'flex flex-col justify-around p-5'
+                                : 'grid grid-rows-[1fr_0fr_0fr]'
+                        }`
                     }
                 >
                     <div
@@ -86,8 +90,7 @@ const Card: React.FC<props> = (index) => {
                         <h1
                             className={
                                 `transition-all delay-100 duration-700` +
-                                ` sm:group-hover/edit:text-3xl sm:group-hover/edit:delay-75 sm:group-hover/edit:duration-500` +
-                                ` ${isCardFullSize() ? 'text-3xl' : ''}`
+                                ` sm:group-hover/edit:text-3xl sm:group-hover/edit:delay-75 sm:group-hover/edit:duration-500`
                             }
                         >
                             Game Name
@@ -95,13 +98,13 @@ const Card: React.FC<props> = (index) => {
                     </div>
                     <p
                         className={
-                            `flex h-full w-full scale-0 justify-center overflow-auto truncate text-xs` +
+                            `flex h-full w-full scale-0 justify-center overflow-auto ` +
                             ` sm:group-hover/edit:scale-100 sm:group-hover/edit:whitespace-normal sm:group-hover/edit:px-2 sm:group-hover/edit:pb-2` +
                             ` ${transtions1}` +
                             ` ${
                                 isCardFullSize()
-                                    ? ' scale-100 whitespace-normal leading-3'
-                                    : ' '
+                                    ? ' scale-100 text-xl'
+                                    : ' truncate text-xs'
                             }`
                         }
                     >
@@ -110,11 +113,11 @@ const Card: React.FC<props> = (index) => {
                     </p>
                     <button
                         className={
-                            `flex h-0 w-0 scale-y-0 items-center justify-center truncate rounded-xl bg-background-primaryButton transition-all` +
+                            `flex items-center justify-center rounded-xl bg-background-primaryButton transition-all` +
                             ` ${
                                 isCardFullSize()
-                                    ? 'h-full w-full scale-100'
-                                    : ''
+                                    ? ' h-7 w-20 scale-100'
+                                    : 'h-0  w-0 scale-0 truncate '
                             }`
                         }
                     >
@@ -188,7 +191,7 @@ const Card: React.FC<props> = (index) => {
                     ' sm:w-full' +
                     ` sm:transition-all sm:duration-500  ${
                         isCardFullSize()
-                            ? ' scale-x-[80%] sm:scale-y-[90%]'
+                            ? ' scale-x-[70%] sm:scale-y-[85%]'
                             : ' sm:hover:scale-x-[130%] sm:hover:scale-y-[122.5%] sm:hover:grid-rows-[8fr_4fr] sm:hover:shadow-card'
                     }` +
                     ` before:absolute before:top-0 before:left-0 before:z-[-1] before:h-full before:w-full before:bg-violet-600 before:opacity-0 before:transition-all before:delay-75 before:duration-500 before:content-[""] hover:before:opacity-100`
