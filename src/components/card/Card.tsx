@@ -5,7 +5,9 @@ interface props {
     index?: number;
 }
 
-const Card: React.FC<props> = ({ index }) => {
+const Card: React.FC<props> = (index) => {
+    console.log(index);
+
     const [styles, setStyles] = useState<object | undefined>(undefined);
     useEffect(() => {
         console.log(Boolean(styles));
