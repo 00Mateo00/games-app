@@ -14,7 +14,6 @@ const Card: React.FC<props> = (index) => {
     function getStyles(
         element: React.MouseEvent<HTMLDivElement, MouseEvent>
     ): object {
-        const { clientWidth, clientHeight } = element.currentTarget;
         const top = element.currentTarget?.getBoundingClientRect()?.top;
         const leftOffset = element.currentTarget?.offsetLeft;
         const parentWidth = element.currentTarget.parentElement?.clientWidth;
@@ -24,16 +23,10 @@ const Card: React.FC<props> = (index) => {
             parentWidth !== undefined &&
             top !== undefined
         ) {
-            const toTranslateY =
-                window.innerHeight / 2 - clientHeight / 2 - top;
-            const toTranslateX = parentWidth / 2 - clientWidth / 2 - leftOffset;
-
-            const scaleX = parentWidth / clientWidth;
-
-            const scaleY = window.innerHeight / clientHeight;
-
             return {
-                transform: `translate(${toTranslateX}px,${toTranslateY}px) scale(${scaleX}, ${scaleY})`,
+                transform: `translate(-${leftOffset}px, -${top}px)`,
+                width: `${parentWidth}px`,
+                height: `${window.innerHeight}px`,
                 zIndex: 100,
             };
         }
@@ -108,7 +101,7 @@ const Card: React.FC<props> = (index) => {
                             ` ${
                                 isCardFullSize()
                                     ? ' scale-100 whitespace-normal leading-3'
-                                    : ''
+                                    : ' '
                             }`
                         }
                     >
@@ -130,8 +123,12 @@ const Card: React.FC<props> = (index) => {
                 </div>
                 <div
                     className={
-                        `flex w-full scale-0 flex-col items-center justify-center truncate rounded-md bg-orange-500 transition-all delay-75 duration-500` +
-                        `${isCardFullSize() ? ' scale-100' : ''}`
+                        ` ${
+                            isCardFullSize()
+                                ? 'scale-x-100 scale-y-100'
+                                : 'scale-x-0 scale-y-100'
+                        }` +
+                        ` flex w-full flex-col items-center justify-center truncate rounded-md bg-orange-500 transition-all delay-75 duration-500`
                     }
                 >
                     <div
@@ -179,7 +176,7 @@ const Card: React.FC<props> = (index) => {
                 ` ${isCardFullSize() ? ' z-50' : 'z-10'}` +
                 `   relative flex h-full w-full items-center` +
                 ` ${transtions1}` +
-                ` sm:hover:z-50 `
+                ` sm:hover:z-50`
             }
             style={styles}
         >
