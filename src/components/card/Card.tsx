@@ -37,11 +37,14 @@ const Card: React.FC<props> = ({ index }) => {
 
             return {
                 transform: `translate(${toTranslateX}px,${toTranslateY}px) scale(${scaleX}, ${scaleY})`,
-                zIndex: '100',
             };
         }
 
         return {};
+    }
+
+    function isCardFullSize(): boolean {
+        return styles !== undefined;
     }
 
     const transtions1 = ` transition-all delay-75 duration-500`;
@@ -65,7 +68,8 @@ const Card: React.FC<props> = ({ index }) => {
                 className={
                     `relative z-[1] grid h-full w-full grid-cols-[6fr_0fr] bg-purple-900 ` +
                     ` ${beforePseudoElement}` +
-                    ` ${transtions1}`
+                    ` ${transtions1}` +
+                    ` ${isCardFullSize() ? ' grid-cols-[6fr_5fr]' : ''}`
                 }
             >
                 <div
@@ -73,24 +77,26 @@ const Card: React.FC<props> = ({ index }) => {
                         `grid h-full w-full grid-rows-[1fr_0fr_0fr]` +
                         ` sm:group-hover/edit:grid-rows-[1fr_1fr_0fr]` +
                         `${transtions1}` +
-                        ` ${
-                            styles !== undefined
-                                ? ' grid-rows-[1fr_0fr_1fr]'
-                                : ''
-                        }`
+                        ` ${isCardFullSize() ? 'grid-rows-[1fr_1fr_1fr]' : ''}`
                     }
                 >
                     <div
                         className={
                             `grid h-full w-full grid-cols-[1fr_0fr] place-items-center transition-all` +
                             `  sm:group-hover/edit:grid-cols-[auto_1fr] sm:group-hover/edit:p-2` +
-                            ` ${transtions1}`
+                            ` ${transtions1}` +
+                            ` ${
+                                isCardFullSize()
+                                    ? 'block h-min place-items-baseline'
+                                    : ''
+                            }`
                         }
                     >
                         <h1
                             className={
                                 `transition-all delay-100 duration-700` +
-                                ` sm:group-hover/edit:text-3xl sm:group-hover/edit:delay-75 sm:group-hover/edit:duration-500`
+                                ` sm:group-hover/edit:text-3xl sm:group-hover/edit:delay-75 sm:group-hover/edit:duration-500` +
+                                ` ${isCardFullSize() ? 'text-3xl' : ''}`
                             }
                         >
                             Game Name
@@ -100,14 +106,26 @@ const Card: React.FC<props> = ({ index }) => {
                         className={
                             `flex h-full w-full scale-0 justify-center overflow-auto truncate text-xs` +
                             ` sm:group-hover/edit:scale-100 sm:group-hover/edit:whitespace-normal sm:group-hover/edit:px-2 sm:group-hover/edit:pb-2` +
-                            ` ${transtions1}`
+                            ` ${transtions1}` +
+                            ` ${
+                                isCardFullSize()
+                                    ? ' scale-100 whitespace-normal leading-3'
+                                    : ''
+                            }`
                         }
                     >
                         Lorem ipsum dolor, sit amet
                         consecteturgroup-hover/edit:px-2group-hover/edit:px-2group-hover/edit:px-2
                     </p>
                     <button
-                        className={`flex h-0 w-0 scale-y-0 items-center justify-center truncate rounded-xl bg-background-primaryButton transition-all`}
+                        className={
+                            `flex h-0 w-0 scale-y-0 items-center justify-center truncate rounded-xl bg-background-primaryButton transition-all` +
+                            ` ${
+                                isCardFullSize()
+                                    ? 'h-full w-full scale-100'
+                                    : ''
+                            }`
+                        }
                     >
                         PLAY
                     </button>
@@ -150,11 +168,11 @@ const Card: React.FC<props> = ({ index }) => {
             onClick={(e) => setStyles(getStyles(e))}
             className={
                 `  ${
-                    styles !== undefined ? '' : 'group/edit hover:z-10 '
+                    isCardFullSize() ? 'z-[100]' : 'group/edit hover:z-10 '
                 } absolute top-0 z-0 grid h-full w-full grid-rows-[3fr_1fr] overflow-hidden rounded-md border border-background-primaryButton border-opacity-50 shadow-none delay-75  sm:grid-rows-[8fr_3fr] ` +
                 ' sm:w-full' +
                 ` sm:transition-all sm:duration-500  ${
-                    styles !== undefined
+                    isCardFullSize()
                         ? ''
                         : 'sm:hover:scale-x-[130%] sm:hover:scale-y-[122.5%] sm:hover:grid-rows-[8fr_4fr] sm:hover:shadow-card'
                 }` +
