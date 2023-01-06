@@ -19,21 +19,40 @@ interface props {
 }
 
 const Main: React.FC<props> = ({ scrollRef }) => {
-    const [width, setWidth] = useState<Number>(window.innerWidth);
+    const [screenWidth, setScreenWidth] = useState<Number>(window.innerWidth);
 
     useEffect(() => {
-        window.addEventListener('resize', () => setWidth(window.innerWidth));
+        window.addEventListener('resize', () =>
+            setScreenWidth(window.innerWidth)
+        );
         return () => {
             window.removeEventListener('resize', () =>
-                setWidth(window.innerWidth)
+                setScreenWidth(window.innerWidth)
             );
         };
     }, []);
 
-    function getCards(n: number, isSwiper: boolean): JSX.Element {
+    function getCards(n: number): JSX.Element {
         const tempArray = Array(n).fill(null);
         let cardsCollection = <></>;
-        if (isSwiper) {
+        if (screenWidth >= 640) {
+            cardsCollection = (
+                <div
+                    className={
+                        'relative grid min-h-[calc(100%_-_128px)] w-full grid-flow-row auto-rows-[24rem] grid-cols-[repeat(auto-fit,_18rem)] place-content-center content-center gap-5 py-2'
+                    }
+                >
+                    {tempArray.map((e, i) => (
+                        <div
+                            key={i}
+                            className='relative flex h-full w-full items-center'
+                        >
+                            <Card index={i} />
+                        </div>
+                    ))}
+                </div>
+            );
+        } else {
             cardsCollection = (
                 <Swiper
                     slidesPerView={1}
@@ -70,30 +89,9 @@ const Main: React.FC<props> = ({ scrollRef }) => {
                     </div>
                 </Swiper>
             );
-        } else {
-            cardsCollection = (
-                <div
-                    className={
-                        'relative grid min-h-[calc(100%_-_128px)] w-full grid-flow-row auto-rows-[24rem] grid-cols-[repeat(auto-fit,_18rem)] place-content-center content-center gap-5 py-2'
-                    }
-                >
-                    {tempArray.map((e, i) => (
-                        <div
-                            key={i}
-                            className='relative flex h-full w-full items-center'
-                        >
-                            <Card index={i} />
-                        </div>
-                    ))}
-                </div>
-            );
         }
         return cardsCollection;
     }
-
-    const noSwiperCards = getCards(13, false);
-
-    const swiperCards = getCards(13, true);
 
     return (
         <div
@@ -111,8 +109,7 @@ const Main: React.FC<props> = ({ scrollRef }) => {
                 }
             >
                 <Header />
-                {width >= 640 && noSwiperCards}
-                {width < 640 && swiperCards}
+                {getCards(13)}
                 <Footer />
             </div>
         </div>
