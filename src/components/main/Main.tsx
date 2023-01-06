@@ -61,16 +61,22 @@ const Main: React.FC<props> = ({ scrollRef }) => {
                     onSwiper={(swiper) => console.log(swiper)}
                     className='h-5/6 w-full'
                 >
-                    {tempArray.map((e, i) => (
-                        <SwiperSlide key={i}>
-                            <Card />
-                        </SwiperSlide>
-                    ))}
+                    <div className='flex h-[calc(100%_-_128px)] w-full items-center justify-center'>
+                        {tempArray.map((e, i) => (
+                            <SwiperSlide key={i}>
+                                <Card />
+                            </SwiperSlide>
+                        ))}
+                    </div>
                 </Swiper>
             );
         } else {
             cardsCollection = (
-                <>
+                <div
+                    className={
+                        'relative grid min-h-[calc(100%_-_128px)] w-full grid-flow-row auto-rows-[24rem] grid-cols-[repeat(auto-fit,_18rem)] place-content-center content-center gap-5 py-2'
+                    }
+                >
                     {tempArray.map((e, i) => (
                         <div
                             key={i}
@@ -79,27 +85,15 @@ const Main: React.FC<props> = ({ scrollRef }) => {
                             <Card index={i} />
                         </div>
                     ))}
-                </>
+                </div>
             );
         }
         return cardsCollection;
     }
 
-    const noSwiperCards = (
-        <div
-            className={
-                'relative grid min-h-[calc(100%_-_128px)] w-full grid-flow-row auto-rows-[24rem] grid-cols-[repeat(auto-fit,_18rem)] place-content-center content-center gap-5 py-2'
-            }
-        >
-            {getCards(13, false)}
-        </div>
-    );
+    const noSwiperCards = getCards(13, false);
 
-    const swiperCards = (
-        <div className='flex h-[calc(100%_-_128px)] w-full items-center justify-center'>
-            {getCards(13, true)}
-        </div>
-    );
+    const swiperCards = getCards(13, true);
 
     return (
         <div
