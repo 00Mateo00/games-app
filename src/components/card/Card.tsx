@@ -17,11 +17,9 @@ const Card: React.FC<props> = (index) => {
         element: React.MouseEvent<HTMLDivElement, MouseEvent>
     ): object {
         const { clientWidth, clientHeight } = element.currentTarget;
-        const top =
-            element.currentTarget.parentElement?.getBoundingClientRect()?.top;
-        const leftOffset = element.currentTarget.parentElement?.offsetLeft;
-        const parentWidth =
-            element.currentTarget.parentElement?.parentElement?.clientWidth;
+        const top = element.currentTarget?.getBoundingClientRect()?.top;
+        const leftOffset = element.currentTarget?.offsetLeft;
+        const parentWidth = element.currentTarget.parentElement?.clientWidth;
 
         if (
             leftOffset !== undefined &&
@@ -32,13 +30,14 @@ const Card: React.FC<props> = (index) => {
                 window.innerHeight / 2 - clientHeight / 2 - top;
             const toTranslateX = parentWidth / 2 - clientWidth / 2 - leftOffset;
 
-            const scaleX = (parentWidth / clientWidth) * 0.85;
+            const scaleX = parentWidth / clientWidth;
             console.log(scaleX);
 
-            const scaleY = (window.innerHeight / clientHeight) * 0.99;
+            const scaleY = window.innerHeight / clientHeight;
 
             return {
                 transform: `translate(${toTranslateX}px,${toTranslateY}px) scale(${scaleX}, ${scaleY})`,
+                zIndex: 100,
             };
         }
 
@@ -167,22 +166,35 @@ const Card: React.FC<props> = (index) => {
     );
     return (
         <div
-            onClick={(e) => setStyles(getStyles(e))}
+            onClick={(e) =>
+                isCardFullSize()
+                    ? setStyles(undefined)
+                    : setStyles(getStyles(e))
+            }
             className={
-                `  ${
-                    isCardFullSize() ? 'z-[100]' : 'group/edit hover:z-10 '
-                } absolute top-0 z-0 grid h-full w-full grid-rows-[3fr_1fr] overflow-hidden rounded-md border border-background-primaryButton border-opacity-50 shadow-none delay-75  sm:grid-rows-[8fr_3fr] ` +
-                ' sm:w-full' +
-                ` sm:transition-all sm:duration-500  ${
-                    isCardFullSize()
-                        ? ''
-                        : 'sm:hover:scale-x-[130%] sm:hover:scale-y-[122.5%] sm:hover:grid-rows-[8fr_4fr] sm:hover:shadow-card'
-                }` +
-                ` before:absolute before:top-0 before:left-0 before:z-[-1] before:h-full before:w-full before:bg-violet-600 before:opacity-0 before:transition-all before:delay-75 before:duration-500 before:content-[""] hover:before:opacity-100`
+                ` ${isCardFullSize() ? ' z-50' : 'z-10'}` +
+                `   relative flex h-full w-full items-center` +
+                ` ${transtions1}` +
+                `  sm:hover:z-50 `
             }
             style={styles}
         >
-            {cardContent}
+            <div
+                className={
+                    ` ${
+                        isCardFullSize() ? '' : ' group/edit'
+                    } z-15 absolute top-0 grid h-full w-full grid-rows-[3fr_1fr] overflow-hidden rounded-md border border-background-primaryButton border-opacity-50 shadow-none delay-75 sm:grid-rows-[8fr_3fr] ` +
+                    ' sm:w-full' +
+                    ` sm:transition-all sm:duration-500  ${
+                        isCardFullSize()
+                            ? ' sm:scale-[90%]'
+                            : ' sm:hover:scale-x-[130%] sm:hover:scale-y-[122.5%] sm:hover:grid-rows-[8fr_4fr] sm:hover:shadow-card'
+                    }` +
+                    ` before:absolute before:top-0 before:left-0 before:z-[-1] before:h-full before:w-full before:bg-violet-600 before:opacity-0 before:transition-all before:delay-75 before:duration-500 before:content-[""] hover:before:opacity-100`
+                }
+            >
+                {cardContent}
+            </div>
         </div>
     );
 };

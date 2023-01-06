@@ -43,12 +43,7 @@ const Main: React.FC<props> = ({ scrollRef }) => {
                     }
                 >
                     {tempArray.map((e, i) => (
-                        <div
-                            key={i}
-                            className='relative flex h-full w-full items-center'
-                        >
-                            <Card index={i} />
-                        </div>
+                        <Card key={i} index={i} />
                     ))}
                 </div>
             );
