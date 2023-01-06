@@ -1,17 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useContext } from 'react';
 import Image from '../../assets/card-Images/tetris.png';
+import GlobalContext from '../../context/GlobalContext';
 
 interface props {
     index?: number;
 }
 
 const Card: React.FC<props> = (index) => {
-    console.log(index);
+    const { setIsSomeCardClicked } = useContext(GlobalContext);
 
     const [styles, setStyles] = useState<object | undefined>(undefined);
-    useEffect(() => {
-        console.log(Boolean(styles));
-    }, [styles]);
 
     function getStyles(
         element: React.MouseEvent<HTMLDivElement, MouseEvent>
@@ -31,7 +29,6 @@ const Card: React.FC<props> = (index) => {
             const toTranslateX = parentWidth / 2 - clientWidth / 2 - leftOffset;
 
             const scaleX = parentWidth / clientWidth;
-            console.log(scaleX);
 
             const scaleY = window.innerHeight / clientHeight;
 
@@ -166,16 +163,20 @@ const Card: React.FC<props> = (index) => {
     );
     return (
         <div
-            onClick={(e) =>
-                isCardFullSize()
-                    ? setStyles(undefined)
-                    : setStyles(getStyles(e))
-            }
+            onClick={(e) => {
+                if (isCardFullSize()) {
+                    setIsSomeCardClicked(false);
+                    setStyles(undefined);
+                } else {
+                    setIsSomeCardClicked(true);
+                    setStyles(getStyles(e));
+                }
+            }}
             className={
                 ` ${isCardFullSize() ? ' z-50' : 'z-10'}` +
                 `   relative flex h-full w-full items-center` +
                 ` ${transtions1}` +
-                `  sm:hover:z-50 `
+                ` sm:hover:z-50 `
             }
             style={styles}
         >
@@ -187,7 +188,7 @@ const Card: React.FC<props> = (index) => {
                     ' sm:w-full' +
                     ` sm:transition-all sm:duration-500  ${
                         isCardFullSize()
-                            ? ' sm:scale-[90%]'
+                            ? ' scale-x-[80%] sm:scale-y-[90%]'
                             : ' sm:hover:scale-x-[130%] sm:hover:scale-y-[122.5%] sm:hover:grid-rows-[8fr_4fr] sm:hover:shadow-card'
                     }` +
                     ` before:absolute before:top-0 before:left-0 before:z-[-1] before:h-full before:w-full before:bg-violet-600 before:opacity-0 before:transition-all before:delay-75 before:duration-500 before:content-[""] hover:before:opacity-100`

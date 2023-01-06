@@ -32,6 +32,19 @@ const Main: React.FC<props> = ({ scrollRef }) => {
         };
     }, []);
 
+    useEffect(() => {
+        const element = scrollRef.current;
+        if (element === null) return;
+        element.addEventListener('wheel', (e) => e.preventDefault(), {
+            passive: false,
+        });
+
+        return () => {
+            if (element === null) return;
+            element.removeEventListener('wheel', (e) => e.preventDefault());
+        };
+    }, []);
+
     function getCards(n: number): JSX.Element {
         const tempArray = Array(n).fill(null);
         let cardsCollection = <></>;
@@ -96,7 +109,6 @@ const Main: React.FC<props> = ({ scrollRef }) => {
             }
         >
             <div
-                onWheel={(e) => e.stopPropagation()}
                 ref={scrollRef}
                 className={
                     'overflow-6 h-full w-full scrollbar:hidden' +

@@ -6,13 +6,12 @@ interface Props {
 }
 
 export default function ContextWrapper({ children }: Props): JSX.Element {
-    const [value, setValue] = useState<number>(5);
-
+    const [isSomeCardClicked, setIsSomeCardClicked] = useState(false);
     return (
         <GlobalContext.Provider
             value={{
-                value,
-                setValue,
+                isSomeCardClicked,
+                setIsSomeCardClicked,
             }}
         >
             {children}
