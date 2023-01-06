@@ -30,8 +30,10 @@ const Card: React.FC<props> = ({ index }) => {
                 window.innerHeight / 2 - clientHeight / 2 - top;
             const toTranslateX = parentWidth / 2 - clientWidth / 2 - leftOffset;
 
-            const scaleX = parentWidth / clientWidth - 0.2;
-            const scaleY = window.innerHeight / clientHeight - 0.2;
+            const scaleX = (parentWidth / clientWidth) * 0.85;
+            console.log(scaleX);
+
+            const scaleY = (window.innerHeight / clientHeight) * 0.99;
 
             return {
                 transform: `translate(${toTranslateX}px,${toTranslateY}px) scale(${scaleX}, ${scaleY})`,
@@ -70,7 +72,12 @@ const Card: React.FC<props> = ({ index }) => {
                     className={
                         `grid h-full w-full grid-rows-[1fr_0fr_0fr]` +
                         ` sm:group-hover/edit:grid-rows-[1fr_1fr_0fr]` +
-                        `${transtions1}`
+                        `${transtions1}` +
+                        ` ${
+                            styles !== undefined
+                                ? ' grid-rows-[1fr_0fr_1fr]'
+                                : ''
+                        }`
                     }
                 >
                     <div
