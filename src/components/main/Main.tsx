@@ -1,29 +1,106 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Card from '../card/Card';
 import Footer from '../footer/Footer';
 import Header from '../header/Header';
+
+// Import Swiper React components
+import { Swiper, SwiperSlide } from 'swiper/react';
+// import required modules
+import { Pagination, EffectCreative } from 'swiper';
+
+// Import Swiper styles
+import 'swiper/css';
+import 'swiper/css/pagination';
+
+import 'swiper/css/effect-creative';
 
 interface props {
     scrollRef: React.MutableRefObject<HTMLDivElement | null>;
 }
 
 const Main: React.FC<props> = ({ scrollRef }) => {
-    function getCards(n: number): JSX.Element {
-        return (
-            <>
-                {Array(n)
-                    .fill(null)
-                    .map((e, i) => (
+    const [width, setWidth] = useState<Number>(window.innerWidth);
+
+    useEffect(() => {
+        window.addEventListener('resize', () => setWidth(window.innerWidth));
+        return () => {
+            window.removeEventListener('resize', () =>
+                setWidth(window.innerWidth)
+            );
+        };
+    }, []);
+
+    function getCards(n: number, isSwiper: boolean): JSX.Element {
+        const tempArray = Array(n).fill(null);
+        let cardsCollection = <></>;
+        if (isSwiper) {
+            cardsCollection = (
+                <Swiper
+                    slidesPerView={1}
+                    grabCursor={true}
+                    spaceBetween={30}
+                    navigation={true}
+                    effect={'creative'}
+                    pagination={{
+                        dynamicBullets: true,
+                    }}
+                    creativeEffect={{
+                        prev: {
+                            shadow: true,
+                            translate: ['0%', 0, -800],
+                            rotate: [0, 0, 0],
+                        },
+                        next: {
+                            shadow: true,
+                            translate: ['125%', 0, -800],
+                            rotate: [0, 0, 360],
+                        },
+                    }}
+                    modules={[Pagination, EffectCreative]}
+                    onSlideChange={() => console.log('slide change')}
+                    onSwiper={(swiper) => console.log(swiper)}
+                    className='h-5/6 w-full'
+                >
+                    {tempArray.map((e, i) => (
+                        <SwiperSlide key={i}>
+                            <Card />
+                        </SwiperSlide>
+                    ))}
+                </Swiper>
+            );
+        } else {
+            cardsCollection = (
+                <>
+                    {tempArray.map((e, i) => (
                         <div
                             key={i}
                             className='relative flex h-full w-full items-center'
                         >
-                            <Card />
+                            <Card index={i} />
                         </div>
                     ))}
-            </>
-        );
+                </>
+            );
+        }
+        return cardsCollection;
     }
+
+    const noSwiperCards = (
+        <div
+            className={
+                'relative grid min-h-[calc(100%_-_128px)] w-full grid-flow-row auto-rows-[24rem] grid-cols-[repeat(auto-fit,_18rem)] place-content-center content-center gap-5 py-2'
+            }
+        >
+            {getCards(13, false)}
+        </div>
+    );
+
+    const swiperCards = (
+        <div className='flex h-[calc(100%_-_128px)] w-full items-center justify-center'>
+            {getCards(13, true)}
+        </div>
+    );
+
     return (
         <div
             className={
@@ -40,14 +117,8 @@ const Main: React.FC<props> = ({ scrollRef }) => {
                 }
             >
                 <Header />
-                <div
-                    className={
-                        'relative ml-[5%] grid min-h-[calc(100%_-_128px)] w-full auto-cols-[90%] grid-flow-col grid-rows-[32rem] content-center gap-5 py-2' +
-                        ' pl-0 sm:mx-auto sm:my-0 sm:ml-auto sm:w-[90%] sm:grid-flow-row sm:auto-rows-[24rem] sm:grid-cols-[repeat(auto-fit,_18rem)] sm:place-content-center'
-                    }
-                >
-                    {getCards(13)}
-                </div>
+                {width >= 640 && noSwiperCards}
+                {width < 640 && swiperCards}
                 <Footer />
             </div>
         </div>

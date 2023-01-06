@@ -1,8 +1,52 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Image from '../../assets/card-Images/tetris.png';
 
-const Card: React.FC = () => {
+interface props {
+    index?: number;
+}
+
+const Card: React.FC<props> = ({ index }) => {
+    const [styles, setStyles] = useState<object | undefined>(undefined);
+    useEffect(() => {
+        console.log(Boolean(styles));
+    }, [styles]);
+
+    function getStyles(
+        element: React.MouseEvent<HTMLDivElement, MouseEvent>
+    ): object {
+        const { clientWidth, clientHeight } = element.currentTarget;
+        const top =
+            element.currentTarget.parentElement?.getBoundingClientRect()?.top;
+        const leftOffset = element.currentTarget.parentElement?.offsetLeft;
+        const parentWidth =
+            element.currentTarget.parentElement?.parentElement?.clientWidth;
+
+        if (
+            leftOffset !== undefined &&
+            parentWidth !== undefined &&
+            top !== undefined
+        ) {
+            const toTranslateY =
+                window.innerHeight / 2 - clientHeight / 2 - top;
+            const toTranslateX = parentWidth / 2 - clientWidth / 2 - leftOffset;
+
+            const scaleX = parentWidth / clientWidth - 0.2;
+            const scaleY = window.innerHeight / clientHeight - 0.2;
+
+            return {
+                transform: `translate(${toTranslateX}px,${toTranslateY}px) scale(${scaleX}, ${scaleY})`,
+                zIndex: '100',
+            };
+        }
+
+        return {};
+    }
+
     const transtions1 = ` transition-all delay-75 duration-500`;
+    const beforePseudoElement =
+        ' before:hidden' +
+        ' sm:before:block sm:before:absolute sm:before:top-0 sm:before:left-0 before:z-[-1] sm:before:h-full sm:before:w-full sm:before:bg-gradient-to-br sm:before:from-violet-600 sm:before:to-violet-800 sm:before:opacity-0 ' +
+        ' sm:group-hover/edit:before:content-[""] sm:group-hover/edit:before:opacity-100 sm:before:transition-all sm:before:delay-75 sm:before:duration-500';
 
     const cardContent = (
         <>
@@ -12,37 +56,34 @@ const Card: React.FC = () => {
                 className={
                     `${transtions1}` +
                     ` h-full w-full overflow-hidden object-cover object-[50%_10%]` +
-                    ` group-hover/edit:opacity-[95%]`
+                    ` sm:group-hover/edit:opacity-[95%]`
                 }
             ></img>
             <div
                 className={
                     `relative z-[1] grid h-full w-full grid-cols-[6fr_0fr] bg-purple-900 ` +
-                    ` before:absolute before:top-0 before:left-0 before:z-[-1] before:h-full before:w-full before:bg-gradient-to-br before:from-violet-600 before:to-violet-800 before:opacity-0 before:transition-all before:delay-75 before:duration-500 before:content-[""]` +
-                    ` before:transition-all before:delay-75 before:duration-500` +
-                    ` group-hover/edit:before:opacity-100` +
-                    `${transtions1}`
+                    ` ${beforePseudoElement}` +
+                    ` ${transtions1}`
                 }
             >
                 <div
                     className={
                         `grid h-full w-full grid-rows-[1fr_0fr_0fr]` +
-                        ` group-hover/edit:grid-rows-[1fr_1fr_0fr]` +
+                        ` sm:group-hover/edit:grid-rows-[1fr_1fr_0fr]` +
                         `${transtions1}`
                     }
                 >
                     <div
                         className={
                             `grid h-full w-full grid-cols-[1fr_0fr] place-items-center transition-all` +
-                            `  group-hover/edit:grid-cols-[auto_1fr] group-hover/edit:p-2` +
+                            `  sm:group-hover/edit:grid-cols-[auto_1fr] sm:group-hover/edit:p-2` +
                             ` ${transtions1}`
                         }
                     >
                         <h1
                             className={
                                 `transition-all delay-100 duration-700` +
-                                ` group-hover/edit:text-3xl group-hover/edit:delay-75 group-hover/edit:duration-500` +
-                                ` group-hover/edit:delay-75 group-hover/edit:duration-500`
+                                ` sm:group-hover/edit:text-3xl sm:group-hover/edit:delay-75 sm:group-hover/edit:duration-500`
                             }
                         >
                             Game Name
@@ -51,7 +92,7 @@ const Card: React.FC = () => {
                     <p
                         className={
                             `flex h-full w-full scale-0 justify-center overflow-auto truncate text-xs` +
-                            ` group-hover/edit:scale-100 group-hover/edit:whitespace-normal group-hover/edit:px-2 group-hover/edit:pb-2` +
+                            ` sm:group-hover/edit:scale-100 sm:group-hover/edit:whitespace-normal sm:group-hover/edit:px-2 sm:group-hover/edit:pb-2` +
                             ` ${transtions1}`
                         }
                     >
@@ -97,15 +138,22 @@ const Card: React.FC = () => {
             </div>
         </>
     );
-    //
-
-    /* <div className={`group/edit lg:absolute lg:top-1/2 lg:-translate-y-[47.5%] w-full lg:w-3/4 lg:hover:scale-x-[130%]  h-full lg:h-5/6 lg:m-auto lg:hover:scale-y-[122.5%] rounded-md border border-background-primaryButton border-opacity-50 lg:hover:border-0 lg:shadow-none lg:hover:shadow-card grid grid-rows-[3fr_1fr] lg:grid-rows-[8fr_3fr] lg:hover:grid-rows-[8fr_4fr] lg:transition-all delay-75 lg:duration-500 overflow-hidden`}></div> */
     return (
         <div
+            onClick={(e) => setStyles(getStyles(e))}
             className={
-                ` group/edit absolute top-0 z-0 grid h-full w-full grid-rows-[3fr_1fr] overflow-hidden rounded-md border border-background-primaryButton border-opacity-50 shadow-none delay-75 hover:z-10 lg:grid-rows-[8fr_3fr] lg:transition-all lg:duration-500 lg:hover:scale-x-[130%] lg:hover:scale-y-[122.5%] lg:hover:grid-rows-[8fr_4fr] lg:hover:shadow-card` +
+                `  ${
+                    styles !== undefined ? '' : 'group/edit hover:z-10 '
+                } absolute top-0 z-0 grid h-full w-full grid-rows-[3fr_1fr] overflow-hidden rounded-md border border-background-primaryButton border-opacity-50 shadow-none delay-75  sm:grid-rows-[8fr_3fr] ` +
+                ' sm:w-full' +
+                ` sm:transition-all sm:duration-500  ${
+                    styles !== undefined
+                        ? ''
+                        : 'sm:hover:scale-x-[130%] sm:hover:scale-y-[122.5%] sm:hover:grid-rows-[8fr_4fr] sm:hover:shadow-card'
+                }` +
                 ` before:absolute before:top-0 before:left-0 before:z-[-1] before:h-full before:w-full before:bg-violet-600 before:opacity-0 before:transition-all before:delay-75 before:duration-500 before:content-[""] hover:before:opacity-100`
             }
+            style={styles}
         >
             {cardContent}
         </div>
