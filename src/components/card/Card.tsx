@@ -129,7 +129,10 @@ const Card: React.FC<props> = (index) => {
                     </button>
                 </div>
                 <div
-                    className={`flex w-full scale-0 flex-col items-center justify-center truncate rounded-md transition-all delay-75 duration-500`}
+                    className={
+                        `flex w-full scale-0 flex-col items-center justify-center truncate rounded-md bg-orange-500 transition-all delay-75 duration-500` +
+                        `${isCardFullSize() ? ' scale-100' : ''}`
+                    }
                 >
                     <div
                         className={`flex h-full w-full items-center justify-around`}
