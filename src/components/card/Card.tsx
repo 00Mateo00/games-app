@@ -199,7 +199,7 @@ const Card: React.FC<props> = (index) => {
                 className={
                     ` ${
                         isCardFullSize() ? '' : ' group/edit'
-                    } z-15 absolute top-0 grid h-full w-full grid-rows-[3fr_1fr] overflow-hidden rounded-md border border-background-primaryButton border-opacity-50 shadow-none delay-75 sm:grid-rows-[8fr_3fr] ` +
+                    } absolute top-0 z-20 grid h-full w-full grid-rows-[3fr_1fr] overflow-hidden rounded-md border border-background-primaryButton border-opacity-50 shadow-none delay-75 sm:grid-rows-[8fr_3fr] ` +
                     ' sm:w-full' +
                     ` sm:transition-all sm:duration-500  ${
                         isCardFullSize()
