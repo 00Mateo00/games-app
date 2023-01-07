@@ -7,7 +7,7 @@ interface props {
 }
 
 const Card: React.FC<props> = (index) => {
-    const { setIsSomeCardClicked } = useContext(GlobalContext);
+    const { setIsSomeCardClicked, screenWidth } = useContext(GlobalContext);
 
     const [styles, setStyles] = useState<object | undefined>(undefined);
 
@@ -42,6 +42,10 @@ const Card: React.FC<props> = (index) => {
         return styles !== undefined;
     }
 
+    function isMobile(): boolean {
+        return screenWidth >= 640;
+    }
+
     const transtions1 = ` transition-all delay-75 duration-500`;
     const beforePseudoElement =
         ' before:hidden' +
@@ -64,7 +68,11 @@ const Card: React.FC<props> = (index) => {
                     `relative z-[1] grid h-full w-full grid-cols-[6fr_0fr] bg-purple-900 ` +
                     ` ${beforePseudoElement}` +
                     ` ${transtions1}` +
-                    ` ${isCardFullSize() ? ' grid-cols-[6fr_5fr]' : ''}`
+                    ` ${
+                        isCardFullSize()
+                            ? ' sm:grid-cols-[6fr_5fr] '
+                            : 'before:hidden'
+                    }`
                 }
             >
                 <div
@@ -74,7 +82,7 @@ const Card: React.FC<props> = (index) => {
                         `${transtions1}` +
                         ` ${
                             isCardFullSize()
-                                ? 'flex flex-col justify-around p-5'
+                                ? 'sm:flex sm:flex-col sm:justify-around sm:p-5'
                                 : 'grid grid-rows-[1fr_0fr_0fr]'
                         }`
                     }
@@ -86,7 +94,7 @@ const Card: React.FC<props> = (index) => {
                             ` ${transtions1}` +
                             ` ${
                                 isCardFullSize()
-                                    ? 'block h-min place-items-baseline'
+                                    ? 'sm:block sm:h-min sm:place-items-baseline'
                                     : ''
                             }`
                         }
@@ -107,7 +115,7 @@ const Card: React.FC<props> = (index) => {
                             ` ${transtions1}` +
                             ` ${
                                 isCardFullSize()
-                                    ? ' scale-100 text-xl'
+                                    ? ' sm:scale-100 sm:text-xl'
                                     : ' truncate text-xs'
                             }`
                         }
@@ -120,7 +128,7 @@ const Card: React.FC<props> = (index) => {
                             `flex items-center justify-center rounded-xl bg-background-primaryButton transition-all` +
                             ` ${
                                 isCardFullSize()
-                                    ? ' h-7 w-20 scale-100'
+                                    ? ' sm:h-7 sm:w-20 sm:scale-100'
                                     : 'h-0  w-0 scale-0 truncate '
                             }`
                         }
@@ -132,7 +140,7 @@ const Card: React.FC<props> = (index) => {
                     className={
                         ` ${
                             isCardFullSize()
-                                ? 'scale-x-100 scale-y-100'
+                                ? 'sm:scale-x-100 sm:scale-y-100'
                                 : 'scale-x-0 scale-y-100'
                         }` +
                         ` flex w-full flex-col items-center justify-center truncate rounded-md bg-orange-500 transition-all delay-75 duration-500`
@@ -171,8 +179,6 @@ const Card: React.FC<props> = (index) => {
     return (
         <div
             onClick={(e) => {
-                console.log(e.currentTarget?.getBoundingClientRect()?.top);
-                console.log(e.currentTarget?.offsetLeft);
                 if (isCardFullSize()) {
                     setIsSomeCardClicked(false);
                     setStyles(undefined);
@@ -182,12 +188,12 @@ const Card: React.FC<props> = (index) => {
                 }
             }}
             className={
-                ` ${isCardFullSize() ? ' z-50' : 'z-10'}` +
+                ` ${isCardFullSize() ? ' sm:z-50' : 'z-10'}` +
                 `   relative flex h-full w-full items-center` +
                 ` ${transtions1}` +
                 ` sm:hover:z-50`
             }
-            style={styles}
+            style={isMobile() ? styles : undefined}
         >
             <div
                 className={
@@ -197,7 +203,7 @@ const Card: React.FC<props> = (index) => {
                     ' sm:w-full' +
                     ` sm:transition-all sm:duration-500  ${
                         isCardFullSize()
-                            ? ' scale-x-[70%] sm:scale-y-[85%]'
+                            ? ' sm:scale-x-[70%] sm:scale-y-[85%]'
                             : ' sm:hover:scale-x-[130%] sm:hover:scale-y-[122.5%] sm:hover:grid-rows-[8fr_4fr] sm:hover:shadow-card'
                     }` +
                     ` before:absolute before:top-0 before:left-0 before:z-[-1] before:h-full before:w-full before:bg-violet-600 before:opacity-0 before:transition-all before:delay-75 before:duration-500 before:content-[""] hover:before:opacity-100`

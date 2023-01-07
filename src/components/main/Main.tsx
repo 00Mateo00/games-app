@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
 import Card from '../card/Card';
 import Footer from '../footer/Footer';
 import Header from '../header/Header';
@@ -13,24 +13,14 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 
 import 'swiper/css/effect-creative';
+import GlobalContext from '../../context/GlobalContext';
 
 interface props {
     scrollRef: React.MutableRefObject<HTMLDivElement | null>;
 }
 
 const Main: React.FC<props> = ({ scrollRef }) => {
-    const [screenWidth, setScreenWidth] = useState<Number>(window.innerWidth);
-
-    useEffect(() => {
-        window.addEventListener('resize', () =>
-            setScreenWidth(window.innerWidth)
-        );
-        return () => {
-            window.removeEventListener('resize', () =>
-                setScreenWidth(window.innerWidth)
-            );
-        };
-    }, []);
+    const { screenWidth } = useContext(GlobalContext);
 
     useEffect(() => {
         const element = scrollRef.current;
@@ -74,13 +64,13 @@ const Main: React.FC<props> = ({ scrollRef }) => {
                     creativeEffect={{
                         prev: {
                             shadow: true,
-                            translate: ['0%', 0, -800],
+                            translate: ['0%', 0, -500],
                             rotate: [0, 0, 0],
                         },
                         next: {
                             shadow: true,
-                            translate: ['125%', 0, -800],
-                            rotate: [0, 0, 360],
+                            translate: ['250%', 0, -500],
+                            rotate: [0, 0, 0],
                         },
                     }}
                     modules={[Pagination, EffectCreative]}
