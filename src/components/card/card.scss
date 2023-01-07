@@ -1,1 +1,21 @@
-    
+.CARD-ExternalWrapper{
+    @apply relative flex h-full w-full items-center sm:hover:z-50;
+
+    &_FullSize{
+        @apply sm:z-50
+
+    }
+    &__SmallSize{
+        @apply z-10
+
+    }
+
+
+    .CARD-Wrapper{
+         @apply z-20 absolute top-0 grid h-full w-full grid-rows-[3fr_1fr] overflow-hidden rounded-md border border-background-primaryButton border-opacity-50 shadow-none delay-75 sm:grid-rows-[8fr_3fr];
+    };
+};
+
+.transitions{
+    @apply transition-all delay-75 duration-500;
+};
