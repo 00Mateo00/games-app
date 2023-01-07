@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react';
 import Image from '../../assets/card-Images/tetris.png';
 import GlobalContext from '../../context/GlobalContext';
+import './card.scss';
 
 interface props {
     index?: number;
@@ -176,37 +177,40 @@ const Card: React.FC<props> = (index) => {
             </div>
         </>
     );
+
+    function stylesSwitch(
+        e: React.MouseEvent<HTMLDivElement, MouseEvent>
+    ): void {
+        if (isCardFullSize()) {
+            setIsSomeCardClicked(false);
+            setStyles(undefined);
+        } else {
+            setIsSomeCardClicked(true);
+            setStyles(getStyles(e));
+        }
+    }
+
     return (
         <div
-            onClick={(e) => {
-                if (isCardFullSize()) {
-                    setIsSomeCardClicked(false);
-                    setStyles(undefined);
-                } else {
-                    setIsSomeCardClicked(true);
-                    setStyles(getStyles(e));
-                }
-            }}
+            onClick={(e) => stylesSwitch(e)}
             className={
-                ` ${isCardFullSize() ? ' sm:z-50' : 'z-10'}` +
-                `   relative flex h-full w-full items-center` +
-                ` ${transtions1}` +
-                ` sm:hover:z-50`
+                `CARD-ExternalWrapper transitions` +
+                ` ${
+                    isCardFullSize()
+                        ? 'CARD-ExternalWrapper_FullSize'
+                        : 'CARD-ExternalWrapper_SmallSize'
+                }`
             }
             style={isMobile() ? styles : undefined}
         >
             <div
                 className={
+                    `CARD-Wrapper` +
                     ` ${
-                        isCardFullSize() ? '' : ' group/edit'
-                    } z-15 absolute top-0 grid h-full w-full grid-rows-[3fr_1fr] overflow-hidden rounded-md border border-background-primaryButton border-opacity-50 shadow-none delay-75 sm:grid-rows-[8fr_3fr] ` +
-                    ' sm:w-full' +
-                    ` sm:transition-all sm:duration-500  ${
                         isCardFullSize()
-                            ? ' sm:scale-x-[70%] sm:scale-y-[85%]'
-                            : ' sm:hover:scale-x-[130%] sm:hover:scale-y-[122.5%] sm:hover:grid-rows-[8fr_4fr] sm:hover:shadow-card'
-                    }` +
-                    ` before:absolute before:top-0 before:left-0 before:z-[-1] before:h-full before:w-full before:bg-violet-600 before:opacity-0 before:transition-all before:delay-75 before:duration-500 before:content-[""] hover:before:opacity-100`
+                            ? 'CARD-Wrapper_FullSize'
+                            : 'CARD-Wrapper_SmallSize group/edit'
+                    } before:absolute before:top-0 before:left-0 before:z-[-1] before:h-full before:w-full before:bg-violet-600 before:opacity-0 before:transition-all before:delay-75 before:duration-500 before:content-[""] hover:before:opacity-100`
                 }
             >
                 {cardContent}
