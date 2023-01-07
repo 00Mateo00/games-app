@@ -14,25 +14,25 @@ const Card: React.FC<props> = (index) => {
     function getStyles(
         element: React.MouseEvent<HTMLDivElement, MouseEvent>
     ): object {
-        const top = element.currentTarget?.getBoundingClientRect()?.top;
+        const topOffset = element.currentTarget?.getBoundingClientRect()?.top;
         const leftOffset = element.currentTarget?.offsetLeft;
         const parentWidth = element.currentTarget.parentElement?.clientWidth;
 
-        function absoluteValueOf(n: number): number {
-            return Math.abs(n);
-        }
+        if (
+            leftOffset !== undefined &&
+            parentWidth !== undefined &&
+            topOffset !== undefined
+        ) {
+            console.log({ topOffset, leftOffset });
 
-        if (parentWidth !== undefined) {
-            const customStyles = {
-                transform: `translate(-${leftOffset}px, -${absoluteValueOf(
-                    top
-                )}px)`,
+            return {
+                transform: `translate(${leftOffset * -1}px, ${
+                    topOffset * -1
+                }px)`,
                 width: `${parentWidth}px`,
                 height: `${window.innerHeight}px`,
                 zIndex: 100,
             };
-
-            return customStyles;
         }
 
         return {};
@@ -171,6 +171,8 @@ const Card: React.FC<props> = (index) => {
     return (
         <div
             onClick={(e) => {
+                console.log(e.currentTarget?.getBoundingClientRect()?.top);
+                console.log(e.currentTarget?.offsetLeft);
                 if (isCardFullSize()) {
                     setIsSomeCardClicked(false);
                     setStyles(undefined);
