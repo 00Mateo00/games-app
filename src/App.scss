@@ -22,3 +22,10 @@ a{
     border-bottom: 2px solid rgba($color: #000000, $alpha: .5);
 }
 
+.primary-button{
+    @apply bg-gradient-to-br from-violet-600 to-violet-800;
+
+    &:active{
+        @apply bg-gradient-to-br from-violet-800 to-violet-600;
+    }
+}

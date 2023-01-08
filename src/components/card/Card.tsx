@@ -49,8 +49,7 @@ const Card: React.FC<props> = (index) => {
 
     const transtions1 = ` transition-all delay-75 duration-500`;
     const beforePseudoElement =
-        ' before:hidden' +
-        ' sm:before:block sm:before:absolute sm:before:top-0 sm:before:left-0 before:z-[-1] sm:before:h-full sm:before:w-full sm:before:bg-gradient-to-br sm:before:from-violet-600 sm:before:to-violet-800 sm:before:opacity-0 ' +
+        ' before:hidden sm:before:block sm:before:absolute sm:before:top-0 sm:before:left-0 before:z-[-1] sm:before:h-full sm:before:w-full sm:before:bg-gradient-to-br sm:before:from-violet-600 sm:before:to-violet-800 sm:before:opacity-0 ' +
         ' sm:group-hover/edit:before:content-[""] sm:group-hover/edit:before:opacity-100 sm:before:transition-all sm:before:delay-75 sm:before:duration-500';
 
     const cardContent = (
@@ -58,21 +57,17 @@ const Card: React.FC<props> = (index) => {
             <img
                 src={Image}
                 alt='GameName'
-                className={
-                    `${transtions1}` +
-                    ` h-full w-full overflow-hidden object-cover object-[50%_10%]` +
-                    ` sm:group-hover/edit:opacity-[95%]`
-                }
+                className={` imagen transitions`}
             ></img>
             <div
                 className={
-                    `relative z-[1] grid h-full w-full grid-cols-[6fr_0fr] bg-purple-900 ` +
+                    `info-Wrapper transtions` +
                     ` ${beforePseudoElement}` +
                     ` ${transtions1}` +
                     ` ${
                         isCardFullSize()
-                            ? ' sm:grid-cols-[6fr_5fr] '
-                            : 'before:hidden'
+                            ? ' info-Wrapper_FullSize'
+                            : ' before:hidden'
                     }`
                 }
             >
@@ -178,7 +173,7 @@ const Card: React.FC<props> = (index) => {
         </>
     );
 
-    function stylesSwitch(
+    function stylesSwitcher(
         e: React.MouseEvent<HTMLDivElement, MouseEvent>
     ): void {
         if (isCardFullSize()) {
@@ -192,7 +187,7 @@ const Card: React.FC<props> = (index) => {
 
     return (
         <div
-            onClick={(e) => stylesSwitch(e)}
+            onClick={(e) => stylesSwitcher(e)}
             className={
                 `CARD-ExternalWrapper transitions` +
                 ` ${
@@ -210,7 +205,7 @@ const Card: React.FC<props> = (index) => {
                         isCardFullSize()
                             ? 'CARD-Wrapper_FullSize'
                             : 'CARD-Wrapper_SmallSize group/edit'
-                    } before:absolute before:top-0 before:left-0 before:z-[-1] before:h-full before:w-full before:bg-violet-600 before:opacity-0 before:transition-all before:delay-75 before:duration-500 before:content-[""] hover:before:opacity-100`
+                    }`
                 }
             >
                 {cardContent}

@@ -11,14 +11,13 @@
 
     }
 
-
     .CARD-Wrapper{
-        @apply absolute top-0 z-20 grid h-full w-full grid-rows-[3fr_1fr] overflow-hidden rounded-md border border-background-primaryButton border-opacity-50 shadow-none delay-75;
+        @apply absolute top-0 z-20 grid h-full w-full grid-rows-[3fr_1fr] overflow-hidden rounded-md border border-background-primaryButton border-opacity-50 shadow-none delay-75 hover:before:opacity-100;
          
         @apply sm:grid-rows-[8fr_3fr] sm:transition-all sm:duration-500  sm:w-full;
 
         &::before{
-            @apply absolute top-0 left-0 z-[-1] h-full w-full bg-violet-600 opacity-0 transition-all delay-75 duration-500 content-[""] hover:opacity-100
+            @apply absolute top-0 left-0 z-[-1] h-full w-full bg-violet-600 opacity-0 transition-all delay-75 duration-500 content-[""];
         }
 
         &_FullSize{
@@ -28,9 +27,35 @@
         &_SmallSize{
             @apply sm:hover:scale-x-[130%] sm:hover:scale-y-[122.5%] sm:hover:grid-rows-[8fr_4fr] sm:hover:shadow-card;
         }
+
+        .imagen{
+            @apply h-full w-full overflow-hidden object-cover object-[50%_10%];
+
+            @apply sm:group-hover/edit:opacity-[95%];
+        }
+
+        .info-Wrapper{
+            @apply relative z-[1] grid h-full w-full grid-cols-[6fr_0fr] bg-purple-900 ;
+
+            &_FullSize{
+                @apply sm:grid-cols-[6fr_5fr];
+            }
+
+            &_SmallSize{
+                @apply before:hidden
+            }
+
+            &::before{
+                
+                @apply hidden; 
+                @apply sm:block sm:absolute sm:top-0 sm:left-0 z-[-1] sm:h-full sm:w-full sm:bg-gradient-to-br sm:from-violet-600 sm:to-violet-800 sm:opacity-0 sm:group-hover/edit:content-[""] sm:group-hover/edit:opacity-100 sm:transition-all sm:delay-75 sm:duration-500;
+            }
+        }
+
     };
 };
 
 .transitions{
     @apply transition-all delay-75 duration-500;
 };
+
