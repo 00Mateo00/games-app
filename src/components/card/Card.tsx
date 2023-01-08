@@ -15,18 +15,14 @@ const Card: React.FC<props> = (index) => {
     function getStyles(
         element: React.MouseEvent<HTMLDivElement, MouseEvent>
     ): object {
+        let customStyles = {};
+
         const topOffset = element.currentTarget?.getBoundingClientRect()?.top;
         const leftOffset = element.currentTarget?.offsetLeft;
         const parentWidth = element.currentTarget.parentElement?.clientWidth;
 
-        if (
-            leftOffset !== undefined &&
-            parentWidth !== undefined &&
-            topOffset !== undefined
-        ) {
-            console.log({ topOffset, leftOffset });
-
-            return {
+        if (parentWidth !== undefined) {
+            customStyles = {
                 transform: `translate(${leftOffset * -1}px, ${
                     topOffset * -1
                 }px)`,
@@ -36,7 +32,7 @@ const Card: React.FC<props> = (index) => {
             };
         }
 
-        return {};
+        return customStyles;
     }
 
     function isCardFullSize(): boolean {
@@ -159,6 +155,9 @@ const Card: React.FC<props> = (index) => {
             style={isMobile() ? styles : undefined}
         >
             <div
+                onClick={(e) => {
+                    if (isCardFullSize()) e.stopPropagation();
+                }}
                 className={
                     `CARD-Wrapper` +
                     ` ${
