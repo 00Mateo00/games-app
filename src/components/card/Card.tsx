@@ -10,7 +10,9 @@ interface props {
 const Card: React.FC<props> = (index) => {
     const { setIsSomeCardClicked, screenWidth } = useContext(GlobalContext);
 
-    const [styles, setStyles] = useState<object | undefined>(undefined);
+    const [onClickStyles, setOnClickStyles] = useState<object | undefined>(
+        undefined
+    );
 
     function getStyles(
         element: React.MouseEvent<HTMLDivElement, MouseEvent>
@@ -36,7 +38,7 @@ const Card: React.FC<props> = (index) => {
     }
 
     function isCardFullSize(): boolean {
-        return styles !== undefined;
+        return onClickStyles !== undefined;
     }
 
     function isMobile(): boolean {
@@ -92,6 +94,7 @@ const Card: React.FC<props> = (index) => {
                         consecteturgroup-hover:px-2group-hover:px-2group-hover:px-2
                     </p>
                     <button
+                        onClick={inGameView}
                         className={
                             `playButton` +
                             ` ${
@@ -134,11 +137,15 @@ const Card: React.FC<props> = (index) => {
     ): void {
         if (isCardFullSize()) {
             setIsSomeCardClicked(false);
-            setStyles(undefined);
+            setOnClickStyles(undefined);
         } else {
             setIsSomeCardClicked(true);
-            setStyles(getStyles(e));
+            setOnClickStyles(getStyles(e));
         }
+    }
+
+    function inGameView(): void {
+        console.log('clicked');
     }
 
     return (
@@ -152,7 +159,7 @@ const Card: React.FC<props> = (index) => {
                         : 'CARD-ExternalWrapper_SmallSize'
                 }`
             }
-            style={isMobile() ? styles : undefined}
+            style={isMobile() ? onClickStyles : undefined}
         >
             <div
                 onClick={(e) => {
