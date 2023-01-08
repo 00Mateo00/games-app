@@ -25,13 +25,35 @@
         }
 
         &_SmallSize{
-            @apply sm:hover:scale-x-[130%] sm:hover:scale-y-[122.5%] sm:hover:grid-rows-[8fr_4fr] sm:hover:shadow-card;
+            &:hover{
+                @apply sm:scale-x-[130%] sm:scale-y-[122.5%] sm:grid-rows-[8fr_4fr] sm:shadow-card;
+                .imagen{
+                    @apply sm:opacity-[95%];
+                }
+                .info-Wrapper{
+                    &::before{
+                        @apply sm:content-[""] sm:opacity-100;
+                    }
+                    .info-grid{
+                        @apply sm:grid-rows-[1fr_1fr_0fr];
+
+                        .h1-wrapper{
+                            @apply sm:grid-cols-[auto_1fr] sm:p-2;
+                            h1{
+                                @apply sm:text-3xl sm:delay-75 sm:duration-500;
+                            }
+                        }
+                        .description{
+                            @apply sm:scale-100 sm:whitespace-normal sm:px-2 sm:pb-2
+                        }
+                    }
+                }
+                
+            };
         }
 
         .imagen{
             @apply h-full w-full overflow-hidden object-cover object-[50%_10%];
-
-            @apply sm:group-hover/edit:opacity-[95%];
         }
 
         .info-Wrapper{
@@ -48,11 +70,78 @@
             &::before{
                 
                 @apply hidden; 
-                @apply sm:block sm:absolute sm:top-0 sm:left-0 z-[-1] sm:h-full sm:w-full sm:bg-gradient-to-br sm:from-violet-600 sm:to-violet-800 sm:opacity-0 sm:group-hover/edit:content-[""] sm:group-hover/edit:opacity-100 sm:transition-all sm:delay-75 sm:duration-500;
+                @apply sm:block sm:absolute sm:top-0 sm:left-0 z-[-1] sm:h-full sm:w-full sm:bg-gradient-to-br sm:from-violet-600 sm:to-violet-800 sm:opacity-0 sm:transition-all sm:delay-75 sm:duration-500;
+            }
+
+            .info-grid{
+                @apply h-full w-full;
+                &_FullSize{
+                   @apply sm:flex sm:flex-col sm:justify-around sm:p-5
+                }
+                &_SmallSize{
+                    @apply grid grid-rows-[1fr_0fr_0fr]
+                }
+                .h1-wrapper{
+                    @apply grid h-full w-full grid-cols-[1fr_0fr] place-items-center transition-all;
+
+                    &_FullSize{
+                        @apply sm:block sm:h-min sm:place-items-baseline;
+                    };
+                    
+                    h1{
+                        @apply transition-all delay-100 duration-700
+                    }
+
+
+                }
+                .description{
+                    @apply flex h-full w-full scale-0 justify-center overflow-auto;
+
+                    &_FullSize{
+                        @apply sm:scale-100 sm:text-xl;
+                    }
+                    &_SmallSize{
+                        @apply truncate text-xs;
+                    }
+                }
+                .playButton{
+                    @apply flex items-center justify-center rounded-xl bg-background-primaryButton transition-all;
+
+                    &_FullSize{
+                        @apply sm:h-7 sm:w-20 sm:scale-100
+                    };
+                    &_SmallSize{
+                        @apply h-0 w-0 scale-0 truncate;
+                    };
+                }
+            }
+
+            .configGrid{
+                @apply flex w-full flex-col items-center justify-center truncate rounded-md bg-orange-500 transition-all delay-75 duration-500;
+                &_FullSize{
+                    @apply sm:scale-x-100 sm:scale-y-100;
+                };
+                &_SmallSize{
+                    @apply scale-x-0 scale-y-100;
+                };
+
+                .difficultySelector{
+                    @apply flex h-full w-full items-center justify-around;
+                    button{
+                        @apply truncate;
+                    }
+                };
+                .otherSettings{
+                    @apply flex h-full w-full items-center justify-around;
+                    button{
+                        @apply flex h-6 w-10 items-center justify-center truncate rounded-xl bg-background-primaryButton sm:h-7 sm:w-20;
+                    };
+                };
             }
         }
 
     };
+
 };
 
 .transitions{
