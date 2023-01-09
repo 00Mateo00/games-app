@@ -1,11 +1,21 @@
-.unrevealed{
-    @apply bg-purple-800 transition-all cursor-pointer border border-purple-900;
-
-    box-shadow: inset -2px -2px 4px rgba(0,0,0,0.2), inset 2px 2px 4px rgba(255,255,255,0.2);
-    
-}
-.revealed{
-    @apply bg-purple-900;
+.cell{
+    &_unrevealed{
+        @apply bg-purple-800  cursor-pointer border border-purple-900 transition-all;
+        box-shadow: inset -2px -2px 4px rgba(0,0,0,0.2), inset 2px 2px 4px rgba(255,255,255,0.2);
+        p{
+            opacity: 0;
+        }
+    }
+    &_revealed{
+        @apply bg-purple-900;
+        box-shadow: none;
+        p{
+            opacity: 1;
+        }
+    }
+    .🚩{
+        opacity: 1;
+    }
 }
 
 .bomb{

@@ -1,14 +1,14 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-boolean-literal-compare */
 import React, { useContext } from 'react';
-import GlobalContext from '../../../context/GlobalContext';
 import { ICell } from './interfaces';
 import './cell.scss';
+import GamesContext from '../GamesContext';
 interface props {
     cell: ICell;
 }
 
 const Cell: React.FC<props> = ({ cell }) => {
-    const { revealCell, flagIt } = useContext(GlobalContext);
+    const { revealCell, flagIt } = useContext(GamesContext);
     const { isFlag, isRevealed, isBomb, numberOfBombs, position } = cell;
     const { y, x } = position;
 
@@ -25,10 +25,16 @@ const Cell: React.FC<props> = ({ cell }) => {
     ];
 
     function cellContent(): string {
+        if (isFlag) {
+            console.log(`coords [${y},${x}]`);
+
+            console.log({ isFlag });
+        }
+
         if (isFlag === true) return '🚩';
         if (isRevealed === false) return '';
         if (isBomb === true) return '💣';
-        return numberOfBombs !== 0 ? numberOfBombs.toString() : '0';
+        return numberOfBombs !== 0 ? numberOfBombs.toString() : '';
     }
 
     return (
@@ -41,12 +47,20 @@ const Cell: React.FC<props> = ({ cell }) => {
                 flagIt(y, x);
             }}
             className={
-                `${isRevealed === true ? ' revealed' : 'unrevealed'}` +
+                `${
+                    isRevealed === true ? ' cell_revealed' : ' cell_unrevealed'
+                }` +
                 ` ${isBomb === true ? 'bomb' : ''}` +
-                ` flex h-10 w-10 items-center justify-center ${COLORS[numberOfBombs]}`
+                ` cell flex h-10 w-10 items-center justify-center ${COLORS[numberOfBombs]}`
             }
         >
-            {cellContent()}
+            <p
+                className={`${COLORS[numberOfBombs]} ${
+                    isFlag === true ? '🚩' : ''
+                }`}
+            >
+                {cellContent()}
+            </p>
         </div>
     );
 };

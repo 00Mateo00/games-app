@@ -1,15 +1,15 @@
 import React, { useContext } from 'react';
-import GlobalContext from '../../../context/GlobalContext';
+import GamesContext from '../GamesContext';
 import Cell from './Cell';
 
 const MineSweeper: React.FC = () => {
-    const { generateBoard, board } = useContext(GlobalContext);
+    const { generateBoard, board } = useContext(GamesContext);
 
     return (
         <div className='h-full w-full bg-yellow-400'>
             <button
                 onClick={() => {
-                    generateBoard(9, 9, 'easy', true);
+                    generateBoard(9, 9);
                 }}
                 className='primary-button h-min w-52 rounded-lg'
             >

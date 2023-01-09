@@ -1,3 +1,4 @@
+type Difficulty = 'easy' | 'medium' | 'hard';
 export interface ICell {
     isBomb: boolean;
     isRevealed: boolean;
@@ -10,4 +11,7 @@ export interface ICell {
     }
 }
 
-export type Difficulty = 'easy' | 'medium' | 'hard';
+export interface GameSettings{
+    difficulty?: Difficulty
+}
+

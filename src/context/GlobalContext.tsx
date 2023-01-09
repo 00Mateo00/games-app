@@ -1,34 +1,23 @@
 import React from 'react';
 
-import { ICell, Difficulty } from '../components/games/mineSweeper/interfaces';
+import { GameSettings } from '../components/games/mineSweeper/interfaces';
 
-interface props {
+interface Props {
     isSomeCardClicked: boolean;
     setIsSomeCardClicked: React.Dispatch<React.SetStateAction<boolean>>;
     screenWidth: Number;
     setScreenWidth: React.Dispatch<React.SetStateAction<Number>>;
-    board: ICell[][];
-    setBoard: React.Dispatch<React.SetStateAction<ICell[][]>>;
-    generateBoard: (
-        numRows: number,
-        numColumns: number,
-        difficulty: Difficulty,
-        customBoard: boolean
-    ) => void;
-    flagIt: (numRows: number, numColumns: number) => void;
-    revealCell: (row: number, col: number) => void;
+    settings: GameSettings;
+    setSettings: React.Dispatch<React.SetStateAction<GameSettings>>;
 }
 
-const GlobalContext = React.createContext<props>({
+const GlobalContext = React.createContext<Props>({
     isSomeCardClicked: false,
     setIsSomeCardClicked: () => {},
     screenWidth: 0,
     setScreenWidth: () => {},
-    board: [],
-    setBoard: () => {},
-    generateBoard: () => {},
-    flagIt: () => {},
-    revealCell: () => {},
+    settings: {},
+    setSettings: () => {},
 });
 
 export default GlobalContext;
