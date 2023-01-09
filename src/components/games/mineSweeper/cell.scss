@@ -1,0 +1,25 @@
+.unrevealed{
+    @apply bg-purple-800 transition-all cursor-pointer border border-purple-900;
+
+    box-shadow: inset -2px -2px 4px rgba(0,0,0,0.2), inset 2px 2px 4px rgba(255,255,255,0.2);
+    
+}
+.revealed{
+    @apply bg-purple-900;
+}
+
+.bomb{
+    @apply bg-red-800
+}
+
+.CFFFFFF{
+    color: #FFFFFF
+};
+.C0000FF{color: #0000FF};
+.C00FF00{color:#00FF00};
+.CFF0000{color:#FF0000};
+.C000080{color:#000080};
+.C800000{color: #800000};
+.C008080{color: #008080};
+.C000000{color: black};
+.C808080{color: #808080};
