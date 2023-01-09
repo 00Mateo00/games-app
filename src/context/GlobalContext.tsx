@@ -12,8 +12,10 @@ interface props {
     generateBoard: (
         numRows: number,
         numColumns: number,
-        difficulty: Difficulty
+        difficulty: Difficulty,
+        customBoard: boolean
     ) => void;
+    flagIt: (numRows: number, numColumns: number) => void;
     revealCell: (row: number, col: number) => void;
 }
 
@@ -25,6 +27,7 @@ const GlobalContext = React.createContext<props>({
     board: [],
     setBoard: () => {},
     generateBoard: () => {},
+    flagIt: () => {},
     revealCell: () => {},
 });
 
