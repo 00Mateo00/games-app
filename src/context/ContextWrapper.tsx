@@ -113,8 +113,12 @@ export default function ContextWrapper({ children }: Props): JSX.Element {
             let surroundingMines = 0;
 
             function searchForMines(i: number, j: number): void {
-                console.log(tempBoard);
+                const { isBomb } = tempBoard[i][j];
+                console.log({ isBomb });
+
                 if (tempBoard[i][j].isBomb === true) {
+                    console.log('counting');
+
                     surroundingMines++;
                 }
             }
@@ -148,6 +152,9 @@ export default function ContextWrapper({ children }: Props): JSX.Element {
             } else {
                 const surroundingMines = lookAround('Search_Surrounding_Mines');
                 actualCell.numberOfBombs = surroundingMines;
+                console.log({ surroundingMines });
+                console.log(actualCell.numberOfBombs);
+
                 if (surroundingMines === 0) {
                     // reveal surrounding cells recursively
                     lookAround('Do_Recursion');
@@ -157,13 +164,13 @@ export default function ContextWrapper({ children }: Props): JSX.Element {
 
         function replantAdjacentMines(): void {
             if (!isFirstClick) return;
-            if (tempBoard[y][x].isBomb === false) return;
             const surroundingMines = lookAround('Search_Surrounding_Mines');
             if (surroundingMines < 5) return;
+            if (tempBoard[y][x].isBomb === false) return;
             lookAround('Clean');
             plantMines(tempBoard, surroundingMines, 9, 9);
         }
-        console.log(isFirstClick);
+        console.log({ isFirstClick });
 
         replantAdjacentMines();
         auxFunction(y, x);
