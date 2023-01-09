@@ -27,7 +27,6 @@ const Cell: React.FC<props> = ({ cell }) => {
     function cellContent(): string {
         if (isFlag === true) return '🚩';
         if (isRevealed === false) return '';
-
         if (isBomb === true) return '💣';
         return numberOfBombs !== 0 ? numberOfBombs.toString() : '0';
     }

@@ -114,7 +114,6 @@ export default function ContextWrapper({ children }: Props): JSX.Element {
 
             function searchForMines(i: number, j: number): void {
                 console.log(tempBoard);
-
                 if (tempBoard[i][j].isBomb === true) {
                     surroundingMines++;
                 }
