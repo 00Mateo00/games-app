@@ -1,14 +1,14 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-boolean-literal-compare */
-import React, { useContext } from 'react';
+import React from 'react';
 import { ICell } from './interfaces';
 import './cell.scss';
-import GamesContext from '../GamesContext';
 interface props {
     cell: ICell;
+    revealCell: (y: number, x: number) => void;
+    flagIt: (y: number, x: number) => void;
 }
 
-const Cell: React.FC<props> = ({ cell }) => {
-    const { revealCell, flagIt } = useContext(GamesContext);
+const Cell: React.FC<props> = ({ cell, revealCell, flagIt }) => {
     const { isFlag, isRevealed, isBomb, numberOfBombs, position } = cell;
     const { y, x } = position;
 

@@ -1,6 +1,5 @@
 import { useRef, useContext } from 'react';
 import './App.scss';
-import Games from './components/games/Games';
 import Main from './components/main/Main';
 import GlobalContext from './context/GlobalContext';
 
@@ -17,7 +16,6 @@ function App(): JSX.Element {
             className='relative flex h-screen w-screen items-center justify-center overflow-hidden bg-neutral-900 '
         >
             <Main scrollRef={scrollRef} />
-            <Games />
         </div>
     );
 }
