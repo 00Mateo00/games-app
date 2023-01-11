@@ -1,10 +1,10 @@
 import React from 'react';
-import MineSweeper from './mineSweeper/MineSweeper';
+import Tetris from './tetris/Tetris';
 
 const Games: React.FC = () => {
     return (
         <div className='h-full w-full'>
-            <MineSweeper />;
+            <Tetris />
         </div>
     );
 };
