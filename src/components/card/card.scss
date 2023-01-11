@@ -21,7 +21,7 @@
         }
 
         &_FullSize{
-            @apply sm:scale-x-[70%] sm:scale-y-[85%];
+            @apply sm:scale-x-[70%] sm:scale-y-[85%] sm:shadow-card;
         }
 
         &_SmallSize{
@@ -141,6 +141,17 @@
         }
 
     };
+
+    .isGameView{
+        @apply border-opacity-100 border-8;
+        @apply grid-rows-[6fr_0fr];
+        .imagen{
+            @apply translate-y-[100%];
+        }
+        .info-Wrapper{
+            @apply hidden;
+        }
+    }
 
 };
 

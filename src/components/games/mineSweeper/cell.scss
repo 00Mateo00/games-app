@@ -1,6 +1,15 @@
 .cell{
+    p{
+        font-size: large;
+        width: 2rem;
+        height: 2rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    @apply border-purple-900;
     &_unrevealed{
-        @apply bg-purple-800  cursor-pointer border border-purple-900 transition-all;
+        @apply bg-gradient-to-br from-purple-600 to-violet-700 cursor-pointer border transition-all;
         box-shadow: inset -2px -2px 4px rgba(0,0,0,0.2), inset 2px 2px 4px rgba(255,255,255,0.2);
         p{
             opacity: 0;
@@ -14,12 +23,13 @@
         }
     }
     .🚩{
+
         opacity: 1;
     }
 }
 
 .bomb{
-    @apply bg-red-800
+    @apply bg-gradient-to-br from-red-700 to-red-800
 }
 
 .CFFFFFF{

@@ -14,6 +14,7 @@ export default function ContextWrapper({ children }: Props): JSX.Element {
     const [settings, setSettings] = useState<GameSettings>({
         difficulty: 'easy',
     });
+    const [inGameView, setInGameView] = useState(false);
 
     useEffect(() => {
         window.addEventListener('resize', () =>
@@ -34,6 +35,8 @@ export default function ContextWrapper({ children }: Props): JSX.Element {
                 setScreenWidth,
                 settings,
                 setSettings,
+                inGameView,
+                setInGameView,
             }}
         >
             {children}

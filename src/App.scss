@@ -23,7 +23,7 @@ a{
 }
 
 .primary-button{
-    @apply bg-gradient-to-br from-violet-600 to-violet-800;
+    @apply bg-gradient-to-br from-violet-600 to-violet-800 rounded-sm border border-violet-900;
 
     &:active{
         @apply bg-gradient-to-br from-violet-800 to-violet-600;

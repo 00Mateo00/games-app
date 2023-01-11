@@ -25,12 +25,6 @@ const Cell: React.FC<props> = ({ cell, revealCell, flagIt }) => {
     ];
 
     function cellContent(): string {
-        if (isFlag) {
-            console.log(`coords [${y},${x}]`);
-
-            console.log({ isFlag });
-        }
-
         if (isFlag === true) return '🚩';
         if (isRevealed === false) return '';
         if (isBomb === true) return '💣';
@@ -47,11 +41,11 @@ const Cell: React.FC<props> = ({ cell, revealCell, flagIt }) => {
                 flagIt(y, x);
             }}
             className={
-                `${
+                ` ${
                     isRevealed === true ? ' cell_revealed' : ' cell_unrevealed'
                 }` +
                 ` ${isBomb === true ? 'bomb' : ''}` +
-                ` cell flex h-10 w-10 items-center justify-center ${COLORS[numberOfBombs]}`
+                ` cell flex h-full w-full items-center justify-center`
             }
         >
             <p

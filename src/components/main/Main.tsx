@@ -46,7 +46,7 @@ const Main: React.FC<props> = ({ scrollRef }) => {
                     }
                 >
                     {tempArray.map((e, i) => (
-                        <Card key={i} index={i} />
+                        <Card key={i} />
                     ))}
                 </div>
             );
@@ -106,7 +106,7 @@ const Main: React.FC<props> = ({ scrollRef }) => {
                 }
             >
                 <Header />
-                {getCards(13)}
+                {getCards(6)}
                 <Footer />
             </div>
         </div>

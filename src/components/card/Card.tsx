@@ -1,19 +1,18 @@
 import React, { useState, useContext } from 'react';
 import Image from '../../assets/card-Images/tetris.png';
 import GlobalContext from '../../context/GlobalContext';
+import Games from '../games/Games';
 import './card.scss';
 
-interface props {
-    index?: number;
-}
-
-const Card: React.FC<props> = (index) => {
-    const { setIsSomeCardClicked, screenWidth } = useContext(GlobalContext);
+const Card: React.FC = () => {
+    const { setIsSomeCardClicked, screenWidth, setInGameView } =
+        useContext(GlobalContext);
 
     const [onClickStyles, setOnClickStyles] = useState<object | undefined>(
         undefined
     );
 
+    const [thisGameInView, setThisGameInView] = useState(false);
     function getStyles(
         element: React.MouseEvent<HTMLDivElement, MouseEvent>
     ): object {
@@ -47,11 +46,17 @@ const Card: React.FC<props> = (index) => {
 
     const cardContent = (
         <>
-            <img
-                src={Image}
-                alt='GameName'
-                className={` imagen transitions`}
-            ></img>
+            <div className='relative h-full w-full'>
+                <div className='gameDisplay absolute top-0  left-0 z-10 h-full w-full bg-purple-700'>
+                    {thisGameInView && <Games />}
+                </div>
+                <img
+                    src={Image}
+                    alt='GameName'
+                    className={` imagen transitions absolute top-0 left-0 z-20`}
+                ></img>
+            </div>
+
             <div
                 className={
                     `info-Wrapper transtions` +
@@ -94,7 +99,10 @@ const Card: React.FC<props> = (index) => {
                         consecteturgroup-hover:px-2group-hover:px-2group-hover:px-2
                     </p>
                     <button
-                        onClick={inGameView}
+                        onClick={() => {
+                            setInGameView(true);
+                            setThisGameInView(true);
+                        }}
                         className={
                             `playButton` +
                             ` ${
@@ -136,16 +144,14 @@ const Card: React.FC<props> = (index) => {
         e: React.MouseEvent<HTMLDivElement, MouseEvent>
     ): void {
         if (isCardFullSize()) {
+            setInGameView(false);
+            setThisGameInView(false);
             setIsSomeCardClicked(false);
             setOnClickStyles(undefined);
         } else {
             setIsSomeCardClicked(true);
             setOnClickStyles(getStyles(e));
         }
-    }
-
-    function inGameView(): void {
-        console.log('clicked');
     }
 
     return (
@@ -166,12 +172,15 @@ const Card: React.FC<props> = (index) => {
                     if (isCardFullSize()) e.stopPropagation();
                 }}
                 className={
-                    `CARD-Wrapper` +
+                    `CARD-Wrapper transitions` +
                     ` ${
                         isCardFullSize()
                             ? 'CARD-Wrapper_FullSize'
                             : 'CARD-Wrapper_SmallSize'
-                    }`
+                    }` +
+                    `
+                    ${thisGameInView ? 'isGameView' : ''}
+                    `
                 }
             >
                 {cardContent}

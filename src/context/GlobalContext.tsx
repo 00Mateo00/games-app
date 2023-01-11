@@ -9,6 +9,8 @@ interface Props {
     setScreenWidth: React.Dispatch<React.SetStateAction<Number>>;
     settings: GameSettings;
     setSettings: React.Dispatch<React.SetStateAction<GameSettings>>;
+    inGameView: boolean;
+    setInGameView: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const GlobalContext = React.createContext<Props>({
@@ -18,6 +20,8 @@ const GlobalContext = React.createContext<Props>({
     setScreenWidth: () => {},
     settings: {},
     setSettings: () => {},
+    inGameView: false,
+    setInGameView: () => {},
 });
 
 export default GlobalContext;

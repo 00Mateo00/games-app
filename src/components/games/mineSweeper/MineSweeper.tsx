@@ -9,11 +9,11 @@ interface GameStatus {
     flags: number;
     clearedCells: number;
     availableCells: number;
-    result: 'in-game' | 'won' | 'lost';
+    result: 'in-game' | 'won' | 'lost' | 'stopped';
 }
 
 const MineSweeper: React.FC = () => {
-    const { settings } = useContext(GlobalContext);
+    const { settings, setSettings, inGameView } = useContext(GlobalContext);
     const { difficulty } = settings;
 
     const [board, setBoard] = useState<ICell[][]>([]);
@@ -25,6 +25,8 @@ const MineSweeper: React.FC = () => {
         availableCells: 0,
         result: 'in-game',
     });
+
+    const [time, setTime] = useState('00:00');
 
     let cellsClearedCounter = 0;
 
@@ -86,7 +88,11 @@ const MineSweeper: React.FC = () => {
             default:
                 numMines = 0;
         }
-        setGameStatus({ ...gameStatus, availableCells: totalCells - numMines });
+        setGameStatus({
+            ...gameStatus,
+            flags: numMines,
+            availableCells: totalCells - numMines,
+        });
         const newBoard = BoardInitializer(numRows, numColumns);
 
         plantMines(newBoard, numMines, numRows, numColumns);
@@ -96,15 +102,24 @@ const MineSweeper: React.FC = () => {
 
     function flagIt(y: number, x: number): void {
         const tempBoard: ICell[][] = [...board];
+        console.log('flagging');
+
         if (tempBoard[y][x].isRevealed) return;
+        console.log("it ain't revelead");
+
         if (tempBoard[y][x].isFlag) {
+            console.log('it is flagged');
+
             tempBoard[y][x].isFlag = false;
             setGameStatus({ ...gameStatus, flags: gameStatus.flags + 1 });
             return;
         }
 
-        console.log(gameStatus.flags);
+        console.log("it ain't flagged");
+
         if (gameStatus.flags <= 0) return;
+
+        console.log(`remaining flags: ${gameStatus.flags}`);
 
         tempBoard[y][x].isFlag = true;
 
@@ -113,33 +128,10 @@ const MineSweeper: React.FC = () => {
         setBoard(tempBoard);
     }
 
-    useEffect(() => {
-        if (isFirstClick) return;
-        if (gameStatus.clearedCells >= gameStatus.availableCells) {
-            setGameStatus({ ...gameStatus, result: 'won' });
-        }
-    }, [gameStatus.clearedCells, gameStatus.availableCells]);
-
-    useEffect(() => {
-        if (gameStatus.result === 'won') {
-            // code
-            console.log('won');
-
-            return;
-        }
-        if (gameStatus.result === 'lost') {
-            // code
-            console.log('lost');
-        }
-    }, [gameStatus.result]);
-
     function revealCell(y: number, x: number): void {
-        type options =
-            | 'Do_Recursion'
-            | 'Search_Surrounding_Mines'
-            | 'Search_Surrounding_Flags'
-            | 'Clean';
+        type options = 'Do_Recursion' | 'Search_Surrounding_Mines' | 'Clean';
         const tempBoard = [...board];
+        let tempResult: GameStatus['result'] = 'in-game';
 
         function lookAround(option: options): number {
             let surroundingMines = 0;
@@ -176,7 +168,7 @@ const MineSweeper: React.FC = () => {
             cellsClearedCounter++;
 
             if (actualCell.isBomb === true) {
-                setGameStatus({ ...gameStatus, result: 'lost' });
+                tempResult = 'lost';
             } else {
                 const surroundingMines = lookAround('Search_Surrounding_Mines');
                 actualCell.numberOfBombs = surroundingMines;
@@ -200,34 +192,177 @@ const MineSweeper: React.FC = () => {
         auxFunction(y, x);
         setGameStatus({
             ...gameStatus,
+            result: tempResult,
             clearedCells: gameStatus.clearedCells + cellsClearedCounter,
         });
         setBoard(tempBoard);
         setIsFirstClick(false);
     }
 
-    return (
-        <div className='h-full w-full bg-yellow-400'>
-            <button
-                onClick={() => {
-                    generateBoard(9, 9);
-                }}
-                className='primary-button h-min w-52 rounded-lg'
-            >
-                play
-            </button>
+    function parseTime(n: number): string {
+        if (n < 10) {
+            return `0${n}`;
+        }
+        return `${n}`;
+    }
 
-            <div className='board row-auto grid w-max grid-cols-9'>
-                {board.map((row) =>
-                    row.map((cell, columnIndex) => (
-                        <Cell
-                            key={columnIndex}
-                            cell={cell}
-                            revealCell={revealCell}
-                            flagIt={flagIt}
-                        />
-                    ))
-                )}
+    function reset(): void {
+        setGameStatus({
+            score: 0,
+            flags: 0,
+            clearedCells: 0,
+            availableCells: 0,
+            result: 'stopped',
+        });
+        setTime('00:00');
+        cellsClearedCounter = 0;
+    }
+
+    useEffect(() => {
+        if (isFirstClick) return;
+        if (gameStatus.clearedCells >= gameStatus.availableCells) {
+            setGameStatus({ ...gameStatus, result: 'won' });
+        }
+    }, [gameStatus.clearedCells, gameStatus.availableCells]);
+
+    useEffect(() => {
+        const initialTime = Date.now();
+        const interval = setInterval(() => {
+            const time = Math.floor((Date.now() - initialTime) / 1000);
+            const sec = time % 60;
+            const min = Math.floor(time / 60);
+
+            if (min > 99) clearInterval(interval);
+            setTime(`${parseTime(min)}:${parseTime(sec)}`);
+        }, 1000);
+
+        if (
+            isFirstClick ||
+            (gameStatus.result !== 'in-game' && gameStatus.result === 'stopped')
+        ) {
+            console.log(gameStatus.result);
+            setGameStatus({ ...gameStatus, result: 'in-game' });
+            clearInterval(interval);
+        }
+
+        return () => {
+            clearInterval(interval);
+        };
+    }, [isFirstClick, gameStatus.result]);
+
+    useEffect(() => {
+        if (gameStatus.result === 'won') {
+            // code
+            console.log('won');
+
+            return;
+        }
+        if (gameStatus.result === 'lost') {
+            // code
+            console.log('lost');
+        }
+        if (gameStatus.result === 'in-game') {
+            generateBoard(9, 9);
+        }
+    }, [gameStatus.result]);
+
+    useEffect(() => {
+        generateBoard(9, 9);
+    }, [inGameView]);
+
+    useEffect(() => {
+        reset();
+    }, [difficulty]);
+
+    return (
+        <div className='relative h-full w-full '>
+            <div
+                onClick={() => {
+                    reset();
+                }}
+                className={
+                    `absolute top-0 left-0 flex h-full w-full items-center justify-center transition-all` +
+                    ` ${
+                        gameStatus.result === 'in-game' ||
+                        gameStatus.result === 'stopped'
+                            ? 'z-0 opacity-0'
+                            : 'z-10 opacity-100'
+                    }`
+                }
+            >
+                <div
+                    className='flex h-48 w-full items-center
+                justify-center bg-green-500 text-center'
+                >
+                    <p className='text-3xl'>{gameStatus.result}</p>
+                </div>
+            </div>
+            <div className='z-1 absolute top-0 left-0 h-full w-full'>
+                <div className='grid h-24 w-full grid-cols-[3fr_4fr] bg-purple-500'>
+                    <div className='flex h-full w-full items-center justify-center bg-orange-500'>
+                        <p className='text-4xl'>{time}</p>
+                    </div>
+                    <div className='flex h-full w-full flex-col items-center justify-center bg-violet-900'>
+                        <div>
+                            <p className='text-3xl'>CHANGE DIFFICULTY</p>
+                        </div>
+                        <div className='flex h-full w-full items-center justify-around'>
+                            <button
+                                onClick={() => {
+                                    reset();
+                                }}
+                                className='primary-button px-2 text-xl'
+                            >
+                                restart
+                            </button>
+                            <button
+                                onClick={() => {
+                                    setSettings({
+                                        ...settings,
+                                        difficulty: 'easy',
+                                    });
+                                }}
+                                className='text-xl'
+                            >
+                                easy
+                            </button>
+                            <button
+                                onClick={() => {
+                                    setSettings({
+                                        ...settings,
+                                        difficulty: 'medium',
+                                    });
+                                }}
+                                className='text-xl'
+                            >
+                                medium
+                            </button>
+                            <button
+                                onClick={() => {
+                                    setSettings({
+                                        ...settings,
+                                        difficulty: 'hard',
+                                    });
+                                }}
+                                className='text-xl'
+                            >
+                                hard
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div className='board row-auto grid h-[calc(100%_-_6rem)] w-full grid-cols-9'>
+                    {board.map((row) =>
+                        row.map((cell, columnIndex) => (
+                            <Cell
+                                key={columnIndex}
+                                cell={cell}
+                                revealCell={revealCell}
+                                flagIt={flagIt}
+                            />
+                        ))
+                    )}
+                </div>
             </div>
         </div>
     );
