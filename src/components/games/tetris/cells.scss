@@ -1,9 +1,43 @@
+.cell{
+    width: 100%;
+    height: 100%;
+    color: black;
+    font-size: larger;
+    font-weight: 900;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .cell-0{
  background-color: black;
- color: aliceblue;
 }
 
 .cell-1{
     background-color: cyan;
-    color: aliceblue;
+}
+.cell-2{
+    background-color: cyan;
+
+}
+.cell-3{
+    background-color: rgb(68, 0, 255);
+}
+.cell-4{
+    background-color: rgb(251, 255, 0);
+}
+.cell-5{
+    background-color: cyan;
+}
+.cell-6{
+    background-color: rgb(68, 0, 255);
+}
+.cell-7{
+    background-color: rgb(251, 255, 0);
+}
+.cell-8{
+    background-color: rgb(251, 255, 0);
+}
+.cell-9{
+    background-color: rgb(68, 0, 255);
 }

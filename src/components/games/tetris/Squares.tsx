@@ -12,7 +12,11 @@ interface Props {
 }
 
 const Squares: React.FC<Props> = ({ square }) => {
-    const { state, X, Y } = square;
-    return <div className={`cell-${state}`}>{`Y:${Y} X:${X}`}</div>;
+    const { state } = square;
+    return (
+        <div className={`cell item-center flex justify-center cell-${state}`}>
+            {state}
+        </div>
+    );
 };
 export default Squares;

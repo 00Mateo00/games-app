@@ -3,42 +3,46 @@ import Squares from './Squares';
 import './tetris.scss';
 
 const Forms: Record<string, number[][]> = {
-    I: [
-        [0, 1, 0, 0],
-        [0, 1, 0, 0],
-        [0, 1, 0, 0],
-        [0, 1, 0, 0],
+    TEST: [
+        [1, 2, 3],
+        [4, 5, 6],
+        [7, 8, 9],
     ],
-
+    ILarge: [
+        [0, 3, 0, 0],
+        [0, 3, 0, 0],
+        [0, 3, 0, 0],
+        [0, 3, 0, 0],
+    ],
+    I: [
+        [0, 1, 0],
+        [0, 1, 0],
+        [0, 1, 0],
+    ],
     J: [
         [0, 2, 0],
         [0, 2, 0],
-        [2, 2, 0],
+        [1, 2, 0],
     ],
-
     L: [
         [0, 3, 0],
         [0, 3, 0],
         [0, 3, 3],
     ],
-
     O: [
         [4, 4],
         [4, 4],
     ],
-
     S: [
         [0, 5, 5],
         [5, 5, 0],
         [0, 0, 0],
     ],
-
     T: [
         [0, 6, 0],
         [6, 6, 6],
         [0, 0, 0],
     ],
-
     Z: [
         [7, 7, 0],
         [0, 7, 7],
@@ -52,19 +56,14 @@ interface newBoard {
     X: number;
 }
 
-type rotation = 1 | 0 | -1;
+type rotation = 90 | 0 | -90;
+type directions = 'left' | 'right' | 'down';
 
 const Tetris: React.FC = () => {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { I, J, L, O, S, T, Z } = Forms;
-
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [actualTetromino, setActualTetromino] = useState(I);
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { ILarge } = Forms;
+    const [actualTetromino, setActualTetromino] = useState(ILarge);
     const [postionY, setPostionY] = useState(0);
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [postionX, setPostionX] = useState(0);
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [rotation, setRotation] = useState<rotation>(0);
 
     const [placed, setPlaced] = useState(false);
@@ -101,38 +100,96 @@ const Tetris: React.FC = () => {
         });
         setBoard(newBoard);
     }
-
-    type directions = 'left' | 'right' | 'down';
-    function handleMovement(direction: directions): void {
-        switch (direction) {
-            case 'left':
-                setPostionX(postionX - 1);
-
-                break;
-            case 'right':
-                setPostionX(postionX + 1);
-                break;
-            case 'down':
-                setPostionY(postionY + 1);
-
-                break;
-
-            default:
-                break;
+    function canNotMoveTo(direction: directions): boolean {
+        function isLeftLimit(): boolean {
+            let temp = false;
+            for (let i = 0; i < 3; i++) {
+                if (
+                    board[postionY + i] === undefined ||
+                    board[postionY + i][0].state >= 1
+                ) {
+                    temp = true;
+                }
+            }
+            return temp;
         }
+        function isRightLimit(): boolean {
+            let temp = false;
+
+            for (let i = 0; i < 3; i++) {
+                if (
+                    board[postionY + i] === undefined ||
+                    board[postionY + i][board[0].length - 1].state >= 1
+                ) {
+                    temp = true;
+                }
+            }
+
+            return temp;
+        }
+        function isDownLimit(): boolean {
+            let temp = false;
+
+            for (let i = 0; i < 3; i++) {
+                if (
+                    board[board.length - 1][postionX + i] !== undefined &&
+                    board[board.length - 1][postionX + i].state >= 1
+                )
+                    temp = true;
+            }
+
+            return temp;
+        }
+
+        if (direction === 'left') return isLeftLimit() || isDownLimit();
+        if (direction === 'right') return isRightLimit() || isDownLimit();
+        if (direction === 'down') return isDownLimit();
+
+        return true;
+    }
+
+    function handleMovement(direction: directions): void {
+        if (canNotMoveTo(direction)) return; // don't do anything
+        if (direction === 'left') setPostionX(postionX - 1); // move to the LEFT
+        if (direction === 'right') setPostionX(postionX + 1); // move to the RIGHT
+        if (direction === 'down') setPostionY(postionY + 1); // move DOWNWARDS
     }
     function handleRotation(n: rotation): void {
         setRotation(n);
     }
+    function handleRotate(n: rotation): void {
+        let rotatedTetromino = actualTetromino;
+        function countBlankSpaces(): number {
+            let x = 0;
+            let isColumnEmpty = true;
 
-    /*
-    function handleRotate(): void {
-        // Transpose and reverse the rows of the shape to rotate it 90 degrees
-        const rotatedShape = actualTetromino[0].map((val, index) =>
-            actualTetromino.map((row) => row[index]).reverse()
-        );
-        setActualTetromino(rotatedShape);
-    } */
+            while (isColumnEmpty && x < 10) {
+                for (let y = 0; y < actualTetromino.length; y++) {
+                    if (actualTetromino[y][x] >= 1) isColumnEmpty = false;
+                }
+                x++;
+            }
+            console.log(x);
+            return x;
+        }
+        if (canNotMoveTo('left')) {
+            setPostionX(postionX + countBlankSpaces());
+        }
+        // Transpose and then reverse the rows of the shape to rotate it 90 degrees
+        if (n === 90) {
+            rotatedTetromino = actualTetromino[0].map((val, index) =>
+                actualTetromino.map((row) => row[index]).reverse()
+            );
+        }
+        // reverse and then Transpose the rows of the shape to rotate it -90 degrees
+        if (n === -90) {
+            rotatedTetromino = actualTetromino[0].map((val, index) =>
+                actualTetromino.map((row) => row.reverse()[index])
+            );
+        }
+
+        setActualTetromino(rotatedTetromino);
+    }
 
     useEffect(() => {
         if (!placed) return;
@@ -141,8 +198,9 @@ const Tetris: React.FC = () => {
 
     useEffect(() => {
         if (!placed) return;
-
+        handleRotate(rotation);
         placeTetromino();
+        setRotation(0);
     }, [rotation]);
 
     return (
@@ -159,8 +217,8 @@ const Tetris: React.FC = () => {
                 <button onClick={()=>{handleMovement("left")}}>Left</button>
                 <button onClick={()=>{handleMovement("right")}}>Right</button>
                 <button onClick={()=>{handleMovement("down")}}>down</button>
-                <button onClick={()=>{handleRotation(1)}}>Rotate-left</button>
-                <button onClick={()=>{handleRotation(-1)}}>Rotate-right</button>
+                <button onClick={()=>{handleRotation(-90)}}>rotate-left</button>
+                <button onClick={()=>{handleRotation(90)}}>rotate-right</button>
                 <button onClick={() => placeTetromino()}>place</button>
             </div>
         </>
