@@ -105,8 +105,8 @@ type directions = 'left' | 'right' | 'bottom';
 
 const Tetris: React.FC = () => {
     const [actualTetromino, setActualTetromino] = useState(Forms[0]);
-    const [postionY, setPostionY] = useState(-1);
-    const [postionX, setPostionX] = useState(0);
+    const [positionY, setPositionY] = useState(-1);
+    const [positionX, setPositionX] = useState(0);
     const [angleOfRotation, setAngleOfRotation] = useState<angles>(0);
     const [decaSeconds, setDecaSeconds] = useState(0);
     const [time, setTime] = useState('00:00');
@@ -157,7 +157,7 @@ const Tetris: React.FC = () => {
         actualTetromino.forEach((row, i) => {
             row.forEach((cell, j) => {
                 if (cell !== 0) {
-                    newBoard[postionY + i][postionX + j].state = cell;
+                    newBoard[positionY + i][positionX + j].state = cell;
                 }
             });
         });
@@ -168,7 +168,7 @@ const Tetris: React.FC = () => {
         actualTetromino.forEach((row, i) => {
             row.forEach((cell, j) => {
                 if (cell !== 0) {
-                    newBoard[postionY + i][postionX + j].state = cell;
+                    newBoard[positionY + i][positionX + j].state = cell;
                 }
             });
         });
@@ -179,8 +179,8 @@ const Tetris: React.FC = () => {
             let temp = false;
             for (let i = 0; i < 3; i++) {
                 if (
-                    board[postionY + i] === undefined ||
-                    board[postionY + i][0].state >= 1
+                    board[positionY + i] === undefined ||
+                    board[positionY + i][0].state >= 1
                 ) {
                     temp = true;
                 }
@@ -192,8 +192,8 @@ const Tetris: React.FC = () => {
 
             for (let i = 0; i < 3; i++) {
                 if (
-                    board[postionY + i] === undefined ||
-                    board[postionY + i][board[0].length - 1].state >= 1
+                    board[positionY + i] === undefined ||
+                    board[positionY + i][board[0].length - 1].state >= 1
                 ) {
                     temp = true;
                 }
@@ -206,8 +206,8 @@ const Tetris: React.FC = () => {
 
             for (let i = 0; i < 3; i++) {
                 if (
-                    board[board.length - 1][postionX + i] !== undefined &&
-                    board[board.length - 1][postionX + i].state >= 1
+                    board[board.length - 1][positionX + i] !== undefined &&
+                    board[board.length - 1][positionX + i].state >= 1
                 )
                     temp = true;
             }
@@ -221,14 +221,157 @@ const Tetris: React.FC = () => {
 
         return true;
     }
+
+    // prettier-ignore
+    function isTetraminoColliding(direction: directions | 'top'): boolean {
+        // colliding logic: if nextCell in direction is !==0 return true
+        function distanceFromBOTTOM(): number {
+            let keepSearching = true;
+            let y = 0;
+            while (keepSearching) {
+                for (let tetrominoX = 0; tetrominoX < actualTetromino.length; tetrominoX++) {
+                    if (actualTetromino[actualTetromino.length-1- y][tetrominoX] !== 0) {
+                        keepSearching = false;
+                    }
+                    y++;
+                }
+            }
+            return y;
+        }
+        function distanceFromLEFT(): number {
+            let keepSearching = true;
+            let x = 0;
+            while (keepSearching) {
+                for (let tetrominoY = 0; tetrominoY < actualTetromino.length; tetrominoY++) {
+                    if (actualTetromino[tetrominoY][x] !== 0) {
+                        keepSearching = false;
+                    }
+                    x++;
+                }
+            }
+
+            return x;
+        }
+        function distanceFromRIGHT(): number {
+            let keepSearching = true;
+            let x = 0;
+            while (keepSearching) {
+                for (let tetrominoY = 0; tetrominoY < actualTetromino.length; tetrominoY++) {
+                    if (actualTetromino[tetrominoY][actualTetromino.length - 1 - x] !== 0) {
+                        keepSearching = false;
+                    }
+                    x++;
+                }
+            }
+
+            return x;
+        }
+        function distanceFromTOP(): number {
+            let keepSearching = true;
+            let y = 0;
+            while (keepSearching) {
+                for (let tetrominoX = 0; tetrominoX < actualTetromino.length; tetrominoX++) {
+                    if (actualTetromino[y][tetrominoX] !== 0) {
+                        keepSearching = false;
+                    }
+                    y++;
+                }
+            }
+
+            return y;
+        }
+
+
+        function isCollidingLEFT():boolean {
+
+            function isCollidingLeftBottom():boolean{
+                const y = distanceFromBOTTOM();
+                const x = distanceFromRIGHT();
+    
+                if(boardOfPlacedTetrominos[positionY+ actualTetromino.length - y][positionX + x - 1].state !==0){
+                    return true
+                }
+                return false;
+    
+            }
+
+            function isCollidingLeftTop():boolean{
+                const y = distanceFromTOP();
+                const x = distanceFromLEFT();
+    
+                if(boardOfPlacedTetrominos[positionY+y][positionX + x - 1].state !==0){
+                    return true
+                }
+                return false;
+    
+            }
+
+            return isCollidingLeftBottom() || isCollidingLeftTop();
+        }
+
+        function isCollidingRIGHT():boolean {
+            function isCollidingRightBottom():boolean{
+                const y = distanceFromBOTTOM();
+                const x = distanceFromRIGHT();
+    
+                if(boardOfPlacedTetrominos[positionY+ actualTetromino.length - y][positionX + actualTetromino.length - x + 1].state !==0){
+                    return true
+                }
+                return false;
+    
+            }
+
+            function isCollidingRightTop():boolean{
+                const y = distanceFromTOP();
+                const x = distanceFromRIGHT();
+    
+                if(boardOfPlacedTetrominos[positionY+y][positionX + actualTetromino.length - x + 1].state !==0){
+                    return true
+                }
+                return false;
+            }
+    
+            return isCollidingRightBottom() || isCollidingRightTop();
+        }
+
+        function isCollidingBOTTOM():boolean {
+            function isCollidingBottomRight():boolean {
+                const y = distanceFromBOTTOM();
+                const x = distanceFromRIGHT();
+                if(boardOfPlacedTetrominos[positionY+ actualTetromino.length - y + 1][positionX + actualTetromino.length - x].state !==0){
+                    return true
+                }
+                return false;
+            }
+            
+            function isCollidingBottomLeft():boolean {
+                const y = distanceFromBOTTOM();
+                const x = distanceFromRIGHT();
+                
+                if(boardOfPlacedTetrominos[positionY+ actualTetromino.length - y + 1][positionX + x].state !==0){
+                    return true
+                }
+                return false;
+            }
+
+            
+            return isCollidingBottomRight() || isCollidingBottomLeft();
+        }
+
+        if(direction==='left') return isCollidingLEFT();
+        if (direction === 'bottom') return isCollidingBOTTOM();
+        if (direction === 'right') return isCollidingRIGHT();
+        return false;
+    }
+
     function handleTetrominoPosition(direction: directions): void {
         if (direction === 'left') {
             if (isCollidingOnBorder(direction)) return; // don't do anything
-            setPostionX(postionX - 1);
+            setPositionX(positionX - 1);
         } // move to the LEFT
         if (direction === 'right') {
             if (isCollidingOnBorder(direction)) return; // don't do anything
-            setPostionX(postionX + 1);
+            setPositionX(positionX + 1);
         } // move to the RIGHT
         if (direction === 'bottom') {
             if (isCollidingOnBorder(direction)) {
@@ -236,13 +379,13 @@ const Tetris: React.FC = () => {
                 return;
             } // don't do anything
 
-            setPostionY(postionY + 1);
+            setPositionY(positionY + 1);
         } // move DOWNWARDS
     }
     function rotateTetromino(angle: angles): void {
         if (angle === 0) return;
-
         let tempTetromino = actualTetromino;
+
         function moveAwayFrom(direction: directions): void {
             let keepSearching = true;
             let x = 0;
@@ -252,7 +395,7 @@ const Tetris: React.FC = () => {
                     for (let i = 0; i < actualTetromino.length; i++) {
                         if (actualTetromino[i][x] !== 0) {
                             keepSearching = false;
-                            setPostionX(postionX + x);
+                            setPositionX(positionX + x);
                         }
                         if (i === actualTetromino.length - 1) x++;
                     }
@@ -267,7 +410,7 @@ const Tetris: React.FC = () => {
                             ] !== 0
                         ) {
                             keepSearching = false;
-                            setPostionX(postionX + x * -1);
+                            setPositionX(positionX + x * -1);
                         }
                         if (i === actualTetromino.length - 1) x++;
                     }
@@ -328,7 +471,7 @@ const Tetris: React.FC = () => {
     useEffect(() => {
         if (!placed) return;
         renderActualTetromino();
-    }, [postionX, postionY]);
+    }, [positionX, positionY]);
 
     // render the tetramino everytime the angle changes
     useEffect(() => {
@@ -343,8 +486,8 @@ const Tetris: React.FC = () => {
         if (!didSettle) return;
         placeTetromino();
         setPlaced(true);
-        setPostionX(0);
-        setPostionY(0);
+        setPositionX(0);
+        setPositionY(0);
         setDidSettle(false);
     }, [didSettle]);
 
