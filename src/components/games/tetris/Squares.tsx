@@ -9,10 +9,17 @@ interface newBoard {
 
 interface Props {
     square: newBoard;
+    square2: newBoard;
 }
 
-const Squares: React.FC<Props> = ({ square }) => {
-    const { state } = square;
+const Squares: React.FC<Props> = ({ square, square2 }) => {
+    let state = 0;
+    if (square2.state > 0) {
+        state = 9;
+    } else {
+        state = square.state;
+    }
+
     return (
         <div className={`cell item-center flex justify-center cell-${state}`}>
             {state}

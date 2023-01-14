@@ -1,12 +1,26 @@
-.tetris-board {
-    position: relative;
-    height: 95%;
+.tetris-wrapper{
     width: 100%;
-    display: grid;
-    place-content: center;    
-
-    grid-template-rows: repeat(20, calc(100% / 20));
-    grid-template-columns: repeat(10, calc(100% / 20));
-
-
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    .tetris-display{
+        display: grid;
+        grid-template-columns: 2fr 5fr 2fr;
+        grid-template-areas:"leftDisplay Board RightDisplay";
+        width: 100%;
+        height: 100%;
+        .tetris-board {
+            grid-area: Board;
+            position: relative;
+            height: 100%;
+            width: 100%;
+            display: grid;
+            place-content: center;    
+        
+            grid-template-columns: repeat(10, 1fr);
+            grid-template-rows: repeat(20, 1fr);
+        
+        
+        }
+    }
 }
