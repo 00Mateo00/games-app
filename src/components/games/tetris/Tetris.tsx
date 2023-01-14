@@ -141,6 +141,7 @@ const Tetris: React.FC = () => {
     // if there is then stop the actual tetromino an copy it in it's actual coordinates and rotation but in the "boardOfPlacedTetrominos"
     // save the actual Y axis position and save it, then compare the next tetramino Y axis and so on
     // read from the highest Y stored to bottom and check if there is a row of ">=0";
+    // rewrite the "isCollidingBorder so it detects from the tetramino to outside"
 
     /* 
     function BoardInitializer(): void {
