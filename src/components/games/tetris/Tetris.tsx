@@ -94,12 +94,6 @@ const Forms: number[][][] = [
     ],
 ];
 
-interface newBoard {
-    state: number;
-    Y: number;
-    X: number;
-}
-
 type angles = 90 | 0 | -90;
 type directions = 'left' | 'right' | 'bottom';
 
@@ -113,26 +107,26 @@ const Tetris: React.FC = () => {
 
     const [placed, setPlaced] = useState(false);
 
-    function newCleanBoard(numRows: number, numColumns: number): newBoard[][] {
+    function newCleanBoard(numRows: number, numColumns: number): number[][] {
         const newBoard = [];
         for (let i = 0; i < numRows; i++) {
             const row = [];
             for (let j = 0; j < numColumns; j++) {
-                row.push({ state: 0, Y: i, X: j });
+                row.push(0);
             }
             newBoard.push(row);
         }
         return newBoard;
     }
 
-    function shallowCopy(matrix: newBoard[][]): newBoard[][] {
+    function shallowCopy(matrix: number[][]): number[][] {
         return JSON.parse(JSON.stringify(matrix));
     }
 
     const CLEANBOARD = newCleanBoard(20, 10);
-    const [board, setBoard] = useState<newBoard[][]>(shallowCopy(CLEANBOARD));
+    const [board, setBoard] = useState<number[][]>(shallowCopy(CLEANBOARD));
     const [boardOfPlacedTetrominos, setBoardOfPlacedTetrominos] = useState<
-        newBoard[][]
+        number[][]
     >(shallowCopy(CLEANBOARD));
     const [highestY, setHighestY] = useState(0);
     const [didSettle, setDidSettle] = useState(false);
@@ -157,7 +151,7 @@ const Tetris: React.FC = () => {
         actualTetromino.forEach((row, i) => {
             row.forEach((cell, j) => {
                 if (cell !== 0) {
-                    newBoard[positionY + i][positionX + j].state = cell;
+                    newBoard[positionY + i][positionX + j] = cell;
                 }
             });
         });
@@ -168,69 +162,23 @@ const Tetris: React.FC = () => {
         actualTetromino.forEach((row, i) => {
             row.forEach((cell, j) => {
                 if (cell !== 0) {
-                    newBoard[positionY + i][positionX + j].state = cell;
+                    newBoard[positionY + i][positionX + j] = cell;
                 }
             });
         });
         setBoard(newBoard);
     }
-    function isCollidingOnBorder(direction: directions): boolean {
-        function isLeftLimit(): boolean {
-            let temp = false;
-            for (let i = 0; i < 3; i++) {
-                if (
-                    board[positionY + i] === undefined ||
-                    board[positionY + i][0].state >= 1
-                ) {
-                    temp = true;
-                }
-            }
-            return temp;
-        }
-        function isRightLimit(): boolean {
-            let temp = false;
-
-            for (let i = 0; i < 3; i++) {
-                if (
-                    board[positionY + i] === undefined ||
-                    board[positionY + i][board[0].length - 1].state >= 1
-                ) {
-                    temp = true;
-                }
-            }
-
-            return temp;
-        }
-        function isDownLimit(): boolean {
-            let temp = false;
-
-            for (let i = 0; i < 3; i++) {
-                if (
-                    board[board.length - 1][positionX + i] !== undefined &&
-                    board[board.length - 1][positionX + i].state >= 1
-                )
-                    temp = true;
-            }
-
-            return temp;
-        }
-
-        if (direction === 'left') return isLeftLimit() || isDownLimit();
-        if (direction === 'right') return isRightLimit() || isDownLimit();
-        if (direction === 'bottom') return isDownLimit();
-
-        return true;
-    }
 
     // prettier-ignore
-    function isTetraminoColliding(direction: directions | 'top'): boolean {
+    function isTetraminoColliding(direction: directions | 'top', tetromino:number[][]): boolean {
+
         // colliding logic: if nextCell in direction is !==0 return true
         function distanceFromBOTTOM(): number {
             let keepSearching = true;
             let y = 0;
             while (keepSearching) {
-                for (let tetrominoX = 0; tetrominoX < actualTetromino.length; tetrominoX++) {
-                    if (actualTetromino[actualTetromino.length-1- y][tetrominoX] !== 0) {
+                for (let tetrominoX = 0; tetrominoX < tetromino.length; tetrominoX++) {
+                    if (tetromino[tetromino.length-1- y][tetrominoX] !== 0) {
                         keepSearching = false;
                         return y;
                     }
@@ -243,8 +191,8 @@ const Tetris: React.FC = () => {
             let keepSearching = true;
             let x = 0;
             while (keepSearching) {
-                for (let tetrominoY = 0; tetrominoY < actualTetromino.length; tetrominoY++) {
-                    if (actualTetromino[tetrominoY][x] !== 0) {
+                for (let tetrominoY = 0; tetrominoY < tetromino.length; tetrominoY++) {
+                    if (tetromino[tetrominoY][x] !== 0) {
                         keepSearching = false;
                         return x;
                     }
@@ -258,8 +206,8 @@ const Tetris: React.FC = () => {
             let keepSearching = true;
             let x = 0;
             while (keepSearching) {
-                for (let tetrominoY = 0; tetrominoY < actualTetromino.length; tetrominoY++) {
-                    if (actualTetromino[tetrominoY][actualTetromino.length - 1 - x] !== 0) {
+                for (let tetrominoY = 0; tetrominoY < tetromino.length; tetrominoY++) {
+                    if (tetromino[tetrominoY][tetromino.length - 1 - x] !== 0) {
                         keepSearching = false;
                         return x;
                     }
@@ -273,8 +221,8 @@ const Tetris: React.FC = () => {
             let keepSearching = true;
             let y = 0;
             while (keepSearching) {
-                for (let tetrominoX = 0; tetrominoX < actualTetromino.length; tetrominoX++) {
-                    if (actualTetromino[y][tetrominoX] !== 0) {
+                for (let tetrominoX = 0; tetrominoX < tetromino.length; tetrominoX++) {
+                    if (tetromino[y][tetrominoX] !== 0) {
                         keepSearching = false;
                         return y;
                     }
@@ -291,9 +239,9 @@ const Tetris: React.FC = () => {
                 const y = distanceFromBOTTOM();
                 const x = distanceFromLEFT();
                 
-                const lastPositionY = positionY+ actualTetromino.length - 1 - y;
+                const lastPositionY = positionY+ tetromino.length - 1 - y;
                 const nextPositionX = positionX + x -1;
-                const isUndefinedOrNotZero = boardOfPlacedTetrominos[lastPositionY][nextPositionX]===undefined || boardOfPlacedTetrominos[lastPositionY][nextPositionX].state !==0
+                const isUndefinedOrNotZero = boardOfPlacedTetrominos[lastPositionY][nextPositionX]===undefined || boardOfPlacedTetrominos[lastPositionY][nextPositionX]!==0
             
                 if( isUndefinedOrNotZero ) return true;
                 return false;
@@ -307,7 +255,7 @@ const Tetris: React.FC = () => {
                 
                 const firstPositionY = positionY+y;
                 const nextPositionX = positionX + x - 1;
-                const isUndefinedOrNotZero = boardOfPlacedTetrominos[firstPositionY][nextPositionX]===undefined || boardOfPlacedTetrominos[firstPositionY][nextPositionX].state !==0 ;
+                const isUndefinedOrNotZero = boardOfPlacedTetrominos[firstPositionY][nextPositionX]===undefined || boardOfPlacedTetrominos[firstPositionY][nextPositionX]!==0 ;
     
                 if( isUndefinedOrNotZero ) return true;
                 return false;
@@ -324,9 +272,9 @@ const Tetris: React.FC = () => {
                 const y = distanceFromBOTTOM();
                 const x = distanceFromRIGHT();
 
-                const lastPositionY = positionY+ actualTetromino.length - 1 - y;
-                const nextPositionX = positionX + actualTetromino.length - x;
-                const isUndefinedOrNotZero = boardOfPlacedTetrominos[lastPositionY][nextPositionX]=== undefined || boardOfPlacedTetrominos[lastPositionY][nextPositionX].state !==0
+                const lastPositionY = positionY+ tetromino.length - 1 - y;
+                const nextPositionX = positionX + tetromino.length - x;
+                const isUndefinedOrNotZero = boardOfPlacedTetrominos[lastPositionY][nextPositionX]=== undefined || boardOfPlacedTetrominos[lastPositionY][nextPositionX]!==0
 
     
                 if(isUndefinedOrNotZero) return true
@@ -340,8 +288,8 @@ const Tetris: React.FC = () => {
 
                 
                 const firstPositionY =positionY+y
-                const nextPositionX = positionX + actualTetromino.length - x;
-                const isUndefinedOrNotZero = boardOfPlacedTetrominos[firstPositionY][nextPositionX]=== undefined || boardOfPlacedTetrominos[firstPositionY][nextPositionX].state !==0
+                const nextPositionX = positionX + tetromino.length - x;
+                const isUndefinedOrNotZero = boardOfPlacedTetrominos[firstPositionY][nextPositionX]=== undefined || boardOfPlacedTetrominos[firstPositionY][nextPositionX]!==0
 
     
                 if(isUndefinedOrNotZero) return true
@@ -357,15 +305,13 @@ const Tetris: React.FC = () => {
                 const y = distanceFromBOTTOM();
                 const x = distanceFromRIGHT();
 
-                const nextPositionY = positionY+ actualTetromino.length - y;
-                const lastPositionX = positionX + actualTetromino.length - 1 - x;
+                const nextPositionY = positionY+ tetromino.length - y;
+                const lastPositionX = positionX + tetromino.length - 1 - x;
                 console.log({nextPositionY});
                 console.log({lastPositionX});
-
-                console.log(Boolean(boardOfPlacedTetrominos[nextPositionY]));
                 
                 
-                const isUndefinedOrNotZero = boardOfPlacedTetrominos[nextPositionY] === undefined || boardOfPlacedTetrominos[nextPositionY][lastPositionX].state !==0
+                const isUndefinedOrNotZero = boardOfPlacedTetrominos[nextPositionY] === undefined || boardOfPlacedTetrominos[nextPositionY][lastPositionX]!==0
 
     
                 if(isUndefinedOrNotZero) return true;
@@ -376,9 +322,9 @@ const Tetris: React.FC = () => {
                 const y = distanceFromBOTTOM();
                 const x = distanceFromRIGHT();
 
-                const nextPositionY = positionY+ actualTetromino.length - y
+                const nextPositionY = positionY+ tetromino.length - y
                 const lastPositionX = positionX + x
-                const isUndefinedOrNotZero = boardOfPlacedTetrominos[nextPositionY]===undefined || boardOfPlacedTetrominos[nextPositionY][lastPositionX].state !==0
+                const isUndefinedOrNotZero = boardOfPlacedTetrominos[nextPositionY]===undefined || boardOfPlacedTetrominos[nextPositionY][lastPositionX]!==0
             
                 if( isUndefinedOrNotZero ) return true;
                 return false;
@@ -396,15 +342,15 @@ const Tetris: React.FC = () => {
 
     function handleTetrominoPosition(direction: directions): void {
         if (direction === 'left') {
-            if (isTetraminoColliding(direction)) return; // don't do anything
+            if (isTetraminoColliding(direction, actualTetromino)) return; // don't do anything
             setPositionX(positionX - 1);
         } // move to the LEFT
         if (direction === 'right') {
-            if (isTetraminoColliding(direction)) return; // don't do anything
+            if (isTetraminoColliding(direction, actualTetromino)) return; // don't do anything
             setPositionX(positionX + 1);
         } // move to the RIGHT
         if (direction === 'bottom') {
-            if (isTetraminoColliding(direction)) {
+            if (isTetraminoColliding(direction, actualTetromino)) {
                 setDidSettle(true);
                 return;
             } // don't do anything
@@ -414,7 +360,7 @@ const Tetris: React.FC = () => {
     }
     function rotateTetromino(angle: angles): void {
         if (angle === 0) return;
-        let tempTetromino = actualTetromino;
+        let tempTetromino = shallowCopy(actualTetromino);
 
         function moveAwayFrom(direction: directions): void {
             let keepSearching = true;
@@ -458,16 +404,24 @@ const Tetris: React.FC = () => {
                 .reverse();
         }
 
-        // check collision
-        if (isTetraminoColliding('bottom')) return;
-        if (isTetraminoColliding('left') && isTetraminoColliding('right'))
-            return;
-        if (isTetraminoColliding('left')) moveAwayFrom('left');
-        if (isTetraminoColliding('right')) moveAwayFrom('right');
-
         // execute rotations
         if (angle === 90) tempTetromino = rotateClockWise();
         if (angle === -90) tempTetromino = rotateAntiClockWise();
+        // check collision
+        if (isTetraminoColliding('bottom', tempTetromino)) return;
+        if (
+            isTetraminoColliding('left', tempTetromino) &&
+            isTetraminoColliding('right', tempTetromino)
+        ) {
+            console.log(
+                isTetraminoColliding('left', tempTetromino) &&
+                    isTetraminoColliding('right', tempTetromino)
+            );
+
+            return;
+        }
+        if (isTetraminoColliding('left', tempTetromino)) moveAwayFrom('left');
+        if (isTetraminoColliding('right', tempTetromino)) moveAwayFrom('right');
 
         setActualTetromino(tempTetromino);
     }

@@ -1,23 +1,17 @@
 import React from 'react';
 import './cells.scss';
 
-interface newBoard {
-    state: number;
-    Y: number;
-    X: number;
-}
-
 interface Props {
-    square: newBoard;
-    square2: newBoard;
+    square: number;
+    square2: number;
 }
 
 const Squares: React.FC<Props> = ({ square, square2 }) => {
     let state = 0;
-    if (square2.state > 0) {
+    if (square2 > 0) {
         state = 9;
     } else {
-        state = square.state;
+        state = square;
     }
 
     return (
