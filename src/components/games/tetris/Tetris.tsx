@@ -98,7 +98,18 @@ type angles = 90 | 0 | -90;
 type directions = 'left' | 'right' | 'bottom';
 
 const Tetris: React.FC = () => {
-    const [actualTetromino, setActualTetromino] = useState(Forms[0]);
+    function getRandomTetromino(): number[][] {
+        const randomPosition = Math.floor(Math.random() * Forms.length);
+        return Forms[randomPosition];
+    }
+
+    /* const [listOfTetrominos, setlistOfTetrominos] = useState<number[][][]>([
+        getRandomTetromino(),
+        getRandomTetromino(),
+        getRandomTetromino(),
+    ]); */
+
+    const [actualTetromino, setActualTetromino] = useState(Forms[1]);
     const [positionY, setPositionY] = useState(0);
     const [positionX, setPositionX] = useState(0);
     const [angleOfRotation, setAngleOfRotation] = useState<angles>(0);
@@ -145,8 +156,6 @@ const Tetris: React.FC = () => {
  */
 
     function placeTetromino(): void {
-        console.log('tetromino Placed');
-
         const newBoard = shallowCopy(boardOfPlacedTetrominos);
         actualTetromino.forEach((row, i) => {
             row.forEach((cell, j) => {
@@ -307,9 +316,6 @@ const Tetris: React.FC = () => {
 
                 const nextPositionY = positionY+ tetromino.length - y;
                 const lastPositionX = positionX + tetromino.length - 1 - x;
-                console.log({nextPositionY});
-                console.log({lastPositionX});
-                
                 
                 const isUndefinedOrNotZero = boardOfPlacedTetrominos[nextPositionY] === undefined || boardOfPlacedTetrominos[nextPositionY][lastPositionX]!==0
 
@@ -410,37 +416,26 @@ const Tetris: React.FC = () => {
             tempTetromino: number[][]
         ): boolean {
             for (let i = 0; i < tempTetromino.length; i++) {
-                let count = 0;
-                // eslint-disable-next-line no-debugger
-                debugger;
-
                 for (let j = 0; j < tempTetromino.length; j++) {
+                    let count = 0;
                     if (
                         boardOfPlacedTetrominos[positionY + i][
                             tempPositionX + j
-                        ] > 0
+                        ] !== 0 ||
+                        boardOfPlacedTetrominos[positionY + i][
+                            tempPositionX + j
+                        ] === undefined
                     ) {
-                        console.log('isOnBOard');
-
                         count++;
                     }
-                    if (tempTetromino[i][j] > 0) {
-                        console.log('IsOnTetromino');
-
+                    if (tempTetromino[i][j] !== 0) {
                         count++;
                     }
-                }
-
-                if (count > 1) {
-                    console.log(count);
-
-                    console.log('true');
-
-                    return true;
+                    if (count > 1) {
+                        return true;
+                    }
                 }
             }
-
-            console.log('false');
 
             return false;
         }
@@ -449,27 +444,14 @@ const Tetris: React.FC = () => {
         if (angle === 90) tempTetromino = rotateClockWise();
         if (angle === -90) tempTetromino = rotateAntiClockWise();
 
-        console.log(
-            isTetraminoColliding('left', tempTetromino) &&
-                isTetraminoColliding('right', tempTetromino)
-        );
         // check collision
         if (isTetraminoColliding('bottom', actualTetromino)) return;
-
-        if (
-            isTetraminoColliding('left', tempTetromino) &&
-            isTetraminoColliding('right', tempTetromino)
-        ) {
-            return;
-        }
         if (isTetraminoColliding('left', actualTetromino)) moveAwayFrom('left');
-        if (isTetraminoColliding('right', actualTetromino))
-            moveAwayFrom('right');
+        if (isTetraminoColliding('right', actualTetromino)) moveAwayFrom('right'); // prettier-ignore
 
         if (tetraminoDoesntFit(tempPositionX, tempTetromino)) return;
 
         setActualTetromino(tempTetromino);
-
         setPositionX(tempPositionX);
     }
 
@@ -478,11 +460,6 @@ const Tetris: React.FC = () => {
             return `0${n}`;
         }
         return `${n}`;
-    }
-
-    function getRandomTetromino(): number[][] {
-        const randomPosition = Math.floor(Math.random() * Forms.length);
-        return Forms[randomPosition];
     }
 
     useEffect(() => {
@@ -521,12 +498,12 @@ const Tetris: React.FC = () => {
         setPlaced(true);
         setPositionX(0);
         setPositionY(0);
+
         setDidSettle(false);
     }, [didSettle]);
 
     useEffect(() => {
-        /* 
-        handleTetrominoPosition('bottom'); */
+        handleTetrominoPosition('bottom');
     }, [decaSeconds]);
 
     return (

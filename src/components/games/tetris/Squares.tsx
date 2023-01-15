@@ -15,9 +15,9 @@ const Squares: React.FC<Props> = ({ square, square2 }) => {
     }
 
     return (
-        <div className={`cell item-center flex justify-center cell-${state}`}>
-            {state}
-        </div>
+        <div
+            className={`cell item-center flex justify-center cell-${state}`}
+        ></div>
     );
 };
 export default Squares;
