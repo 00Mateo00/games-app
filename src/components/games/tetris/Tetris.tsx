@@ -361,6 +361,7 @@ const Tetris: React.FC = () => {
     function rotateTetromino(angle: angles): void {
         if (angle === 0) return;
         let tempTetromino = shallowCopy(actualTetromino);
+        let tempPositionX = positionX;
 
         function moveAwayFrom(direction: directions): void {
             let keepSearching = true;
@@ -371,7 +372,7 @@ const Tetris: React.FC = () => {
                     for (let i = 0; i < actualTetromino.length; i++) {
                         if (actualTetromino[i][x] !== 0) {
                             keepSearching = false;
-                            setPositionX(positionX + x);
+                            tempPositionX = positionX + x;
                         }
                         if (i === actualTetromino.length - 1) x++;
                     }
@@ -386,7 +387,7 @@ const Tetris: React.FC = () => {
                             ] !== 0
                         ) {
                             keepSearching = false;
-                            setPositionX(positionX + x * -1);
+                            tempPositionX = positionX + x * -1;
                         }
                         if (i === actualTetromino.length - 1) x++;
                     }
@@ -402,6 +403,46 @@ const Tetris: React.FC = () => {
             return actualTetromino[0]
                 .map((val, index) => actualTetromino.map((row) => row[index]))
                 .reverse();
+        }
+
+        function tetraminoDoesntFit(
+            tempPositionX: number,
+            tempTetromino: number[][]
+        ): boolean {
+            for (let i = 0; i < tempTetromino.length; i++) {
+                let count = 0;
+                // eslint-disable-next-line no-debugger
+                debugger;
+
+                for (let j = 0; j < tempTetromino.length; j++) {
+                    if (
+                        boardOfPlacedTetrominos[positionY + i][
+                            tempPositionX + j
+                        ] > 0
+                    ) {
+                        console.log('isOnBOard');
+
+                        count++;
+                    }
+                    if (tempTetromino[i][j] > 0) {
+                        console.log('IsOnTetromino');
+
+                        count++;
+                    }
+                }
+
+                if (count > 1) {
+                    console.log(count);
+
+                    console.log('true');
+
+                    return true;
+                }
+            }
+
+            console.log('false');
+
+            return false;
         }
 
         // execute rotations
@@ -425,7 +466,11 @@ const Tetris: React.FC = () => {
         if (isTetraminoColliding('right', actualTetromino))
             moveAwayFrom('right');
 
+        if (tetraminoDoesntFit(tempPositionX, tempTetromino)) return;
+
         setActualTetromino(tempTetromino);
+
+        setPositionX(tempPositionX);
     }
 
     function parseTime(n: number): string {
