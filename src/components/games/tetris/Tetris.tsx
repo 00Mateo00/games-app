@@ -407,21 +407,23 @@ const Tetris: React.FC = () => {
         // execute rotations
         if (angle === 90) tempTetromino = rotateClockWise();
         if (angle === -90) tempTetromino = rotateAntiClockWise();
+
+        console.log(
+            isTetraminoColliding('left', tempTetromino) &&
+                isTetraminoColliding('right', tempTetromino)
+        );
         // check collision
-        if (isTetraminoColliding('bottom', tempTetromino)) return;
+        if (isTetraminoColliding('bottom', actualTetromino)) return;
+
         if (
             isTetraminoColliding('left', tempTetromino) &&
             isTetraminoColliding('right', tempTetromino)
         ) {
-            console.log(
-                isTetraminoColliding('left', tempTetromino) &&
-                    isTetraminoColliding('right', tempTetromino)
-            );
-
             return;
         }
-        if (isTetraminoColliding('left', tempTetromino)) moveAwayFrom('left');
-        if (isTetraminoColliding('right', tempTetromino)) moveAwayFrom('right');
+        if (isTetraminoColliding('left', actualTetromino)) moveAwayFrom('left');
+        if (isTetraminoColliding('right', actualTetromino))
+            moveAwayFrom('right');
 
         setActualTetromino(tempTetromino);
     }
