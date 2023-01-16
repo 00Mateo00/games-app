@@ -96,7 +96,7 @@ const Forms: number[][][] = [
 ];
 
 type angles = 90 | 0 | -90;
-type directions = 'left' | 'right' | 'bottom';
+type directions = 'left' | 'right' | 'bottom' | 'top';
 
 const Tetris: React.FC = () => {
     function getRandomTetromino(): number[][] {
@@ -178,71 +178,105 @@ const Tetris: React.FC = () => {
         setBoard(newBoard);
     }
 
-    function tetraminoDoesntFit(
+    function Overlapping(
         direction: directions,
-        tempTetromino: number[][]
-    ): boolean {
-        let tempPositionX = positionX;
-        let tempPositionY = positionY;
-        if (direction === 'left') {
-            tempPositionX--;
-        }
-        if (direction === 'right') {
-            tempPositionX++;
-        }
-        if (direction === 'bottom') {
-            tempPositionY++;
+        tempTetromino: number[][],
+        positionY: number,
+        positionX: number
+    ): number {
+        // bottom case
+        let unavailables = 0;
+
+        function isOverlapping(
+            i: number,
+            j: number,
+            axis: 'columns' | 'rows'
+        ): boolean {
+            let Y = 0;
+            let X = 0;
+            if (axis === 'rows') {
+                X += j;
+                Y += i;
+            }
+            if (axis === 'columns') {
+                X += i;
+                Y += j;
+            }
+            const boardX = positionX + X;
+            const boardY = positionY + Y;
+
+            const isUndefined =
+                boardOfPlacedTetrominos[boardY] === undefined ||
+                boardOfPlacedTetrominos[boardY][boardX] === undefined;
+            const isOverlap =
+                (isUndefined ||
+                    boardOfPlacedTetrominos[boardY][boardX] !== 0) &&
+                tempTetromino[Y][X] !== 0;
+
+            if (isOverlap) {
+                return true;
+            }
+
+            return false;
         }
 
-        for (let i = 0; i < tempTetromino.length; i++) {
-            for (let j = 0; j < tempTetromino.length; j++) {
-                let count = 0;
+        function search(
+            axis: 'columns' | 'rows',
+            startFrom: 'FromLast' | 'FromFirst'
+        ): number {
+            let unavailables = 0;
 
-                const positionOnBoardNotExist =
-                    boardOfPlacedTetrominos[tempPositionY + i] === undefined ||
-                    boardOfPlacedTetrominos[tempPositionY + i][
-                        tempPositionX + j
-                    ] === undefined;
-
-                if (
-                    positionOnBoardNotExist ||
-                    boardOfPlacedTetrominos[tempPositionY + i][
-                        tempPositionX + j
-                    ] !== 0
-                ) {
-                    count++;
-                }
-                if (tempTetromino[i][j] !== 0) {
-                    count++;
-                }
-                if (count > 1) {
-                    return true;
+            if (startFrom === 'FromFirst') {
+                for (let i = 0; i < tempTetromino.length; i++) {
+                    let matrixesOverlapping = 0;
+                    for (let j = 0; j < tempTetromino.length; j++) {
+                        if (isOverlapping(i, j, axis)) matrixesOverlapping++;
+                    }
+                    if (matrixesOverlapping > 0) unavailables++;
                 }
             }
+            if (startFrom === 'FromLast') {
+                for (let i = tempTetromino.length - 1; i >= 0; i--) {
+                    let matrixesOverlapping = 0;
+                    for (let j = 0; j < tempTetromino.length; j++) {
+                        if (isOverlapping(i, j, axis)) matrixesOverlapping++;
+                    }
+                    if (matrixesOverlapping > 0) unavailables++;
+                }
+            }
+            return unavailables;
         }
 
-        return false;
+        if (direction === 'top') unavailables = search('rows', 'FromFirst');
+        if (direction === 'bottom') unavailables = search('rows', 'FromLast');
+        if (direction === 'left') unavailables = search('columns', 'FromFirst');
+        if (direction === 'right') unavailables = search('columns', 'FromLast');
+
+        return unavailables;
     }
 
     // prettier-ignore
 
     function handleTetrominoPosition(direction: directions): void {
-        if (direction === 'left') {
-            if(tetraminoDoesntFit(direction,actualTetromino)) return// don't do anything
-            setPositionX(positionX - 1);
-        } // move to the LEFT
-        if (direction === 'right') {
-            if(tetraminoDoesntFit(direction,actualTetromino)) return  // don't do anything
-            setPositionX(positionX + 1);
-        } // move to the RIGHT
-        if (direction === 'bottom') {
-            if(tetraminoDoesntFit(direction,actualTetromino)) {
-                setDidSettle(true);
-                return;
-            } // don't do anything
+        let tempPositionX = positionX;
+        let tempPositionY = positionY;
 
-            setPositionY(positionY + 1);
-        } // move DOWNWARDS
+        if (direction==='left')  tempPositionX--;
+        if (direction==='right') tempPositionX++;
+        if (direction==='bottom') tempPositionY++;
+
+        const willCollide = Overlapping(direction,actualTetromino,tempPositionY,tempPositionX)>0; 
+        
+        if (direction === 'bottom' && willCollide) {
+            setDidSettle(true);
+            return;
+        } 
+        if (willCollide) return;
+        
+        setPositionX(tempPositionX);
+        setPositionY(tempPositionY);
+
+        // move DOWNWARDS
     }
     function rotateTetromino(angle: angles): void {
         if (angle === 0) return;
@@ -250,58 +284,6 @@ const Tetris: React.FC = () => {
         let tempPositionX = positionX;
         let tempPositionY = positionY;
 
-        function moveAwayFrom(direction: directions): number {
-            let keepSearching = true;
-            let x = 0;
-            let y = 0;
-
-            if (direction === 'bottom') {
-                while (keepSearching) {
-                    for (let i = 0; i < actualTetromino.length; i++) {
-                        if (
-                            actualTetromino[actualTetromino.length - 1 - y][
-                                i
-                            ] !== 0
-                        ) {
-                            keepSearching = false;
-                        }
-                        if (i === actualTetromino.length - 1) y++;
-                    }
-                }
-
-                return positionY - y;
-            }
-
-            if (direction === 'left') {
-                while (keepSearching) {
-                    for (let i = 0; i < actualTetromino.length; i++) {
-                        if (actualTetromino[i][x] !== 0) {
-                            keepSearching = false;
-                        }
-                        if (i === actualTetromino.length - 1) x++;
-                    }
-                }
-                return positionX + x;
-            }
-
-            if (direction === 'right') {
-                while (keepSearching) {
-                    for (let i = 0; i < actualTetromino.length; i++) {
-                        if (
-                            actualTetromino[i][
-                                actualTetromino.length - 1 - x
-                            ] !== 0
-                        ) {
-                            keepSearching = false;
-                        }
-                        if (i === actualTetromino.length - 1) x++;
-                    }
-                }
-                return positionX + x * -1;
-            }
-
-            return 0;
-        }
         function rotateClockWise(): number[][] {
             return actualTetromino[0].map((val, index) =>
                 actualTetromino.map((row) => row[index]).reverse()
@@ -317,27 +299,21 @@ const Tetris: React.FC = () => {
         if (angle === 90) tempTetromino = rotateClockWise();
         if (angle === -90) tempTetromino = rotateAntiClockWise();
 
-        const tetrominoDoesntFitRIGHT = tetraminoDoesntFit(
-            'right',
-            actualTetromino
-        );
-        const tetrominoDoesntFitLEFT = tetraminoDoesntFit(
-            'left',
-            actualTetromino
-        );
+        const numberOfOverlappingFromLeft=Overlapping('left',tempTetromino,positionY,positionX) // prettier-ignore
+        const numberOfOverlappingFromRight=Overlapping('right',tempTetromino,positionY,positionX) // prettier-ignore
+        const numberOfOverlappingFromBottom=Overlapping('bottom',tempTetromino,positionY,positionX) // prettier-ignore
 
         // check collision
-        console.log(tetraminoDoesntFit('bottom', tempTetromino));
+        if (numberOfOverlappingFromBottom>0) tempPositionY -= numberOfOverlappingFromBottom; // prettier-ignore
+        if (numberOfOverlappingFromRight>0) tempPositionX -= numberOfOverlappingFromRight; // prettier-ignore
+        if (numberOfOverlappingFromLeft>0) tempPositionX += numberOfOverlappingFromLeft; // prettier-ignore
+        console.log({
+            numberOfOverlappingFromRight,
+            numberOfOverlappingFromLeft,
+        });
 
-        if (tetraminoDoesntFit('bottom', tempTetromino))
-            tempPositionY = moveAwayFrom('bottom');
-
-        console.log(positionY - moveAwayFrom('bottom'));
-
-        if (tetrominoDoesntFitRIGHT) tempPositionX = moveAwayFrom('right'); // prettier-ignore
-        if (tetrominoDoesntFitLEFT) tempPositionX = moveAwayFrom('left');
-
-        if (tetrominoDoesntFitRIGHT && tetrominoDoesntFitLEFT) return;
+        if (numberOfOverlappingFromRight > 0 && numberOfOverlappingFromLeft > 0)
+            return;
 
         setActualTetromino(tempTetromino);
         setPositionX(tempPositionX);
@@ -392,7 +368,7 @@ const Tetris: React.FC = () => {
     }, [didSettle]);
 
     useEffect(() => {
-        handleTetrominoPosition('bottom');
+        /*  handleTetrominoPosition('bottom'); */
     }, [decaSeconds]);
 
     return (
