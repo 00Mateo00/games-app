@@ -59,9 +59,10 @@ import './tetris.scss';
 
 const Forms: number[][][] = [
     [
-        [0, 1, 0],
-        [0, 1, 0],
-        [0, 1, 0],
+        [0, 1, 0, 0],
+        [0, 1, 0, 0],
+        [0, 1, 0, 0],
+        [0, 1, 0, 0],
     ],
     [
         [0, 2, 0],
@@ -109,7 +110,7 @@ const Tetris: React.FC = () => {
         getRandomTetromino(),
     ]); */
 
-    const [actualTetromino, setActualTetromino] = useState(Forms[1]);
+    const [actualTetromino, setActualTetromino] = useState(Forms[0]);
     const [positionY, setPositionY] = useState(0);
     const [positionX, setPositionX] = useState(0);
     const [angleOfRotation, setAngleOfRotation] = useState<angles>(0);
@@ -146,7 +147,6 @@ const Tetris: React.FC = () => {
     // if there is then stop the actual tetromino an copy it in it's actual coordinates and rotation but in the "boardOfPlacedTetrominos"
     // save the actual Y axis position and save it, then compare the next tetramino Y axis and so on
     // read from the highest Y stored to bottom and check if there is a row of ">=0";
-    // rewrite the "isCollidingBorder so it detects from the tetramino to outside"
 
     /* 
     function BoardInitializer(): void {
@@ -178,185 +178,65 @@ const Tetris: React.FC = () => {
         setBoard(newBoard);
     }
 
-    // prettier-ignore
-    function isTetraminoColliding(direction: directions | 'top', tetromino:number[][]): boolean {
+    function tetraminoDoesntFit(
+        direction: directions,
+        tempTetromino: number[][]
+    ): boolean {
+        let tempPositionX = positionX;
+        let tempPositionY = positionY;
+        if (direction === 'left') {
+            tempPositionX--;
+        }
+        if (direction === 'right') {
+            tempPositionX++;
+        }
+        if (direction === 'bottom') {
+            tempPositionY++;
+        }
 
-        // colliding logic: if nextCell in direction is !==0 return true
-        function distanceFromBOTTOM(): number {
-            let keepSearching = true;
-            let y = 0;
-            while (keepSearching) {
-                for (let tetrominoX = 0; tetrominoX < tetromino.length; tetrominoX++) {
-                    if (tetromino[tetromino.length-1- y][tetrominoX] !== 0) {
-                        keepSearching = false;
-                        return y;
-                    }
+        for (let i = 0; i < tempTetromino.length; i++) {
+            for (let j = 0; j < tempTetromino.length; j++) {
+                let count = 0;
+
+                const positionOnBoardNotExist =
+                    boardOfPlacedTetrominos[tempPositionY + i] === undefined ||
+                    boardOfPlacedTetrominos[tempPositionY + i][
+                        tempPositionX + j
+                    ] === undefined;
+
+                if (
+                    positionOnBoardNotExist ||
+                    boardOfPlacedTetrominos[tempPositionY + i][
+                        tempPositionX + j
+                    ] !== 0
+                ) {
+                    count++;
                 }
-                y++;
-            }
-            return y;
-        }
-        function distanceFromLEFT(): number {
-            let keepSearching = true;
-            let x = 0;
-            while (keepSearching) {
-                for (let tetrominoY = 0; tetrominoY < tetromino.length; tetrominoY++) {
-                    if (tetromino[tetrominoY][x] !== 0) {
-                        keepSearching = false;
-                        return x;
-                    }
+                if (tempTetromino[i][j] !== 0) {
+                    count++;
                 }
-                x++;
-            }
-
-            return x;
-        }
-        function distanceFromRIGHT(): number {
-            let keepSearching = true;
-            let x = 0;
-            while (keepSearching) {
-                for (let tetrominoY = 0; tetrominoY < tetromino.length; tetrominoY++) {
-                    if (tetromino[tetrominoY][tetromino.length - 1 - x] !== 0) {
-                        keepSearching = false;
-                        return x;
-                    }
+                if (count > 1) {
+                    return true;
                 }
-                x++;
             }
-
-            return x;
-        }
-        function distanceFromTOP(): number {
-            let keepSearching = true;
-            let y = 0;
-            while (keepSearching) {
-                for (let tetrominoX = 0; tetrominoX < tetromino.length; tetrominoX++) {
-                    if (tetromino[y][tetrominoX] !== 0) {
-                        keepSearching = false;
-                        return y;
-                    }
-                }
-                y++;
-            }
-
-            return y;
         }
 
-
-        function isCollidingLEFT():boolean {
-            function isCollidingLeftBottom():boolean{
-                const y = distanceFromBOTTOM();
-                const x = distanceFromLEFT();
-                
-                const lastPositionY = positionY+ tetromino.length - 1 - y;
-                const nextPositionX = positionX + x -1;
-                const isUndefinedOrNotZero = boardOfPlacedTetrominos[lastPositionY][nextPositionX]===undefined || boardOfPlacedTetrominos[lastPositionY][nextPositionX]!==0
-            
-                if( isUndefinedOrNotZero ) return true;
-                return false;
-    
-            }
-
-            function isCollidingLeftTop():boolean{
-                const y = distanceFromTOP();
-                const x = distanceFromLEFT();
-
-                
-                const firstPositionY = positionY+y;
-                const nextPositionX = positionX + x - 1;
-                const isUndefinedOrNotZero = boardOfPlacedTetrominos[firstPositionY][nextPositionX]===undefined || boardOfPlacedTetrominos[firstPositionY][nextPositionX]!==0 ;
-    
-                if( isUndefinedOrNotZero ) return true;
-                return false;
-    
-            }
-            
-            
-
-            return isCollidingLeftBottom() || isCollidingLeftTop();
-        }
-
-        function isCollidingRIGHT():boolean {
-            function isCollidingRightBottom():boolean{
-                const y = distanceFromBOTTOM();
-                const x = distanceFromRIGHT();
-
-                const lastPositionY = positionY+ tetromino.length - 1 - y;
-                const nextPositionX = positionX + tetromino.length - x;
-                const isUndefinedOrNotZero = boardOfPlacedTetrominos[lastPositionY][nextPositionX]=== undefined || boardOfPlacedTetrominos[lastPositionY][nextPositionX]!==0
-
-    
-                if(isUndefinedOrNotZero) return true
-                return false;
-    
-            }
-
-            function isCollidingRightTop():boolean{
-                const y = distanceFromTOP();
-                const x = distanceFromRIGHT();
-
-                
-                const firstPositionY =positionY+y
-                const nextPositionX = positionX + tetromino.length - x;
-                const isUndefinedOrNotZero = boardOfPlacedTetrominos[firstPositionY][nextPositionX]=== undefined || boardOfPlacedTetrominos[firstPositionY][nextPositionX]!==0
-
-    
-                if(isUndefinedOrNotZero) return true
-                return false;
-            }
-    
-            return isCollidingRightBottom() || isCollidingRightTop();
-        }
-
-
-        function isCollidingBOTTOM():boolean {
-            function isCollidingBottomRight():boolean {
-                const y = distanceFromBOTTOM();
-                const x = distanceFromRIGHT();
-
-                const nextPositionY = positionY+ tetromino.length - y;
-                const lastPositionX = positionX + tetromino.length - 1 - x;
-                
-                const isUndefinedOrNotZero = boardOfPlacedTetrominos[nextPositionY] === undefined || boardOfPlacedTetrominos[nextPositionY][lastPositionX]!==0
-
-    
-                if(isUndefinedOrNotZero) return true;
-                return false;
-            }
-            
-            function isCollidingBottomLeft():boolean {
-                const y = distanceFromBOTTOM();
-                const x = distanceFromRIGHT();
-
-                const nextPositionY = positionY+ tetromino.length - y
-                const lastPositionX = positionX + x
-                const isUndefinedOrNotZero = boardOfPlacedTetrominos[nextPositionY]===undefined || boardOfPlacedTetrominos[nextPositionY][lastPositionX]!==0
-            
-                if( isUndefinedOrNotZero ) return true;
-                return false;
-            }
-
-            
-            return isCollidingBottomRight() || isCollidingBottomLeft();
-        }
-
-        if(direction==='left') return isCollidingLEFT();
-        if (direction === 'bottom') return isCollidingBOTTOM();
-        if (direction === 'right') return isCollidingRIGHT();
         return false;
     }
 
+    // prettier-ignore
+
     function handleTetrominoPosition(direction: directions): void {
         if (direction === 'left') {
-            if (isTetraminoColliding(direction, actualTetromino)) return; // don't do anything
+            if(tetraminoDoesntFit(direction,actualTetromino)) return// don't do anything
             setPositionX(positionX - 1);
         } // move to the LEFT
         if (direction === 'right') {
-            if (isTetraminoColliding(direction, actualTetromino)) return; // don't do anything
+            if(tetraminoDoesntFit(direction,actualTetromino)) return  // don't do anything
             setPositionX(positionX + 1);
         } // move to the RIGHT
         if (direction === 'bottom') {
-            if (isTetraminoColliding(direction, actualTetromino)) {
+            if(tetraminoDoesntFit(direction,actualTetromino)) {
                 setDidSettle(true);
                 return;
             } // don't do anything
@@ -368,22 +248,42 @@ const Tetris: React.FC = () => {
         if (angle === 0) return;
         let tempTetromino = shallowCopy(actualTetromino);
         let tempPositionX = positionX;
+        let tempPositionY = positionY;
 
-        function moveAwayFrom(direction: directions): void {
+        function moveAwayFrom(direction: directions): number {
             let keepSearching = true;
             let x = 0;
+            let y = 0;
+
+            if (direction === 'bottom') {
+                while (keepSearching) {
+                    for (let i = 0; i < actualTetromino.length; i++) {
+                        if (
+                            actualTetromino[actualTetromino.length - 1 - y][
+                                i
+                            ] !== 0
+                        ) {
+                            keepSearching = false;
+                        }
+                        if (i === actualTetromino.length - 1) y++;
+                    }
+                }
+
+                return positionY - y;
+            }
 
             if (direction === 'left') {
                 while (keepSearching) {
                     for (let i = 0; i < actualTetromino.length; i++) {
                         if (actualTetromino[i][x] !== 0) {
                             keepSearching = false;
-                            tempPositionX = positionX + x;
                         }
                         if (i === actualTetromino.length - 1) x++;
                     }
                 }
+                return positionX + x;
             }
+
             if (direction === 'right') {
                 while (keepSearching) {
                     for (let i = 0; i < actualTetromino.length; i++) {
@@ -393,12 +293,14 @@ const Tetris: React.FC = () => {
                             ] !== 0
                         ) {
                             keepSearching = false;
-                            tempPositionX = positionX + x * -1;
                         }
                         if (i === actualTetromino.length - 1) x++;
                     }
                 }
+                return positionX + x * -1;
             }
+
+            return 0;
         }
         function rotateClockWise(): number[][] {
             return actualTetromino[0].map((val, index) =>
@@ -411,48 +313,35 @@ const Tetris: React.FC = () => {
                 .reverse();
         }
 
-        function tetraminoDoesntFit(
-            tempPositionX: number,
-            tempTetromino: number[][]
-        ): boolean {
-            for (let i = 0; i < tempTetromino.length; i++) {
-                for (let j = 0; j < tempTetromino.length; j++) {
-                    let count = 0;
-                    if (
-                        boardOfPlacedTetrominos[positionY + i][
-                            tempPositionX + j
-                        ] !== 0 ||
-                        boardOfPlacedTetrominos[positionY + i][
-                            tempPositionX + j
-                        ] === undefined
-                    ) {
-                        count++;
-                    }
-                    if (tempTetromino[i][j] !== 0) {
-                        count++;
-                    }
-                    if (count > 1) {
-                        return true;
-                    }
-                }
-            }
-
-            return false;
-        }
-
         // execute rotations
         if (angle === 90) tempTetromino = rotateClockWise();
         if (angle === -90) tempTetromino = rotateAntiClockWise();
 
-        // check collision
-        if (isTetraminoColliding('bottom', actualTetromino)) return;
-        if (isTetraminoColliding('left', actualTetromino)) moveAwayFrom('left');
-        if (isTetraminoColliding('right', actualTetromino)) moveAwayFrom('right'); // prettier-ignore
+        const tetrominoDoesntFitRIGHT = tetraminoDoesntFit(
+            'right',
+            actualTetromino
+        );
+        const tetrominoDoesntFitLEFT = tetraminoDoesntFit(
+            'left',
+            actualTetromino
+        );
 
-        if (tetraminoDoesntFit(tempPositionX, tempTetromino)) return;
+        // check collision
+        console.log(tetraminoDoesntFit('bottom', tempTetromino));
+
+        if (tetraminoDoesntFit('bottom', tempTetromino))
+            tempPositionY = moveAwayFrom('bottom');
+
+        console.log(positionY - moveAwayFrom('bottom'));
+
+        if (tetrominoDoesntFitRIGHT) tempPositionX = moveAwayFrom('right'); // prettier-ignore
+        if (tetrominoDoesntFitLEFT) tempPositionX = moveAwayFrom('left');
+
+        if (tetrominoDoesntFitRIGHT && tetrominoDoesntFitLEFT) return;
 
         setActualTetromino(tempTetromino);
         setPositionX(tempPositionX);
+        setPositionY(tempPositionY);
     }
 
     function parseTime(n: number): string {
