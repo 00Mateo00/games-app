@@ -307,13 +307,9 @@ const Tetris: React.FC = () => {
         if (numberOfOverlappingFromBottom>0) tempPositionY -= numberOfOverlappingFromBottom; // prettier-ignore
         if (numberOfOverlappingFromRight>0) tempPositionX -= numberOfOverlappingFromRight; // prettier-ignore
         if (numberOfOverlappingFromLeft>0) tempPositionX += numberOfOverlappingFromLeft; // prettier-ignore
-        console.log({
-            numberOfOverlappingFromRight,
-            numberOfOverlappingFromLeft,
-        });
 
-        if (numberOfOverlappingFromRight > 0 && numberOfOverlappingFromLeft > 0)
-            return;
+        /* if (numberOfOverlappingFromRight > 0 && numberOfOverlappingFromLeft > 0)
+            return; */
 
         setActualTetromino(tempTetromino);
         setPositionX(tempPositionX);
