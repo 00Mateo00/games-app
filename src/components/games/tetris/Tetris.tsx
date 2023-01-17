@@ -110,7 +110,7 @@ const Tetris: React.FC = () => {
         getRandomTetromino(),
     ]); */
 
-    const [actualTetromino, setActualTetromino] = useState(Forms[0]);
+    const [actualTetromino, setActualTetromino] = useState(Forms[2]);
     const [positionY, setPositionY] = useState(0);
     const [positionX, setPositionX] = useState(0);
     const [angleOfRotation, setAngleOfRotation] = useState<angles>(0);
@@ -191,15 +191,12 @@ const Tetris: React.FC = () => {
         positionX: number
     ): idk {
         // bottom case
-        const firstHalf = (tempTetromino.length - 1) / 2;
         let linesColliding = 0;
         let isColliding = false;
         let sectionColliding: idk['sectionColliding'] = 'none';
-        let firstHalfColliding = 0;
-        let lastHalfColliding = 0;
         let DistanceFromCollision = 0;
 
-        for (let i = 0; i < tempTetromino.length; i++) {
+        for (let i = 0; i < (tempTetromino.length - 1) / 2; i++) {
             let matrixesOverlapping = 0;
             let onesInTetromino = 0;
             for (let j = 0; j < tempTetromino.length; j++) {
@@ -218,8 +215,7 @@ const Tetris: React.FC = () => {
 
                 if (tempTetromino[Y][X] !== 0) onesInTetromino++;
                 if (isOverlap) {
-                    if (i < firstHalf) firstHalfColliding++;
-                    if (i > firstHalf) lastHalfColliding++;
+                    sectionColliding = 'FirstHalf';
                     matrixesOverlapping++;
                 }
             }
@@ -227,8 +223,209 @@ const Tetris: React.FC = () => {
             if (linesColliding > 0) isColliding = true;
             if (onesInTetromino > 0 && !isColliding) DistanceFromCollision++;
         }
-        if (firstHalfColliding > lastHalfColliding)sectionColliding = 'FirstHalf'; // prettier-ignore
-        if (firstHalfColliding < lastHalfColliding)sectionColliding = 'LastHalf'; // prettier-ignore
+
+        for (
+            let i = tempTetromino.length - 1;
+            i > (tempTetromino.length - 1) / 2;
+            i--
+        ) {
+            let matrixesOverlapping = 0;
+            let onesInTetromino = 0;
+            for (let j = 0; j < tempTetromino.length; j++) {
+                const Y = axis === 'rows' ? i : j;
+                const X = axis === 'rows' ? j : i;
+                const isUndefined =
+                    boardOfPlacedTetrominos[positionY + Y] === undefined ||
+                    boardOfPlacedTetrominos[positionY + Y][positionX + X] ===
+                        undefined;
+                const isOverlap =
+                    (isUndefined ||
+                        boardOfPlacedTetrominos[positionY + Y][
+                            positionX + X
+                        ] !== 0) &&
+                    tempTetromino[Y][X] !== 0;
+
+                if (tempTetromino[Y][X] !== 0) onesInTetromino++;
+                if (isOverlap) {
+                    sectionColliding = 'LastHalf';
+                    matrixesOverlapping++;
+                }
+            }
+            if (matrixesOverlapping > 0) linesColliding++;
+            if (linesColliding > 0) isColliding = true;
+            if (onesInTetromino > 0 && !isColliding) DistanceFromCollision++;
+        }
+
+        console.log({ isColliding });
+        if (!isColliding) DistanceFromCollision = 0;
+        console.log({ linesColliding, DistanceFromCollision });
+
+        linesColliding =
+            linesColliding >= DistanceFromCollision
+                ? linesColliding
+                : DistanceFromCollision;
+
+        console.log({ linesColliding });
+
+        return { linesColliding, sectionColliding, isColliding };
+    }
+
+    function onMoveCollitions(
+        axis: 'columns' | 'rows',
+        tempTetromino: number[][],
+        positionY: number,
+        positionX: number
+    ): idk {
+        // bottom case
+        let linesColliding = 0;
+        let isColliding = false;
+        let sectionColliding: idk['sectionColliding'] = 'none';
+        let DistanceFromCollision = 0;
+
+        for (let i = 0; i < (tempTetromino.length - 1) / 2; i++) {
+            let matrixesOverlapping = 0;
+            let onesInTetromino = 0;
+            for (let j = 0; j < tempTetromino.length; j++) {
+                const Y = axis === 'rows' ? i : j;
+                const X = axis === 'rows' ? j : i;
+                const isUndefined =
+                    boardOfPlacedTetrominos[positionY + Y] === undefined ||
+                    boardOfPlacedTetrominos[positionY + Y][positionX + X] ===
+                        undefined;
+                const isOverlap =
+                    (isUndefined ||
+                        boardOfPlacedTetrominos[positionY + Y][
+                            positionX + X
+                        ] !== 0) &&
+                    tempTetromino[Y][X] !== 0;
+
+                if (tempTetromino[Y][X] !== 0) onesInTetromino++;
+                if (isOverlap) {
+                    sectionColliding = 'FirstHalf';
+                    matrixesOverlapping++;
+                }
+            }
+            if (matrixesOverlapping > 0) linesColliding++;
+            if (linesColliding > 0) isColliding = true;
+            if (onesInTetromino > 0 && !isColliding) DistanceFromCollision++;
+        }
+
+        for (
+            let i = tempTetromino.length - 1;
+            i > (tempTetromino.length - 1) / 2;
+            i--
+        ) {
+            let matrixesOverlapping = 0;
+            let onesInTetromino = 0;
+            for (let j = 0; j < tempTetromino.length; j++) {
+                const Y = axis === 'rows' ? i : j;
+                const X = axis === 'rows' ? j : i;
+                const isUndefined =
+                    boardOfPlacedTetrominos[positionY + Y] === undefined ||
+                    boardOfPlacedTetrominos[positionY + Y][positionX + X] ===
+                        undefined;
+                const isOverlap =
+                    (isUndefined ||
+                        boardOfPlacedTetrominos[positionY + Y][
+                            positionX + X
+                        ] !== 0) &&
+                    tempTetromino[Y][X] !== 0;
+
+                if (tempTetromino[Y][X] !== 0) onesInTetromino++;
+                if (isOverlap) {
+                    sectionColliding = 'LastHalf';
+                    matrixesOverlapping++;
+                }
+            }
+            if (matrixesOverlapping > 0) linesColliding++;
+            if (linesColliding > 0) isColliding = true;
+            if (onesInTetromino > 0 && !isColliding) DistanceFromCollision++;
+        }
+
+        console.log({ isColliding });
+        if (!isColliding) DistanceFromCollision = 0;
+        console.log({ linesColliding, DistanceFromCollision });
+
+        linesColliding =
+            linesColliding >= DistanceFromCollision
+                ? linesColliding
+                : DistanceFromCollision;
+
+        console.log({ linesColliding });
+
+        return { linesColliding, sectionColliding, isColliding };
+    }
+    function onRotateCollitions(
+        axis: 'columns' | 'rows',
+        tempTetromino: number[][],
+        positionY: number,
+        positionX: number
+    ): idk {
+        // bottom case
+        let linesColliding = 0;
+        let isColliding = false;
+        let sectionColliding: idk['sectionColliding'] = 'none';
+        let DistanceFromCollision = 0;
+
+        for (let i = 0; i < (tempTetromino.length - 1) / 2; i++) {
+            let matrixesOverlapping = 0;
+            let onesInTetromino = 0;
+            for (let j = 0; j < tempTetromino.length; j++) {
+                const Y = axis === 'rows' ? i : j;
+                const X = axis === 'rows' ? j : i;
+                const isUndefined =
+                    boardOfPlacedTetrominos[positionY + Y] === undefined ||
+                    boardOfPlacedTetrominos[positionY + Y][positionX + X] ===
+                        undefined;
+                const isOverlap =
+                    (isUndefined ||
+                        boardOfPlacedTetrominos[positionY + Y][
+                            positionX + X
+                        ] !== 0) &&
+                    tempTetromino[Y][X] !== 0;
+
+                if (tempTetromino[Y][X] !== 0) onesInTetromino++;
+                if (isOverlap) {
+                    sectionColliding = 'FirstHalf';
+                    matrixesOverlapping++;
+                }
+            }
+            if (matrixesOverlapping > 0) linesColliding++;
+            if (linesColliding > 0) isColliding = true;
+            if (onesInTetromino > 0 && !isColliding) DistanceFromCollision++;
+        }
+
+        for (
+            let i = tempTetromino.length - 1;
+            i > (tempTetromino.length - 1) / 2;
+            i--
+        ) {
+            let matrixesOverlapping = 0;
+            let onesInTetromino = 0;
+            for (let j = 0; j < tempTetromino.length; j++) {
+                const Y = axis === 'rows' ? i : j;
+                const X = axis === 'rows' ? j : i;
+                const isUndefined =
+                    boardOfPlacedTetrominos[positionY + Y] === undefined ||
+                    boardOfPlacedTetrominos[positionY + Y][positionX + X] ===
+                        undefined;
+                const isOverlap =
+                    (isUndefined ||
+                        boardOfPlacedTetrominos[positionY + Y][
+                            positionX + X
+                        ] !== 0) &&
+                    tempTetromino[Y][X] !== 0;
+
+                if (tempTetromino[Y][X] !== 0) onesInTetromino++;
+                if (isOverlap) {
+                    sectionColliding = 'LastHalf';
+                    matrixesOverlapping++;
+                }
+            }
+            if (matrixesOverlapping > 0) linesColliding++;
+            if (linesColliding > 0) isColliding = true;
+            if (onesInTetromino > 0 && !isColliding) DistanceFromCollision++;
+        }
 
         console.log({ isColliding });
         if (!isColliding) DistanceFromCollision = 0;
