@@ -1,5 +1,5 @@
 import React from 'react';
-import './cells.scss';
+import './square.scss';
 
 interface Props {
     square: number;
@@ -7,17 +7,11 @@ interface Props {
 }
 
 const Squares: React.FC<Props> = ({ square, square2 }) => {
-    let state = 0;
-    if (square2 > 0) {
-        state = 9;
-    } else {
-        state = square;
-    }
+    const state = square > 0 ? square : square2;
 
     return (
-        <div
-            className={`cell item-center flex justify-center cell-${state}`}
-        ></div>
+        <div className={`item-center flex justify-center cell-${state} cell `}>
+        </div>
     );
 };
 export default Squares;

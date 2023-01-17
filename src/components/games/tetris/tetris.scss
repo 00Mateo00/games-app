@@ -16,11 +16,10 @@
             width: 100%;
             display: grid;
             place-content: center;    
+            background-color: black;
         
             grid-template-columns: repeat(10, 1fr);
             grid-template-rows: repeat(20, 1fr);
-        
-        
         }
     }
 }
