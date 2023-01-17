@@ -178,81 +178,70 @@ const Tetris: React.FC = () => {
         setBoard(newBoard);
     }
 
-    function Overlapping(
-        direction: directions,
+    interface idk {
+        linesColliding: number;
+        sectionColliding: 'FirstHalf' | 'LastHalf' | 'none';
+        isColliding: boolean;
+    }
+
+    function searchOverlap(
+        axis: 'columns' | 'rows',
         tempTetromino: number[][],
         positionY: number,
         positionX: number
-    ): number {
+    ): idk {
         // bottom case
-        let unavailables = 0;
+        const firstHalf = (tempTetromino.length - 1) / 2;
+        let linesColliding = 0;
+        let isColliding = false;
+        let sectionColliding: idk['sectionColliding'] = 'none';
+        let firstHalfColliding = 0;
+        let lastHalfColliding = 0;
+        let DistanceFromCollision = 0;
 
-        function isOverlapping(
-            i: number,
-            j: number,
-            axis: 'columns' | 'rows'
-        ): boolean {
-            let Y = 0;
-            let X = 0;
-            if (axis === 'rows') {
-                X += j;
-                Y += i;
-            }
-            if (axis === 'columns') {
-                X += i;
-                Y += j;
-            }
-            const boardX = positionX + X;
-            const boardY = positionY + Y;
+        for (let i = 0; i < tempTetromino.length; i++) {
+            let matrixesOverlapping = 0;
+            let onesInTetromino = 0;
+            for (let j = 0; j < tempTetromino.length; j++) {
+                const Y = axis === 'rows' ? i : j;
+                const X = axis === 'rows' ? j : i;
+                const isUndefined =
+                    boardOfPlacedTetrominos[positionY + Y] === undefined ||
+                    boardOfPlacedTetrominos[positionY + Y][positionX + X] ===
+                        undefined;
+                const isOverlap =
+                    (isUndefined ||
+                        boardOfPlacedTetrominos[positionY + Y][
+                            positionX + X
+                        ] !== 0) &&
+                    tempTetromino[Y][X] !== 0;
 
-            const isUndefined =
-                boardOfPlacedTetrominos[boardY] === undefined ||
-                boardOfPlacedTetrominos[boardY][boardX] === undefined;
-            const isOverlap =
-                (isUndefined ||
-                    boardOfPlacedTetrominos[boardY][boardX] !== 0) &&
-                tempTetromino[Y][X] !== 0;
-
-            if (isOverlap) {
-                return true;
-            }
-
-            return false;
-        }
-
-        function search(
-            axis: 'columns' | 'rows',
-            startFrom: 'FromLast' | 'FromFirst'
-        ): number {
-            let unavailables = 0;
-
-            if (startFrom === 'FromFirst') {
-                for (let i = 0; i < tempTetromino.length; i++) {
-                    let matrixesOverlapping = 0;
-                    for (let j = 0; j < tempTetromino.length; j++) {
-                        if (isOverlapping(i, j, axis)) matrixesOverlapping++;
-                    }
-                    if (matrixesOverlapping > 0) unavailables++;
+                if (tempTetromino[Y][X] !== 0) onesInTetromino++;
+                if (isOverlap) {
+                    if (i < firstHalf) firstHalfColliding++;
+                    if (i > firstHalf) lastHalfColliding++;
+                    matrixesOverlapping++;
                 }
             }
-            if (startFrom === 'FromLast') {
-                for (let i = tempTetromino.length - 1; i >= 0; i--) {
-                    let matrixesOverlapping = 0;
-                    for (let j = 0; j < tempTetromino.length; j++) {
-                        if (isOverlapping(i, j, axis)) matrixesOverlapping++;
-                    }
-                    if (matrixesOverlapping > 0) unavailables++;
-                }
-            }
-            return unavailables;
+            if (matrixesOverlapping > 0) linesColliding++;
+            if (linesColliding > 0) isColliding = true;
+            if (onesInTetromino > 0 && !isColliding) DistanceFromCollision++;
         }
+        if (firstHalfColliding > lastHalfColliding)sectionColliding = 'FirstHalf'; // prettier-ignore
+        if (firstHalfColliding < lastHalfColliding)sectionColliding = 'LastHalf'; // prettier-ignore
 
-        if (direction === 'top') unavailables = search('rows', 'FromFirst');
-        if (direction === 'bottom') unavailables = search('rows', 'FromLast');
-        if (direction === 'left') unavailables = search('columns', 'FromFirst');
-        if (direction === 'right') unavailables = search('columns', 'FromLast');
+        console.log({ isColliding });
+        if (!isColliding) DistanceFromCollision = 0;
+        console.log({ linesColliding, DistanceFromCollision });
 
-        return unavailables;
+        linesColliding =
+            linesColliding >= DistanceFromCollision
+                ? linesColliding
+                : DistanceFromCollision;
+
+        console.log({ linesColliding });
+
+        return { linesColliding, sectionColliding, isColliding };
     }
 
     // prettier-ignore
@@ -265,13 +254,12 @@ const Tetris: React.FC = () => {
         if (direction==='right') tempPositionX++;
         if (direction==='bottom') tempPositionY++;
 
-        const willCollide = Overlapping(direction,actualTetromino,tempPositionY,tempPositionX)>0; 
+        const {isColliding} = searchOverlap("columns",actualTetromino,tempPositionY,tempPositionX); 
         
-        if (direction === 'bottom' && willCollide) {
-            setDidSettle(true);
-            return;
-        } 
-        if (willCollide) return;
+        if (isColliding){
+            if (direction==='bottom') setDidSettle(true);
+            return
+        }
         
         setPositionX(tempPositionX);
         setPositionY(tempPositionY);
@@ -299,17 +287,48 @@ const Tetris: React.FC = () => {
         if (angle === 90) tempTetromino = rotateClockWise();
         if (angle === -90) tempTetromino = rotateAntiClockWise();
 
-        const numberOfOverlappingFromLeft=Overlapping('left',tempTetromino,positionY,positionX) // prettier-ignore
-        const numberOfOverlappingFromRight=Overlapping('right',tempTetromino,positionY,positionX) // prettier-ignore
-        const numberOfOverlappingFromBottom=Overlapping('bottom',tempTetromino,positionY,positionX) // prettier-ignore
+        let columns = searchOverlap(
+            'columns',
+            tempTetromino,
+            tempPositionY,
+            tempPositionX
+        );
+        let rows = searchOverlap(
+            'rows',
+            tempTetromino,
+            tempPositionY,
+            tempPositionX
+        );
+
+        const isCollidingLeft = columns.sectionColliding === 'FirstHalf';
+        const isCollidingRight = columns.sectionColliding === 'LastHalf';
+        const isCollidingBottom = rows.sectionColliding === 'LastHalf';
 
         // check collision
-        if (numberOfOverlappingFromBottom>0) tempPositionY -= numberOfOverlappingFromBottom; // prettier-ignore
-        if (numberOfOverlappingFromRight>0) tempPositionX -= numberOfOverlappingFromRight; // prettier-ignore
-        if (numberOfOverlappingFromLeft>0) tempPositionX += numberOfOverlappingFromLeft; // prettier-ignore
+        console.log({ isCollidingLeft, isCollidingRight });
+        console.log(columns.linesColliding);
 
-        /* if (numberOfOverlappingFromRight > 0 && numberOfOverlappingFromLeft > 0)
-            return; */
+        if (isCollidingLeft) tempPositionX += columns.linesColliding;
+        if (isCollidingRight) tempPositionX -= columns.linesColliding;
+        if (!isCollidingLeft && !isCollidingRight && isCollidingBottom)
+            tempPositionY -= rows.linesColliding;
+        if (isCollidingLeft && isCollidingRight) return;
+
+        // check collision in the new position
+        columns = searchOverlap(
+            'columns',
+            tempTetromino,
+            tempPositionY,
+            tempPositionX
+        );
+        rows = searchOverlap(
+            'rows',
+            tempTetromino,
+            tempPositionY,
+            tempPositionX
+        );
+
+        if (columns.isColliding || rows.isColliding) return;
 
         setActualTetromino(tempTetromino);
         setPositionX(tempPositionX);
