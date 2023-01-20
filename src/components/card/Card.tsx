@@ -1,31 +1,29 @@
 import React, { useState, useContext } from 'react';
 import Image from '../../assets/card-Images/tetris.png';
 import GlobalContext from '../../context/GlobalContext';
+import Games from '../games/Games';
+import './card.scss';
 
-interface props {
-    index?: number;
-}
+const Card: React.FC = () => {
+    const { setIsSomeCardClicked, screenWidth, setInGameView } =
+        useContext(GlobalContext);
 
-const Card: React.FC<props> = (index) => {
-    const { setIsSomeCardClicked, screenWidth } = useContext(GlobalContext);
+    const [onClickStyles, setOnClickStyles] = useState<object | undefined>(
+        undefined
+    );
 
-    const [styles, setStyles] = useState<object | undefined>(undefined);
-
+    const [thisGameInView, setThisGameInView] = useState(false);
     function getStyles(
         element: React.MouseEvent<HTMLDivElement, MouseEvent>
     ): object {
+        let customStyles = {};
+
         const topOffset = element.currentTarget?.getBoundingClientRect()?.top;
         const leftOffset = element.currentTarget?.offsetLeft;
         const parentWidth = element.currentTarget.parentElement?.clientWidth;
 
-        if (
-            leftOffset !== undefined &&
-            parentWidth !== undefined &&
-            topOffset !== undefined
-        ) {
-            console.log({ topOffset, leftOffset });
-
-            return {
+        if (parentWidth !== undefined) {
+            customStyles = {
                 transform: `translate(${leftOffset * -1}px, ${
                     topOffset * -1
                 }px)`,
@@ -35,101 +33,82 @@ const Card: React.FC<props> = (index) => {
             };
         }
 
-        return {};
+        return customStyles;
     }
 
     function isCardFullSize(): boolean {
-        return styles !== undefined;
+        return onClickStyles !== undefined;
     }
 
     function isMobile(): boolean {
         return screenWidth >= 640;
     }
 
-    const transtions1 = ` transition-all delay-75 duration-500`;
-    const beforePseudoElement =
-        ' before:hidden' +
-        ' sm:before:block sm:before:absolute sm:before:top-0 sm:before:left-0 before:z-[-1] sm:before:h-full sm:before:w-full sm:before:bg-gradient-to-br sm:before:from-violet-600 sm:before:to-violet-800 sm:before:opacity-0 ' +
-        ' sm:group-hover/edit:before:content-[""] sm:group-hover/edit:before:opacity-100 sm:before:transition-all sm:before:delay-75 sm:before:duration-500';
-
     const cardContent = (
         <>
-            <img
-                src={Image}
-                alt='GameName'
-                className={
-                    `${transtions1}` +
-                    ` h-full w-full overflow-hidden object-cover object-[50%_10%]` +
-                    ` sm:group-hover/edit:opacity-[95%]`
-                }
-            ></img>
+            <div className='relative h-full w-full'>
+                <div className='gameDisplay absolute top-0  left-0 z-10 h-full w-full bg-purple-700'>
+                    {thisGameInView && <Games />}
+                </div>
+                <img
+                    src={Image}
+                    alt='GameName'
+                    className={` imagen transitions absolute top-0 left-0 z-20`}
+                ></img>
+            </div>
+
             <div
                 className={
-                    `relative z-[1] grid h-full w-full grid-cols-[6fr_0fr] bg-purple-900 ` +
-                    ` ${beforePseudoElement}` +
-                    ` ${transtions1}` +
+                    `info-Wrapper transtions` +
                     ` ${
                         isCardFullSize()
-                            ? ' sm:grid-cols-[6fr_5fr] '
-                            : 'before:hidden'
+                            ? ' info-Wrapper_FullSize'
+                            : ' info-Wrapper_SmallSize'
                     }`
                 }
             >
                 <div
                     className={
-                        `h-full w-full` +
-                        ` sm:group-hover/edit:grid-rows-[1fr_1fr_0fr]` +
-                        `${transtions1}` +
+                        `info-grid transtions` +
                         ` ${
                             isCardFullSize()
-                                ? 'sm:flex sm:flex-col sm:justify-around sm:p-5'
-                                : 'grid grid-rows-[1fr_0fr_0fr]'
+                                ? 'info-grid_FullSize'
+                                : 'info-grid_SmallSize'
                         }`
                     }
                 >
                     <div
                         className={
-                            `grid h-full w-full grid-cols-[1fr_0fr] place-items-center transition-all` +
-                            `  sm:group-hover/edit:grid-cols-[auto_1fr] sm:group-hover/edit:p-2` +
-                            ` ${transtions1}` +
-                            ` ${
-                                isCardFullSize()
-                                    ? 'sm:block sm:h-min sm:place-items-baseline'
-                                    : ''
-                            }`
+                            `h1-wrapper transitions` +
+                            ` ${isCardFullSize() ? 'h1-wrapper_FullSize' : ''}`
                         }
                     >
-                        <h1
-                            className={
-                                `transition-all delay-100 duration-700` +
-                                ` sm:group-hover/edit:text-3xl sm:group-hover/edit:delay-75 sm:group-hover/edit:duration-500`
-                            }
-                        >
-                            Game Name
-                        </h1>
+                        <h1>Game Name</h1>
                     </div>
                     <p
                         className={
-                            `flex h-full w-full scale-0 justify-center overflow-auto ` +
-                            ` sm:group-hover/edit:scale-100 sm:group-hover/edit:whitespace-normal sm:group-hover/edit:px-2 sm:group-hover/edit:pb-2` +
-                            ` ${transtions1}` +
+                            `description transitions` +
                             ` ${
                                 isCardFullSize()
-                                    ? ' sm:scale-100 sm:text-xl'
-                                    : ' truncate text-xs'
+                                    ? 'description_FullSize'
+                                    : 'description_SmallSize'
                             }`
                         }
                     >
                         Lorem ipsum dolor, sit amet
-                        consecteturgroup-hover/edit:px-2group-hover/edit:px-2group-hover/edit:px-2
+                        consecteturgroup-hover:px-2group-hover:px-2group-hover:px-2
                     </p>
                     <button
+                        onClick={() => {
+                            setInGameView(true);
+                            setThisGameInView(true);
+                        }}
                         className={
-                            `flex items-center justify-center rounded-xl bg-background-primaryButton transition-all` +
+                            `playButton` +
                             ` ${
                                 isCardFullSize()
-                                    ? ' sm:h-7 sm:w-20 sm:scale-100'
-                                    : 'h-0  w-0 scale-0 truncate '
+                                    ? 'playButton_FullSize'
+                                    : 'playButton_SmallSize'
                             }`
                         }
                     >
@@ -138,75 +117,70 @@ const Card: React.FC<props> = (index) => {
                 </div>
                 <div
                     className={
-                        ` ${
+                        `configGrid transitions` +
+                        `${
                             isCardFullSize()
-                                ? 'sm:scale-x-100 sm:scale-y-100'
-                                : 'scale-x-0 scale-y-100'
-                        }` +
-                        ` flex w-full flex-col items-center justify-center truncate rounded-md bg-orange-500 transition-all delay-75 duration-500`
+                                ? 'configGrid_FullSize'
+                                : 'configGrid_SmallSize'
+                        }`
                     }
                 >
-                    <div
-                        className={`flex h-full w-full items-center justify-around`}
-                    >
-                        <button className={`truncate`}>easy</button>
-                        <button className={`truncate`}>medium</button>
-                        <button className={`truncate`}>hard</button>
+                    <div className={`difficultySelector`}>
+                        <button>easy</button>
+                        <button>medium</button>
+                        <button>hard</button>
                     </div>
-                    <div
-                        className={`flex h-full w-full items-center justify-around`}
-                    >
-                        <button
-                            className={`flex h-6 w-10 items-center justify-center truncate rounded-xl bg-background-primaryButton sm:h-7 sm:w-20`}
-                        >
-                            settiings
-                        </button>
-                        <button
-                            className={`flex h-6 w-10 items-center justify-center truncate rounded-xl bg-background-primaryButton sm:h-7 sm:w-20`}
-                        >
-                            scores
-                        </button>
-                        <button
-                            className={`flex h-6 w-10 items-center justify-center truncate rounded-xl bg-background-primaryButton sm:h-7 sm:w-20`}
-                        >
-                            tutorial
-                        </button>
+                    <div className={`otherSettings`}>
+                        <button>settiings</button>
+                        <button>scores</button>
+                        <button>tutorial</button>
                     </div>
                 </div>
             </div>
         </>
     );
+
+    function stylesSwitcher(
+        e: React.MouseEvent<HTMLDivElement, MouseEvent>
+    ): void {
+        if (isCardFullSize()) {
+            setInGameView(false);
+            setThisGameInView(false);
+            setIsSomeCardClicked(false);
+            setOnClickStyles(undefined);
+        } else {
+            setIsSomeCardClicked(true);
+            setOnClickStyles(getStyles(e));
+        }
+    }
+
     return (
         <div
-            onClick={(e) => {
-                if (isCardFullSize()) {
-                    setIsSomeCardClicked(false);
-                    setStyles(undefined);
-                } else {
-                    setIsSomeCardClicked(true);
-                    setStyles(getStyles(e));
-                }
-            }}
+            onClick={(e) => stylesSwitcher(e)}
             className={
-                ` ${isCardFullSize() ? ' sm:z-50' : 'z-10'}` +
-                `   relative flex h-full w-full items-center` +
-                ` ${transtions1}` +
-                ` sm:hover:z-50`
+                `CARD-ExternalWrapper transitions` +
+                ` ${
+                    isCardFullSize()
+                        ? 'CARD-ExternalWrapper_FullSize'
+                        : 'CARD-ExternalWrapper_SmallSize'
+                }`
             }
-            style={isMobile() ? styles : undefined}
+            style={isMobile() ? onClickStyles : undefined}
         >
             <div
+                onClick={(e) => {
+                    if (isCardFullSize()) e.stopPropagation();
+                }}
                 className={
+                    `CARD-Wrapper transitions` +
                     ` ${
-                        isCardFullSize() ? '' : ' group/edit'
-                    } absolute top-0 z-20 grid h-full w-full grid-rows-[3fr_1fr] overflow-hidden rounded-md border border-background-primaryButton border-opacity-50 shadow-none delay-75 sm:grid-rows-[8fr_3fr] ` +
-                    ' sm:w-full' +
-                    ` sm:transition-all sm:duration-500  ${
                         isCardFullSize()
-                            ? ' sm:scale-x-[70%] sm:scale-y-[85%]'
-                            : ' sm:hover:scale-x-[130%] sm:hover:scale-y-[122.5%] sm:hover:grid-rows-[8fr_4fr] sm:hover:shadow-card'
+                            ? 'CARD-Wrapper_FullSize'
+                            : 'CARD-Wrapper_SmallSize'
                     }` +
-                    ` before:absolute before:top-0 before:left-0 before:z-[-1] before:h-full before:w-full before:bg-violet-600 before:opacity-0 before:transition-all before:delay-75 before:duration-500 before:content-[""] hover:before:opacity-100`
+                    `
+                    ${thisGameInView ? 'isGameView' : ''}
+                    `
                 }
             >
                 {cardContent}

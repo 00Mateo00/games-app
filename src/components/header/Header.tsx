@@ -4,7 +4,7 @@ const Header: React.FC = () => {
     return (
         <header className='mx-auto flex h-20 w-[91%] items-center justify-between p-2'>
             <div className='h-fit'>
-                <button className='flex h-7 w-20 items-center justify-center rounded-xl bg-background-primaryButton'>
+                <button className='primary-button flex h-7 w-20 items-center justify-center rounded-xl'>
                     HOME
                 </button>
             </div>

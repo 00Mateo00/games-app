@@ -1,0 +1,45 @@
+.cell{
+    p{
+        font-size: large;
+        width: 2rem;
+        height: 2rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    @apply border-purple-900;
+    &_unrevealed{
+        @apply bg-gradient-to-br from-purple-600 to-violet-700 cursor-pointer border transition-all;
+        box-shadow: inset -2px -2px 4px rgba(0,0,0,0.2), inset 2px 2px 4px rgba(255,255,255,0.2);
+        p{
+            opacity: 0;
+        }
+    }
+    &_revealed{
+        @apply bg-purple-900;
+        box-shadow: none;
+        p{
+            opacity: 1;
+        }
+    }
+    .🚩{
+
+        opacity: 1;
+    }
+}
+
+.bomb{
+    @apply bg-gradient-to-br from-red-700 to-red-800
+}
+
+.CFFFFFF{
+    color: #FFFFFF
+};
+.C0000FF{color: #0000FF};
+.C00FF00{color:#00FF00};
+.CFF0000{color:#FF0000};
+.C000080{color:#000080};
+.C800000{color: #800000};
+.C008080{color: #008080};
+.C000000{color: black};
+.C808080{color: #808080};

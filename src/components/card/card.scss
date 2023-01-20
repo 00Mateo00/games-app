@@ -1,1 +1,161 @@
-    
+.CARD-ExternalWrapper{
+    @apply relative flex h-full w-full items-center; 
+    @apply sm:hover:z-50;
+
+    &_FullSize{
+        @apply sm:z-50
+
+    }
+    &_SmallSize{
+        @apply z-10
+
+    }
+
+    .CARD-Wrapper{
+        @apply absolute top-0 z-20 grid h-full w-full grid-rows-[3fr_1fr] overflow-hidden rounded-md border border-background-primaryButton border-opacity-50 shadow-none delay-75 hover:before:opacity-100;
+         
+        @apply sm:grid-rows-[8fr_3fr] sm:transition-all sm:duration-500  sm:w-full;
+
+        &::before{
+            @apply absolute top-0 left-0 z-[-1] h-full w-full bg-violet-600 opacity-0 transition-all delay-75 duration-500 content-[""];
+        }
+
+        &_FullSize{
+            @apply sm:scale-x-[70%] sm:scale-y-[85%] sm:shadow-card;
+        }
+
+        &_SmallSize{
+            &:hover{
+                @apply sm:scale-x-[130%] sm:scale-y-[122.5%] sm:grid-rows-[8fr_4fr] sm:shadow-card;
+                .imagen{
+                    @apply sm:opacity-[95%];
+                }
+                .info-Wrapper{
+                    &::before{
+                        @apply sm:content-[""] sm:opacity-100;
+                    }
+                    .info-grid{
+                        @apply sm:grid-rows-[1fr_1fr_0fr];
+
+                        .h1-wrapper{
+                            @apply sm:grid-cols-[auto_1fr] sm:p-2;
+                            h1{
+                                @apply sm:text-3xl sm:delay-75 sm:duration-500;
+                            }
+                        }
+                        .description{
+                            @apply sm:scale-100 sm:whitespace-normal sm:px-2 sm:pb-2
+                        }
+                    }
+                }
+                
+            };
+        }
+
+        .imagen{
+            @apply h-full w-full overflow-hidden object-cover object-[50%_10%];
+        }
+
+        .info-Wrapper{
+            @apply relative z-[1] grid h-full w-full grid-cols-[6fr_0fr] bg-purple-900 ;
+
+            &_FullSize{
+                @apply sm:grid-cols-[6fr_5fr];
+            }
+
+            &_SmallSize{
+                @apply before:hidden
+            }
+
+            &::before{
+                
+                @apply hidden; 
+                @apply sm:block sm:absolute sm:top-0 sm:left-0 z-[-1] sm:h-full sm:w-full sm:bg-gradient-to-br sm:from-violet-600 sm:to-violet-800 sm:opacity-0 sm:transition-all sm:delay-75 sm:duration-500;
+            }
+
+            .info-grid{
+                @apply h-full w-full;
+                &_FullSize{
+                   @apply sm:flex sm:flex-col sm:justify-around sm:p-5
+                }
+                &_SmallSize{
+                    @apply grid grid-rows-[1fr_0fr_0fr]
+                }
+                .h1-wrapper{
+                    @apply grid h-full w-full grid-cols-[1fr_0fr] place-items-center transition-all;
+
+                    &_FullSize{
+                        @apply sm:block sm:h-min sm:place-items-baseline;
+                    };
+                    
+                    h1{
+                        @apply transition-all delay-100 duration-700
+                    }
+
+
+                }
+                .description{
+                    @apply flex h-full w-full scale-0 justify-center overflow-auto;
+
+                    &_FullSize{
+                        @apply sm:scale-100 sm:text-xl;
+                    }
+                    &_SmallSize{
+                        @apply truncate text-xs;
+                    }
+                }
+                .playButton{
+                    @apply flex items-center justify-center rounded-xl bg-background-primaryButton transition-all;
+
+                    &_FullSize{
+                        @apply sm:h-7 sm:w-20 sm:scale-100
+                    };
+                    &_SmallSize{
+                        @apply h-0 w-0 scale-0 truncate;
+                    };
+                }
+            }
+
+            .configGrid{
+                @apply flex w-full flex-col items-center justify-center truncate rounded-md bg-orange-500 transition-all delay-75 duration-500;
+                &_FullSize{
+                    @apply sm:scale-x-100 sm:scale-y-100;
+                };
+                &_SmallSize{
+                    @apply scale-x-0 scale-y-100;
+                };
+
+                .difficultySelector{
+                    @apply flex h-full w-full items-center justify-around;
+                    button{
+                        @apply truncate;
+                    }
+                };
+                .otherSettings{
+                    @apply flex h-full w-full items-center justify-around;
+                    button{
+                        @apply flex h-6 w-10 items-center justify-center truncate rounded-xl bg-background-primaryButton sm:h-7 sm:w-20;
+                    };
+                };
+            }
+        }
+
+    };
+
+    .isGameView{
+        @apply border-opacity-100 border-8;
+        @apply grid-rows-[6fr_0fr];
+        .imagen{
+            @apply translate-y-[100%];
+        }
+        .info-Wrapper{
+            @apply hidden;
+        }
+    }
+
+};
+
+.transitions{
+    @apply transition-all delay-75 duration-500;
+};
+
