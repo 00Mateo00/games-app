@@ -1,0 +1,41 @@
+.listGrid{
+    .cell{
+        padding-top: 100%;
+        color: black;
+        font-size: larger;
+        font-weight: 900;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        @apply bg-gradient-to-br;
+        box-shadow: inset -2px -2px 4px rgba(0,0,0,0.2), inset 2px 2px 4px rgba(255,255,255,0.2);   
+    }
+    .cell-0{
+        @apply bg-none border-none;
+        box-shadow: none;
+    }
+    .cell-1{
+        @apply from-cyan-500 to-cyan-700;
+        
+    }
+    .cell-2{
+        @apply from-indigo-500 to-indigo-700;
+    }
+    .cell-3{
+        @apply from-orange-500 to-orange-700;
+    }
+    .cell-4{
+        @apply from-yellow-400 to-yellow-700;
+    }
+    .cell-5{
+       @apply from-lime-500 to-lime-700;
+    
+    }
+    .cell-6{
+        @apply from-violet-500 to-purple-700;
+    }
+    .cell-7{
+        @apply from-red-500 to-red-700;
+    }
+}
+
