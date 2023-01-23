@@ -1,7 +1,8 @@
 .game-board {
-    width: 600px;
-    height: 400px;
+    width: 100%;
+    height: 70%;
     background-color: black;
     position: relative;
+    @apply border-4 border-orange-400
   }
   

@@ -1,10 +1,12 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect, useState } from 'react';
 import NextTetromino from './NextTetromino';
 import Squares from './Squares';
 import './tetris.scss';
 
+type angles = 90 | 0 | -90;
+type directions = 'left' | 'right' | 'bottom' | 'top';
 type formsNames = 'I' | 'J' | 'L' | 'O' | 'S' | 'T' | 'Z';
+
 type Form = [formsNames, number[][]];
 const Forms: Form[] = [
     [
@@ -65,98 +67,6 @@ const Forms: Form[] = [
     ],
 ];
 
-/* const TestForms: Array<[string, number[][]]> = [
-    [
-        'I',
-        [
-            [0, 0, 6, 0, 0],
-            [0, 0, 6, 0, 0],
-            [0, 0, 6, 0, 0],
-            [0, 0, 6, 0, 0],
-            [0, 0, 6, 0, 0],
-        ],
-    ],
-    [
-        'O',
-        [
-            [4, 4, 4, 4, 4],
-            [4, 4, 4, 4, 4],
-            [4, 4, 4, 4, 4],
-            [4, 4, 4, 4, 4],
-            [4, 4, 4, 4, 4],
-        ],
-    ],
-    [
-        'top',
-        [
-            [4, 4, 4, 4, 4, 4, 4, 0, 4, 4],
-            [4, 4, 0, 4, 4, 4, 4, 0, 4, 4],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        ],
-    ],
-    [
-        'beteween',
-        [
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [4, 4, 4, 4, 4, 4, 4, 0, 4, 4],
-            [4, 4, 4, 4, 4, 4, 4, 0, 4, 4],
-            [4, 4, 4, 4, 4, 4, 4, 0, 4, 4],
-            [4, 4, 4, 4, 4, 4, 4, 0, 4, 4],
-        ],
-    ],
-
-    [
-        'bottom',
-        [
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [4, 4, 4, 4, 4, 0, 4, 4, 4, 4],
-        ],
-    ],
-    [
-        'complete',
-        [
-            [1, 1, 1, 1, 1, 1, 1, 0, 1, 1],
-            [2, 2, 2, 2, 2, 2, 2, 0, 2, 2],
-            [2, 2, 2, 2, 2, 2, 2, 0, 2, 2],
-            [4, 4, 4, 4, 4, 0, 4, 0, 4, 4],
-            [2, 2, 2, 2, 2, 2, 2, 0, 2, 2],
-            [2, 2, 2, 2, 2, 2, 2, 0, 2, 2],
-            [4, 4, 4, 4, 4, 0, 4, 4, 4, 4],
-        ],
-    ],
-    [
-        'I2',
-        [
-            [0, 0, 6, 0, 0],
-            [0, 0, 6, 0, 0],
-            [0, 0, 6, 0, 0],
-            [0, 0, 6, 0, 0],
-            [0, 0, 6, 0, 0],
-            [0, 0, 6, 0, 0],
-        ],
-    ],
-]; */
-
-type angles = 90 | 0 | -90;
-type directions = 'left' | 'right' | 'bottom' | 'top';
-
 const Tetris: React.FC = () => {
     function shallowCopy(matrix: number[][]): number[][] {
         return JSON.parse(JSON.stringify(matrix));
@@ -170,14 +80,6 @@ const Tetris: React.FC = () => {
         getRandomTetromino(),
         getRandomTetromino(),
         getRandomTetromino(),
-        /*         TestForms[0],
-        TestForms[0],
-        TestForms[1],
-        TestForms[2],
-        TestForms[3],
-        TestForms[4],
-        TestForms[5],
-        TestForms[6], */
     ]);
 
     function shiftAndPushTetromino(listOfTetrominos: Form[]): Form[] {
@@ -219,18 +121,12 @@ const Tetris: React.FC = () => {
     );
     const [keyPressed, setKeyPressed] = useState('released');
 
-    /* function BoardInitializer(): void {
-        const newBoard = CLEANBOARD
-        setBoard(newBoard);
-    } */
-
     function TEST(
         matix: number[][],
         score: number
     ): { UpdatedMatrix: number[][]; updatedScore: number; didLoss: boolean } {
         const tempMatrix = shallowCopy(matix);
         let LowestY = tempMatrix.length;
-        let HighestY = 0;
         let tempScore = score;
 
         function iterateMatrixTopToBottom(
@@ -268,7 +164,6 @@ const Tetris: React.FC = () => {
         const { fullRows, cleanedRowsMatrix, didLoss } =
             iterateMatrixTopToBottom(tempMatrix, CLEANBOARD);
 
-        HighestY = fullRows[0];
         LowestY = fullRows[fullRows.length - 1];
 
         function iterateMatrixBottomToTop(Matrix: number[][]): number[][] {
@@ -706,17 +601,15 @@ const Tetris: React.FC = () => {
     }, [keyPressed]);
 
     function handleKeyDown(e: KeyboardEvent): void {
-        console.log('down');
-
         setKeyPressed(e.key);
     }
 
     function handleKeyUp(): void {
-        console.log('keyup');
+        //
     }
 
     return (
-        <div onClick={() => console.log('onclick')} className='tetris-wrapper'>
+        <div className='tetris-wrapper'>
             <div className='tetris-display'>
                 <div className='left-side flex h-full w-full flex-col items-center'>
                     <div className='w-full'>

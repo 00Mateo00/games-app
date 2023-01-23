@@ -1,14 +1,14 @@
 import React from 'react';
 import './paddle.scss';
-interface PaddleProps {
+interface Props {
     y: number;
     right: boolean;
 }
 
-const Paddle: React.FC<PaddleProps> = ({ y, right }) => {
+const Paddle: React.FC<Props> = ({ y, right }) => {
     return (
         <div
-            className='paddle'
+            className={`paddle ${right ? 'right' : 'left'}`}
             style={{
                 top: y,
                 right: right ? '5px' : 'initial',

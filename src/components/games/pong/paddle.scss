@@ -1,7 +1,22 @@
 .paddle {
     width: 10px;
-    height: 50px;
-    background-color: white;
+    height: 60px;
     position: absolute;
     left: 5px;
-  }
+    @apply bg-gradient-to-r;
+    
+}
+
+.right{
+  @apply bg-gradient-to-r;
+
+  @apply from-red-500 to-red-700;
+}
+
+.left{
+  @apply bg-gradient-to-l;
+
+  @apply from-blue-500 to-blue-700;
+}
+
+

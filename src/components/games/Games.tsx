@@ -1,10 +1,10 @@
 import React from 'react';
-import Pong from './pong/Pong';
+import Tetris from './tetris/Tetris';
 
 const Games: React.FC = () => {
     return (
         <div className='h-full w-full'>
-            <Pong />
+            <Tetris />
         </div>
     );
 };
