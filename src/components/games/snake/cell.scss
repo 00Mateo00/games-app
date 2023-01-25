@@ -1,0 +1,18 @@
+.snakeCell-0{
+    background-color: black;
+}
+.snakeCell-1{
+    @apply bg-lime-700
+}
+.snakeCell-2{
+    @apply bg-lime-800
+}
+.snakeCell-3{
+    @apply bg-lime-500
+}
+.snakeCell-10{
+    @apply bg-yellow-900;
+    border-radius: 100%;
+    width: 50%;
+    height: 50%;
+}
