@@ -275,93 +275,95 @@ const MineSweeper: React.FC = () => {
     }, [difficulty]);
 
     return (
-        <div className='relative h-full w-full '>
-            <div
-                onClick={() => {
-                    reset();
-                }}
-                className={
-                    `absolute top-0 left-0 flex h-full w-full items-center justify-center transition-all` +
-                    ` ${
-                        gameStatus.result === 'in-game' ||
-                        gameStatus.result === 'stopped'
-                            ? 'z-0 opacity-0'
-                            : 'z-10 opacity-100'
-                    }`
-                }
-            >
+        <div className='h-full w-full'>
+            <div className='relative h-full w-full '>
                 <div
-                    className='flex h-48 w-full items-center
-                justify-center bg-green-500 text-center'
+                    onClick={() => {
+                        reset();
+                    }}
+                    className={
+                        `absolute top-0 left-0 flex h-full w-full items-center justify-center transition-all` +
+                        ` ${
+                            gameStatus.result === 'in-game' ||
+                            gameStatus.result === 'stopped'
+                                ? 'z-0 opacity-0'
+                                : 'z-10 opacity-100'
+                        }`
+                    }
                 >
-                    <p className='text-3xl'>{gameStatus.result}</p>
-                </div>
-            </div>
-            <div className='z-1 absolute top-0 left-0 h-full w-full'>
-                <div className='grid h-24 w-full grid-cols-[3fr_4fr] bg-purple-500'>
-                    <div className='flex h-full w-full items-center justify-center bg-orange-500'>
-                        <p className='text-4xl'>{time}</p>
-                    </div>
-                    <div className='flex h-full w-full flex-col items-center justify-center bg-violet-900'>
-                        <div>
-                            <p className='text-3xl'>CHANGE DIFFICULTY</p>
-                        </div>
-                        <div className='flex h-full w-full items-center justify-around'>
-                            <button
-                                onClick={() => {
-                                    reset();
-                                }}
-                                className='primary-button px-2 text-xl'
-                            >
-                                restart
-                            </button>
-                            <button
-                                onClick={() => {
-                                    setSettings({
-                                        ...settings,
-                                        difficulty: 'easy',
-                                    });
-                                }}
-                                className='text-xl'
-                            >
-                                easy
-                            </button>
-                            <button
-                                onClick={() => {
-                                    setSettings({
-                                        ...settings,
-                                        difficulty: 'medium',
-                                    });
-                                }}
-                                className='text-xl'
-                            >
-                                medium
-                            </button>
-                            <button
-                                onClick={() => {
-                                    setSettings({
-                                        ...settings,
-                                        difficulty: 'hard',
-                                    });
-                                }}
-                                className='text-xl'
-                            >
-                                hard
-                            </button>
-                        </div>
+                    <div
+                        className='flex h-48 w-full items-center
+                justify-center bg-green-500 text-center'
+                    >
+                        <p className='text-3xl'>{gameStatus.result}</p>
                     </div>
                 </div>
-                <div className='board row-auto grid h-[calc(100%_-_6rem)] w-full grid-cols-9'>
-                    {board.map((row) =>
-                        row.map((cell, columnIndex) => (
-                            <Cell
-                                key={columnIndex}
-                                cell={cell}
-                                revealCell={revealCell}
-                                flagIt={flagIt}
-                            />
-                        ))
-                    )}
+                <div className='z-1 absolute top-0 left-0 h-full w-full'>
+                    <div className='grid h-24 w-full grid-cols-[3fr_4fr] bg-purple-500'>
+                        <div className='flex h-full w-full items-center justify-center bg-orange-500'>
+                            <p className='text-4xl'>{time}</p>
+                        </div>
+                        <div className='flex h-full w-full flex-col items-center justify-center bg-violet-900'>
+                            <div>
+                                <p className='text-3xl'>CHANGE DIFFICULTY</p>
+                            </div>
+                            <div className='flex h-full w-full items-center justify-around'>
+                                <button
+                                    onClick={() => {
+                                        reset();
+                                    }}
+                                    className='primary-button px-2 text-xl'
+                                >
+                                    restart
+                                </button>
+                                <button
+                                    onClick={() => {
+                                        setSettings({
+                                            ...settings,
+                                            difficulty: 'easy',
+                                        });
+                                    }}
+                                    className='text-xl'
+                                >
+                                    easy
+                                </button>
+                                <button
+                                    onClick={() => {
+                                        setSettings({
+                                            ...settings,
+                                            difficulty: 'medium',
+                                        });
+                                    }}
+                                    className='text-xl'
+                                >
+                                    medium
+                                </button>
+                                <button
+                                    onClick={() => {
+                                        setSettings({
+                                            ...settings,
+                                            difficulty: 'hard',
+                                        });
+                                    }}
+                                    className='text-xl'
+                                >
+                                    hard
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div className='board row-auto grid h-[calc(100%_-_6rem)] w-full grid-cols-9'>
+                        {board.map((row) =>
+                            row.map((cell, columnIndex) => (
+                                <Cell
+                                    key={columnIndex}
+                                    cell={cell}
+                                    revealCell={revealCell}
+                                    flagIt={flagIt}
+                                />
+                            ))
+                        )}
+                    </div>
                 </div>
             </div>
         </div>

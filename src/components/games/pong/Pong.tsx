@@ -93,7 +93,6 @@ const Pong: React.FC = () => {
             setAccelerationY(accelerationY - accelerationY - 1);
         }
         handleAIMovement(difficulty);
-        setPaddle1Y(ballY - 30);
     }, [decaSeconds]);
 
     useEffect(() => {
@@ -181,29 +180,31 @@ const Pong: React.FC = () => {
     }
 
     return (
-        <div className='relative grid h-full w-full grid-rows-[1fr_10fr_1fr] flex-col items-center'>
-            <div className='scoreboard flex h-full w-full items-start'>
-                <div className='score flex h-full w-full items-center justify-around bg-blue-600'>
-                    <p className='text-6xl'>{score1}</p>
-                </div>
-                <div className='score flex h-full w-full items-center justify-around bg-red-600'>
-                    <p className='text-6xl'>{score2}</p>
-                </div>
-            </div>
-            <div
-                ref={boardRef}
-                onClick={() => !gameStarted && setGameStarted(true)}
-                className='game-board'
-                tabIndex={0}
-            >
-                <Paddle y={paddle1Y} right={false} />
-                <Paddle y={paddle2Y} right={true} />
-                <Ball x={ballX} y={ballY} />
-                {!gameStarted && (
-                    <div className='absolute top-1/2 flex  h-24 w-full -translate-y-1/2 items-center justify-center bg-green-600'>
-                        <p className='text-6xl'>Press To Start</p>
+        <div className='h-full w-full'>
+            <div className='relative grid h-full w-full grid-rows-[1fr_10fr_1fr] flex-col items-center'>
+                <div className='scoreboard flex h-full w-full items-start'>
+                    <div className='score flex h-full w-full items-center justify-around bg-blue-600'>
+                        <p className='text-6xl'>{score1}</p>
                     </div>
-                )}
+                    <div className='score flex h-full w-full items-center justify-around bg-red-600'>
+                        <p className='text-6xl'>{score2}</p>
+                    </div>
+                </div>
+                <div
+                    ref={boardRef}
+                    onClick={() => !gameStarted && setGameStarted(true)}
+                    className='game-board'
+                    tabIndex={0}
+                >
+                    <Paddle y={paddle1Y} right={false} />
+                    <Paddle y={paddle2Y} right={true} />
+                    <Ball x={ballX} y={ballY} />
+                    {!gameStarted && (
+                        <div className='absolute top-1/2 flex  h-24 w-full -translate-y-1/2 items-center justify-center bg-green-600'>
+                            <p className='text-6xl'>Press To Start</p>
+                        </div>
+                    )}
+                </div>
             </div>
         </div>
     );

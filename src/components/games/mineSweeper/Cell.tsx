@@ -42,10 +42,12 @@ const Cell: React.FC<props> = ({ cell, revealCell, flagIt }) => {
             }}
             className={
                 ` ${
-                    isRevealed === true ? ' cell_revealed' : ' cell_unrevealed'
+                    isRevealed === true
+                        ? ' BoardCell_revealed'
+                        : ' BoardCell_unrevealed'
                 }` +
                 ` ${isBomb === true ? 'bomb' : ''}` +
-                ` cell flex h-full w-full items-center justify-center`
+                ` BoardCell flex h-full w-full items-center justify-center`
             }
         >
             <p

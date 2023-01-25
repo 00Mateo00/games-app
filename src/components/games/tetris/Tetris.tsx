@@ -609,117 +609,119 @@ const Tetris: React.FC = () => {
     }
 
     return (
-        <div className='tetris-wrapper'>
-            <div className='tetris-display'>
-                <div className='left-side flex h-full w-full flex-col items-center'>
-                    <div className='w-full'>
-                        <div className='flex h-min w-full items-center justify-center bg-orange-500'>
-                            <p className='text-4xl'>{time}</p>
+        <div className='h-full w-full'>
+            <div className='tetris-wrapper'>
+                <div className='tetris-display'>
+                    <div className='left-side flex h-full w-full flex-col items-center'>
+                        <div className='w-full'>
+                            <div className='flex h-min w-full items-center justify-center bg-orange-500'>
+                                <p className='text-4xl'>{time}</p>
+                            </div>
+                            <div className='flex h-min w-full items-center justify-center bg-indigo-500'>
+                                <p className='text-4xl'>{score}</p>
+                            </div>
                         </div>
-                        <div className='flex h-min w-full items-center justify-center bg-indigo-500'>
-                            <p className='text-4xl'>{score}</p>
-                        </div>
-                    </div>
-                    <div className='controls-wrapper w-full place-self-center'>
-                        <div className='controls'>
-                            <button
-                                className='key'
-                                onClick={() => {
-                                    handleTetrominoPosition('left');
-                                }}
-                            >
-                                <p>A</p>
-                            </button>
+                        <div className='controls-wrapper w-full place-self-center'>
+                            <div className='controls'>
+                                <button
+                                    className='key'
+                                    onClick={() => {
+                                        handleTetrominoPosition('left');
+                                    }}
+                                >
+                                    <p>A</p>
+                                </button>
 
-                            <button
-                                className='key'
-                                onClick={() => {
-                                    handleTetrominoPosition('right');
-                                }}
-                            >
-                                D
-                            </button>
+                                <button
+                                    className='key'
+                                    onClick={() => {
+                                        handleTetrominoPosition('right');
+                                    }}
+                                >
+                                    D
+                                </button>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div
-                    onClick={() => {
-                        setPlaced(true);
-                        setGameState('In-game');
-                        if (gameState === 'loss') restart();
-                    }}
-                    className='tetris-board relative'
-                >
-                    {board.map(
-                        (row, rowIndex) =>
-                            rowIndex > 4 &&
-                            row.map((square, columnIndex) => (
-                                <Squares
-                                    key={columnIndex}
-                                    square={square}
-                                    square2={
-                                        boardOfPlacedTetrominos[rowIndex][
-                                            columnIndex
-                                        ]
-                                    }
-                                />
-                            ))
-                    )}
-                    {gameState !== 'In-game' && (
-                        <div
-                            className={`absolute top-1/2 flex h-36 w-full -translate-y-1/2 items-center justify-center  ${
-                                gameState === 'loss'
-                                    ? 'bg-red-700'
-                                    : 'bg-green-600'
-                            }`}
-                        >
-                            <p className='text-8xl'>
-                                {gameState === 'loss'
-                                    ? 'Game Over'
-                                    : 'Press To Start'}
-                            </p>
-                        </div>
-                    )}
-                </div>
-                <div className='right-side tetrominoList flex w-full flex-col justify-self-center'>
-                    <div className='w-1/2'>
-                        {listOfTetrominos.map(
-                            (e, i) =>
-                                i !== 0 && (
-                                    <NextTetromino key={i} tetromino={e} />
-                                )
+                    <div
+                        onClick={() => {
+                            setPlaced(true);
+                            setGameState('In-game');
+                            if (gameState === 'loss') restart();
+                        }}
+                        className='tetris-board relative'
+                    >
+                        {board.map(
+                            (row, rowIndex) =>
+                                rowIndex > 4 &&
+                                row.map((square, columnIndex) => (
+                                    <Squares
+                                        key={columnIndex}
+                                        square={square}
+                                        square2={
+                                            boardOfPlacedTetrominos[rowIndex][
+                                                columnIndex
+                                            ]
+                                        }
+                                    />
+                                ))
+                        )}
+                        {gameState !== 'In-game' && (
+                            <div
+                                className={`absolute top-1/2 flex h-36 w-full -translate-y-1/2 items-center justify-center  ${
+                                    gameState === 'loss'
+                                        ? 'bg-red-700'
+                                        : 'bg-green-600'
+                                }`}
+                            >
+                                <p className='text-8xl'>
+                                    {gameState === 'loss'
+                                        ? 'Game Over'
+                                        : 'Press To Start'}
+                                </p>
+                            </div>
                         )}
                     </div>
-                    <div className='controls-wrapper flex w-full items-center justify-center'>
-                        <div className='controls flex justify-around'>
-                            <button
-                                className='key'
-                                onClick={() => {
-                                    setAngleOfRotation(-90);
-                                }}
-                            >
-                                <p>Q</p>
-                            </button>
-                            <button
-                                className='key'
-                                onClick={() => {
-                                    setAngleOfRotation(90);
-                                }}
-                            >
-                                <p>E</p>
-                            </button>
+                    <div className='right-side tetrominoList flex w-full flex-col justify-self-center'>
+                        <div className='w-1/2'>
+                            {listOfTetrominos.map(
+                                (e, i) =>
+                                    i !== 0 && (
+                                        <NextTetromino key={i} tetromino={e} />
+                                    )
+                            )}
                         </div>
-                    </div>
-                    <div className='controls-wrapper flex w-full items-center justify-center'>
-                        <div className='controls flex justify-around'>
-                            <button
-                                className='key'
-                                onClick={() => {
-                                    handleTetrominoPosition('bottom');
-                                }}
-                            >
-                                S
-                            </button>
+                        <div className='controls-wrapper flex w-full items-center justify-center'>
+                            <div className='controls flex justify-around'>
+                                <button
+                                    className='key'
+                                    onClick={() => {
+                                        setAngleOfRotation(-90);
+                                    }}
+                                >
+                                    <p>Q</p>
+                                </button>
+                                <button
+                                    className='key'
+                                    onClick={() => {
+                                        setAngleOfRotation(90);
+                                    }}
+                                >
+                                    <p>E</p>
+                                </button>
+                            </div>
+                        </div>
+                        <div className='controls-wrapper flex w-full items-center justify-center'>
+                            <div className='controls flex justify-around'>
+                                <button
+                                    className='key'
+                                    onClick={() => {
+                                        handleTetrominoPosition('bottom');
+                                    }}
+                                >
+                                    S
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>

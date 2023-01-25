@@ -2,6 +2,10 @@ import React, { useEffect, useContext } from 'react';
 import Card from '../card/Card';
 import Footer from '../footer/Footer';
 import Header from '../header/Header';
+import Tetris from '../games/tetris/Tetris';
+import Pong from '../games/pong/Pong';
+import MineSweeper from '../games/mineSweeper/MineSweeper';
+import Snake from '../games/snake/Snake';
 
 // Import Swiper React components
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -21,6 +25,12 @@ interface props {
 
 const Main: React.FC<props> = ({ scrollRef }) => {
     const { screenWidth } = useContext(GlobalContext);
+    const cardData = [
+        { component: <Tetris />, image: 'image1.jpg' },
+        { component: <Pong />, image: 'image1.jpg' },
+        { component: <MineSweeper />, image: 'image1.jpg' },
+        { component: <Snake />, image: 'image1.jpg' },
+    ];
 
     useEffect(() => {
         const element = scrollRef.current;
@@ -36,7 +46,7 @@ const Main: React.FC<props> = ({ scrollRef }) => {
     }, []);
 
     function getCards(n: number): JSX.Element {
-        const tempArray = Array(n).fill(null);
+        /* const tempArray = Array(n).fill(null); */
         let cardsCollection = <></>;
         if (screenWidth >= 640) {
             cardsCollection = (
@@ -45,8 +55,8 @@ const Main: React.FC<props> = ({ scrollRef }) => {
                         'relative grid min-h-[calc(100%_-_128px)] w-full grid-flow-row auto-rows-[24rem] grid-cols-[repeat(auto-fit,_18rem)] place-content-center content-center gap-5 py-2'
                     }
                 >
-                    {tempArray.map((e, i) => (
-                        <Card key={i} />
+                    {cardData.map((e, i) => (
+                        <Card key={i} object={cardData[i]} />
                     ))}
                 </div>
             );
@@ -79,9 +89,9 @@ const Main: React.FC<props> = ({ scrollRef }) => {
                     className='h-5/6 w-full'
                 >
                     <div className='flex h-[calc(100%_-_128px)] w-full items-center justify-center'>
-                        {tempArray.map((e, i) => (
+                        {cardData.map((e, i) => (
                             <SwiperSlide key={i}>
-                                <Card />
+                                <Card object={cardData[i]} />
                             </SwiperSlide>
                         ))}
                     </div>

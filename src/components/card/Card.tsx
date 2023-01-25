@@ -1,10 +1,19 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState, useContext } from 'react';
 import Image from '../../assets/card-Images/tetris.png';
 import GlobalContext from '../../context/GlobalContext';
 import Games from '../games/Games';
 import './card.scss';
 
-const Card: React.FC = () => {
+interface Props {
+    object: {
+        component: JSX.Element;
+        image: string;
+    };
+}
+
+const Card: React.FC<Props> = ({ object }) => {
+    const { component, image } = object;
     const { setIsSomeCardClicked, screenWidth, setInGameView } =
         useContext(GlobalContext);
 
@@ -48,7 +57,7 @@ const Card: React.FC = () => {
         <>
             <div className='relative h-full w-full'>
                 <div className='gameDisplay absolute top-0  left-0 z-10 h-full w-full bg-purple-700'>
-                    {thisGameInView && <Games />}
+                    {thisGameInView && component}
                 </div>
                 <img
                     src={Image}
