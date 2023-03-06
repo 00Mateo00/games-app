@@ -121,7 +121,7 @@ const Snake: React.FC = () => {
         if (direction === 'right') setPositionX(positionX + 1);
         if (direction === 'up') setPositionY(positionY - 1);
         if (direction === 'down') setPositionY(positionY + 1);
-    }, [time]);
+    }, [time, direction]);
 
     useEffect(() => {
         if (keyPressed === 'w') {
@@ -169,7 +169,11 @@ const Snake: React.FC = () => {
                             setGameState('in-game');
                             reset();
                         }}
-                        className={`relative grid h-full w-5/6 grid-cols-[repeat(${CLEANBOARD.length},_1fr)] grid-rows-[repeat(${CLEANBOARD[0].length},_1fr)] bg-black`}
+                        className={`relative grid h-full w-5/6 bg-black`}
+                        style={{
+                            gridTemplateColumns: `repeat(${CLEANBOARD.length}, 1fr)`,
+                            gridTemplateRows: `repeat(${CLEANBOARD[0].length}, 1fr)`,
+                        }}
                     >
                         {board.map((e, i) =>
                             e.map((e, i) => (

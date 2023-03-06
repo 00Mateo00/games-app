@@ -6,6 +6,7 @@ import Tetris from '../games/tetris/Tetris';
 import Pong from '../games/pong/Pong';
 import MineSweeper from '../games/mineSweeper/MineSweeper';
 import Snake from '../games/snake/Snake';
+import BreakOut from '../games/breakOut/BreakOut';
 
 // Import Swiper React components
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -30,6 +31,7 @@ const Main: React.FC<props> = ({ scrollRef }) => {
         { component: <Pong />, image: 'image1.jpg' },
         { component: <MineSweeper />, image: 'image1.jpg' },
         { component: <Snake />, image: 'image1.jpg' },
+        { component: <BreakOut />, image: 'image1.jpg' },
     ];
 
     useEffect(() => {
