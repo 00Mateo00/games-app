@@ -1,0 +1,38 @@
+.brick{
+    border: 2px solid black;
+    @apply bg-gradient-to-br;
+    box-shadow: inset -2px -2px 4px rgba(0,0,0,0.2), inset 2px 2px 4px rgba(255,255,255,0.2);   
+}
+
+.brick-0{
+    background-image:none;
+    background-color: black;
+    box-shadow: none;
+}
+.brick-1{
+    @apply from-red-600 to-red-700;
+}
+.brick-2{
+    @apply from-orange-600 to-orange-700;
+}
+.brick-3{
+    @apply from-yellow-600 to-yellow-700;
+}
+.brick-4{
+    @apply from-green-600 to-green-700;
+}
+.brick-5{
+    @apply from-blue-600 to-blue-700;
+}
+.brick-6{
+    @apply from-purple-600 to-purple-700;
+}
+.brick-7{
+    @apply from-cyan-600 to-cyan-700;
+}
+.brick-8{
+    @apply from-pink-600 to-pink-700;
+}
+.brick-9{
+    @apply from-amber-600 to-amber-700;
+}
