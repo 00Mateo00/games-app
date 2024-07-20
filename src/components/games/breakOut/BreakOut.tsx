@@ -81,6 +81,7 @@ const BreakOut: React.FC = () => {
             x: number;
             axisOfcollision: 'Y' | 'X' | 'none';
         } {
+            // dsadsa
             for (let i = StartY; i < EndY; i++) {
                 for (let j = StartX; j < EndX; j++) {
                     if (boardOfStates[i][j] === 0) continue;
