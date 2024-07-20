@@ -18,7 +18,7 @@ const Snake: React.FC = () => {
     }
     const CLEANBOARD = initializeBoard(35, 35);
     const [snake, setSnake] = useState<number[][]>([
-        [10, 10],
+        [10, 9],
         [10, 10],
     ]);
     const [gameState, setGameState] = useState<GameStateType>('paused');
@@ -32,15 +32,16 @@ const Snake: React.FC = () => {
     const [score, setScore] = useState(0);
 
     function reset(): void {
+        
         setSnake([
-            [10, 10],
+            [10, 9],
             [10, 10],
         ]);
         setBoard(CLEANBOARD);
         setTime(0);
         setDirection('down');
         setPositionX(10);
-        setPositionY(10);
+        setPositionY(11);
         setFood(placeFood(board));
         setScore(0);
     }
@@ -72,6 +73,7 @@ const Snake: React.FC = () => {
     }
 
     function isColliding(snake: number[][]): boolean {
+        
         const head = snake[snake.length - 1];
         const tail = snake.slice(0, snake.length - 1);
         const rows = board.length;
@@ -82,7 +84,11 @@ const Snake: React.FC = () => {
         }
         // check if the snake hit itself
         for (const [x, y] of tail) {
+            console.log(`tail: x:${x}, y:${y}`);
+            console.log(`head: x:${head[0]}, y:${head[1]}`);
+            console.log(`-------------------------------------`);
             if (head[0] === x && head[1] === y) {
+                
                 return true;
             }
         }
@@ -177,7 +183,7 @@ const Snake: React.FC = () => {
                     >
                         {board.map((e, i) =>
                             e.map((e, i) => (
-                                <Cell key={i} state={e} direction={direction} />
+                                <Cell key={i} state={e}  direction={direction} />
                             ))
                         )}
                         {gameState !== 'in-game' && (

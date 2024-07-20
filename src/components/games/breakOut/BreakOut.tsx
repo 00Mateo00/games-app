@@ -97,12 +97,20 @@ const BreakOut: React.FC = () => {
                         ballX >= brickXSTART &&
                         ballX <= brickXEND
                     ) {
+                        
                         if (
                             ballY <= BrickYCollisionBoxEND &&
                             ballY >= brickYEND &&
                             ballX >= brickXSTART &&
                             ballX <= brickXEND
                         ) {
+                            console.log(`ballY: ${ballY}`);
+                            console.log(`brickYCollisionBoxEnd: ${BrickYCollisionBoxEND}`);
+                            console.log(`brickYend: ${brickYEND}`);
+                            console.log(`brickXstart: ${brickXSTART}`);
+                            console.log(`brickXend: ${brickXEND}`);
+                            
+                            console.log("is colliding Y");
                             return {
                                 isColliding: true,
                                 y: i,
@@ -110,6 +118,15 @@ const BreakOut: React.FC = () => {
                                 axisOfcollision: 'Y',
                             };
                         } else {
+                            console.log("------------------------------");
+                            
+                            console.log(`ballY: ${ballY}`);
+                            console.log(`brickYCollisionBoxEnd: ${BrickYCollisionBoxEND}`);
+                            console.log(`brickYend: ${brickYEND}`);
+                            console.log(`brickXstart: ${brickXSTART}`);
+                            console.log(`brickXend: ${brickXEND}`);
+                            console.log("is colliding X");
+
                             return {
                                 isColliding: true,
                                 y: i,
@@ -131,6 +148,8 @@ const BreakOut: React.FC = () => {
                             ballX >= brickXSTART &&
                             ballX <= brickXEND
                         ) {
+                            console.log("is colliding Y");
+                            
                             return {
                                 isColliding: true,
                                 y: i,
@@ -138,6 +157,7 @@ const BreakOut: React.FC = () => {
                                 axisOfcollision: 'Y',
                             };
                         } else {
+                            console.log("is colliding X");
                             return {
                                 isColliding: true,
                                 y: i,
@@ -212,13 +232,13 @@ const BreakOut: React.FC = () => {
             setBoardOfPositions(tempBoardOfPositions);
         }
 
-        const initialTime = Date.now();
+        /* const initialTime = Date.now();
         const interval = setInterval(() => {
             const time = Math.floor(Date.now() - initialTime) / 10;
             setDecaSeconds(time);
         }, 10);
 
-        return () => clearInterval(interval);
+        return () => clearInterval(interval); */
     }, [gameState]);
     useEffect(() => {
         let tempAcceleartionY = accelerationY;
@@ -313,7 +333,7 @@ const BreakOut: React.FC = () => {
             }
         }
 
-        if (boardRef.current !== null) {
+        if (boardRef.current !== null) { // ball velocity
             if (ballX >= boardRef.current.clientWidth || ballX <= 0) {
                 tempAcceleartionX = tempAcceleartionX * -1;
                 setAccelerationX(tempAcceleartionX);
@@ -364,6 +384,8 @@ const BreakOut: React.FC = () => {
 
         setBallX(ballX + tempAcceleartionX);
         setBallY(ballY + tempAcceleartionY);
+        console.log({ballY});
+        
     }, [decaSeconds]);
     useEffect(() => {
         window.addEventListener('keydown', handlekey);
@@ -379,6 +401,9 @@ const BreakOut: React.FC = () => {
         }
         if (keyPressed === 'd') {
             setPaddleX(paddleX + 10);
+        }
+        if (keyPressed==='z') {
+            setDecaSeconds(decaSeconds+1)
         }
         setkeyPressed('none');
     }, [keyPressed]);
