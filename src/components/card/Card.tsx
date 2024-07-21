@@ -9,11 +9,12 @@ interface Props {
     object: {
         component: JSX.Element;
         image: string;
+        GameName: string;
     };
 }
 
 const Card: React.FC<Props> = ({ object }) => {
-    const { component, image } = object;
+    const { component, image, GameName } = object;
     const { setIsSomeCardClicked, screenWidth, setInGameView } =
         useContext(GlobalContext);
 
@@ -56,13 +57,13 @@ const Card: React.FC<Props> = ({ object }) => {
     const cardContent = (
         <>
             <div className='relative h-full w-full'>
-                <div className='gameDisplay absolute top-0  left-0 z-10 h-full w-full bg-purple-700'>
+                <div className='gameDisplay absolute left-0  top-0 z-10 h-full w-full bg-purple-700'>
                     {thisGameInView && component}
                 </div>
                 <img
                     src={Image}
                     alt='GameName'
-                    className={` imagen transitions absolute top-0 left-0 z-20`}
+                    className={` imagen transitions absolute left-0 top-0 z-20`}
                 ></img>
             </div>
 
@@ -92,7 +93,7 @@ const Card: React.FC<Props> = ({ object }) => {
                             ` ${isCardFullSize() ? 'h1-wrapper_FullSize' : ''}`
                         }
                     >
-                        <h1>Game Name</h1>
+                        <h1>{GameName}</h1>
                     </div>
                     <p
                         className={
@@ -104,8 +105,8 @@ const Card: React.FC<Props> = ({ object }) => {
                             }`
                         }
                     >
-                        Lorem ipsum dolor, sit amet
-                        consecteturgroup-hover:px-2group-hover:px-2group-hover:px-2
+                        Lorem ipsum, dolor sit amet consectetur adipisicing
+                        elit.
                     </p>
                     <button
                         onClick={() => {

@@ -9,8 +9,8 @@ const Header: React.FC = () => {
                 </button>
             </div>
             <div className='flex w-36 justify-between'>
-                <a href=''>INSTAGRAM</a>
-                <a href=''>GIHUB</a>
+                <a href='https://www.instagram.com/lmateo_ossal/'>INSTAGRAM</a>
+                <a href='https://github.com/00Mateo00'>GITHUB</a>
             </div>
         </header>
     );

@@ -27,11 +27,15 @@ interface props {
 const Main: React.FC<props> = ({ scrollRef }) => {
     const { screenWidth } = useContext(GlobalContext);
     const cardData = [
-        { component: <Tetris />, image: 'image1.jpg' },
-        { component: <Pong />, image: 'image1.jpg' },
-        { component: <MineSweeper />, image: 'image1.jpg' },
-        { component: <Snake />, image: 'image1.jpg' },
-        { component: <BreakOut />, image: 'image1.jpg' },
+        { component: <Tetris />, image: 'image1.jpg', GameName: 'Tetris' },
+        { component: <Pong />, image: 'image1.jpg', GameName: 'Pong' },
+        {
+            component: <MineSweeper />,
+            image: 'image1.jpg',
+            GameName: 'MineSweeper',
+        },
+        { component: <Snake />, image: 'image1.jpg', GameName: 'Snake' },
+        { component: <BreakOut />, image: 'image1.jpg', GameName: 'BreakOut' },
     ];
 
     useEffect(() => {
