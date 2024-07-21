@@ -5,7 +5,6 @@ import Life from './Life';
 import Paddle from './Paddle';
 
 type Difficulty = 'easy' | 'medium' | 'hard';
-type Region = 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
 type GameState = 'in-game' | 'paused' | 'loss' | 'won';
 
 const BreakOut: React.FC = () => {
@@ -13,6 +12,9 @@ const BreakOut: React.FC = () => {
     const ballSize = 12;
     const rows = 11;
     const columns = 11;
+
+    /* testing shit */
+    /* testing shit */
 
     function deepCopy2DArray(arr: number[][][]): number[][][] {
         return JSON.parse(JSON.stringify(arr));
@@ -61,137 +63,117 @@ const BreakOut: React.FC = () => {
         setkeyPressed(e.key.toLocaleLowerCase());
     }
 
-    function search(
-        matrix: number[][][],
-        direction: Region
-    ): {
+    function search(matrix: number[][][]): {
         isColliding: boolean;
         x: number;
         y: number;
         axisOfcollision: 'Y' | 'X' | 'none';
     } {
-        function search(
-            StartY: number,
-            EndY: number,
-            StartX: number,
-            EndX: number
-        ): {
-            isColliding: boolean;
-            y: number;
-            x: number;
-            axisOfcollision: 'Y' | 'X' | 'none';
-        } {
-            // dsadsa
-            for (let i = StartY; i < EndY; i++) {
-                for (let j = StartX; j < EndX; j++) {
-                    if (boardOfStates[i][j] === 0) continue;
-                    const brickYSTART = matrix[i][j][0];
-                    const brickYEND = matrix[i][j][0] + brickHeight;
-                    const brickXSTART = matrix[i][j][1];
-                    const brickXEND = matrix[i][j][1] + brickWidth;
-                    const BrickYCollisionBoxStart = brickYSTART - 6;
-                    const BrickYCollisionBoxEND = brickYEND + 6;
-                    // collisions top-left
+        for (let i = 0; i < matrix[0].length; i++) {
+            for (let j = 0; j < matrix[1].length; j++) {
+                if (boardOfStates[i][j] === 0) continue;
+                const brickYSTART = matrix[i][j][0];
+                const brickYEND = matrix[i][j][0] + brickHeight;
+                const brickXSTART = matrix[i][j][1];
+                const brickXEND = matrix[i][j][1] + brickWidth;
+                const BrickYCollisionBoxStart = brickYSTART - 6;
+                const BrickYCollisionBoxEND = brickYEND + 6;
+
+                //  ball is colliding top-left
+                if (
+                    ballY <= BrickYCollisionBoxEND &&
+                    ballY >= BrickYCollisionBoxStart &&
+                    ballX >= brickXSTART &&
+                    ballX <= brickXEND
+                ) {
+                    console.log('ball is colliding top-left');
+
                     if (
-                        ballY >= brickYSTART &&
-                        ballY <= brickYEND &&
+                        ballY <= BrickYCollisionBoxEND &&
+                        ballY >= BrickYCollisionBoxStart &&
                         ballX >= brickXSTART &&
                         ballX <= brickXEND
                     ) {
-                        
-                        if (
-                            ballY <= BrickYCollisionBoxEND &&
-                            ballY >= brickYEND &&
-                            ballX >= brickXSTART &&
-                            ballX <= brickXEND
-                        ) {
-                            console.log(`ballY: ${ballY}`);
-                            console.log(`brickYCollisionBoxEnd: ${BrickYCollisionBoxEND}`);
-                            console.log(`brickYend: ${brickYEND}`);
-                            console.log(`brickXstart: ${brickXSTART}`);
-                            console.log(`brickXend: ${brickXEND}`);
-                            
-                            console.log("is colliding Y");
-                            return {
-                                isColliding: true,
-                                y: i,
-                                x: j,
-                                axisOfcollision: 'Y',
-                            };
-                        } else {
-                            console.log("------------------------------");
-                            
-                            console.log(`ballY: ${ballY}`);
-                            console.log(`brickYCollisionBoxEnd: ${BrickYCollisionBoxEND}`);
-                            console.log(`brickYend: ${brickYEND}`);
-                            console.log(`brickXstart: ${brickXSTART}`);
-                            console.log(`brickXend: ${brickXEND}`);
-                            console.log("is colliding X");
+                        console.log('------------------------------');
+                        console.log(`ballY: ${ballY}`);
+                        console.log(`brickYSTART: ${brickYSTART}`);
+                        console.log(
+                            `BrickYCollisionBoxEND : ${BrickYCollisionBoxEND}`
+                        );
+                        console.log(`brickYend: ${brickYEND}`);
+                        console.log(`brickXstart: ${brickXSTART}`);
+                        console.log(`brickXend: ${brickXEND}`);
 
-                            return {
-                                isColliding: true,
-                                y: i,
-                                x: j,
-                                axisOfcollision: 'X',
-                            };
-                        }
+                        console.log('is colliding Y');
+                        return {
+                            isColliding: true,
+                            y: i,
+                            x: j,
+                            axisOfcollision: 'Y',
+                        };
+                    } else {
+                        console.log('------------------------------');
+                        console.log(`ballY: ${ballY}`);
+                        console.log(`brickYSTART: ${brickYSTART}`);
+                        console.log(
+                            `BrickYCollisionBoxEND : ${BrickYCollisionBoxEND}`
+                        );
+                        console.log(`brickYend: ${brickYEND}`);
+                        console.log(`brickXstart: ${brickXSTART}`);
+                        console.log(`brickXend: ${brickXEND}`);
+
+                        console.log('is colliding X');
+
+                        return {
+                            isColliding: true,
+                            y: i,
+                            x: j,
+                            axisOfcollision: 'X',
+                        };
                     }
-                    // collisions bottom-right
+                }
+                // ball is colliding bottom-right
+                if (
+                    ballY + ballSize >= brickYSTART &&
+                    ballY + ballSize <= brickYEND &&
+                    ballX + ballSize >= brickXSTART &&
+                    ballX + ballSize <= brickXEND
+                ) {
+                    console.log('ball is colliding bottom-right');
+
                     if (
-                        ballY + ballSize >= brickYSTART &&
-                        ballY + ballSize <= brickYEND &&
-                        ballX + ballSize >= brickXSTART &&
-                        ballX + ballSize <= brickXEND
+                        ballY + ballSize >= BrickYCollisionBoxStart &&
+                        ballY + ballSize <= BrickYCollisionBoxEND &&
+                        ballX >= brickXSTART &&
+                        ballX <= brickXEND
                     ) {
-                        if (
-                            ballY + ballSize >= BrickYCollisionBoxStart &&
-                            ballY + ballSize <= brickYSTART &&
-                            ballX >= brickXSTART &&
-                            ballX <= brickXEND
-                        ) {
-                            console.log("is colliding Y");
-                            
-                            return {
-                                isColliding: true,
-                                y: i,
-                                x: j,
-                                axisOfcollision: 'Y',
-                            };
-                        } else {
-                            console.log("is colliding X");
-                            return {
-                                isColliding: true,
-                                y: i,
-                                x: j,
-                                axisOfcollision: 'X',
-                            };
-                        }
+                        console.log('is colliding Y');
+
+                        return {
+                            isColliding: true,
+                            y: i,
+                            x: j,
+                            axisOfcollision: 'Y',
+                        };
+                    } else {
+                        console.log('is colliding X');
+                        return {
+                            isColliding: true,
+                            y: i,
+                            x: j,
+                            axisOfcollision: 'X',
+                        };
                     }
                 }
             }
-            return {
-                isColliding: false,
-                y: -1,
-                x: -1,
-                axisOfcollision: 'none',
-            };
         }
 
-        const start = 0;
-        const columnsHalf = Math.round(matrix.length / 2);
-        const rowsHalf = Math.round(matrix[0].length / 2);
-        const rowsEnd = matrix[0].length;
-        const columnsEnd = matrix.length;
-
-        if (direction === 'top-left')
-            return search(start, columnsHalf, start, rowsHalf);
-        if (direction === 'top-right')
-            return search(start, columnsHalf, rowsHalf, rowsEnd);
-        if (direction === 'bottom-left')
-            return search(columnsHalf, columnsEnd, start, rowsHalf);
-        if (direction === 'bottom-right')
-            return search(columnsHalf, columnsEnd, rowsHalf, rowsEnd);
-        return { isColliding: false, x: 0, y: 0, axisOfcollision: 'none' };
+        return {
+            isColliding: false,
+            y: -1,
+            x: -1,
+            axisOfcollision: 'none',
+        };
     }
 
     useEffect(() => {
@@ -233,108 +215,42 @@ const BreakOut: React.FC = () => {
             setBoardOfPositions(tempBoardOfPositions);
         }
 
-        /* const initialTime = Date.now();
+        const initialTime = Date.now();
         const interval = setInterval(() => {
             const time = Math.floor(Date.now() - initialTime) / 10;
             setDecaSeconds(time);
         }, 10);
 
-        return () => clearInterval(interval); */
+        return () => clearInterval(interval);
     }, [gameState]);
     useEffect(() => {
         let tempAcceleartionY = accelerationY;
         let tempAcceleartionX = accelerationX;
 
         if (gridRef.current !== null) {
-            const gridWidth = gridRef.current.clientWidth;
             const gridHeight = gridRef.current.clientHeight;
             if (ballY - 2 < gridHeight + brickHeight) {
-                const isLeft = ballX < gridWidth / 2 + brickWidth;
-                const isRight = ballX >= gridWidth / 2 - brickWidth;
-                const isTop = ballY < gridHeight / 2 + brickHeight;
-                const isBottom = ballY >= gridHeight / 2 - brickHeight;
+                const { isColliding, x, y, axisOfcollision } =
+                    search(boardOfPositions);
 
-                if (isTop && isLeft) {
-                    const { isColliding, x, y, axisOfcollision } = search(
-                        boardOfPositions,
-                        'top-left'
-                    );
-
-                    const tempBoardOfStates = deepCopy2DArray2(boardOfStates);
-                    if (isColliding) {
-                        setScore(score + 10);
-                        tempBoardOfStates[y][x] = 0;
-                        setBoardOfStates(tempBoardOfStates);
-                        if (axisOfcollision === 'X') {
-                            tempAcceleartionX = tempAcceleartionX * -1;
-                            setAccelerationX(tempAcceleartionX);
-                        } else {
-                            tempAcceleartionY = tempAcceleartionY * -1;
-                            setAccelerationY(tempAcceleartionY);
-                        }
-                    }
-                }
-                if (isTop && isRight) {
-                    const { isColliding, x, y, axisOfcollision } = search(
-                        boardOfPositions,
-                        'top-right'
-                    );
-                    const tempBoardOfStates = deepCopy2DArray2(boardOfStates);
-                    if (isColliding) {
-                        setScore(score + 10);
-                        tempBoardOfStates[y][x] = 0;
-                        setBoardOfStates(tempBoardOfStates);
-                        if (axisOfcollision === 'X') {
-                            tempAcceleartionX = tempAcceleartionX * -1;
-                            setAccelerationX(tempAcceleartionX);
-                        } else {
-                            tempAcceleartionY = tempAcceleartionY * -1;
-                            setAccelerationY(tempAcceleartionY);
-                        }
-                    }
-                }
-                if (isBottom && isLeft) {
-                    const { isColliding, x, y, axisOfcollision } = search(
-                        boardOfPositions,
-                        'bottom-left'
-                    );
-                    const tempBoardOfStates = deepCopy2DArray2(boardOfStates);
-                    if (isColliding) {
-                        setScore(score + 10);
-                        tempBoardOfStates[y][x] = 0;
-                        setBoardOfStates(tempBoardOfStates);
-                        if (axisOfcollision === 'X') {
-                            tempAcceleartionX = tempAcceleartionX * -1;
-                            setAccelerationX(tempAcceleartionX);
-                        } else {
-                            tempAcceleartionY = tempAcceleartionY * -1;
-                            setAccelerationY(tempAcceleartionY);
-                        }
-                    }
-                }
-                if (isBottom && isRight) {
-                    const { isColliding, x, y, axisOfcollision } = search(
-                        boardOfPositions,
-                        'bottom-right'
-                    );
-                    const tempBoardOfStates = deepCopy2DArray2(boardOfStates);
-                    if (isColliding) {
-                        setScore(score + 10);
-                        tempBoardOfStates[y][x] = 0;
-                        setBoardOfStates(tempBoardOfStates);
-                        if (axisOfcollision === 'X') {
-                            tempAcceleartionX = tempAcceleartionX * -1;
-                            setAccelerationX(tempAcceleartionX);
-                        } else {
-                            tempAcceleartionY = tempAcceleartionY * -1;
-                            setAccelerationY(tempAcceleartionY);
-                        }
+                const tempBoardOfStates = deepCopy2DArray2(boardOfStates);
+                if (isColliding) {
+                    setScore(score + 10);
+                    tempBoardOfStates[y][x] = 0;
+                    setBoardOfStates(tempBoardOfStates);
+                    if (axisOfcollision === 'X') {
+                        tempAcceleartionX = tempAcceleartionX * -1;
+                        setAccelerationX(tempAcceleartionX);
+                    } else {
+                        tempAcceleartionY = tempAcceleartionY * -1;
+                        setAccelerationY(tempAcceleartionY);
                     }
                 }
             }
         }
 
-        if (boardRef.current !== null) { // ball velocity
+        if (boardRef.current !== null) {
+            // ball velocity
             if (ballX >= boardRef.current.clientWidth || ballX <= 0) {
                 tempAcceleartionX = tempAcceleartionX * -1;
                 setAccelerationX(tempAcceleartionX);
@@ -349,32 +265,9 @@ const BreakOut: React.FC = () => {
                 ballX <= paddleX + paddleWidth
             ) {
                 const middleBall = ballX + Math.round(ballSize / 2);
-                const firstFifth = paddleX + paddleWidth * (1 / 5);
-                const secondFifth = paddleX + paddleWidth * (2 / 5);
-                const thirdFifth = paddleX + paddleWidth * (3 / 5);
-                const fourthFifth = paddleX + paddleWidth * (4 / 5);
-                if (middleBall < secondFifth) {
-                    if (middleBall < firstFifth) {
-                        console.log('outside');
-                        tempAcceleartionX = -2;
-                        tempAcceleartionY = -1;
-                    } else {
-                        console.log('insideside');
-                        tempAcceleartionX = -1;
-                        tempAcceleartionY = -2;
-                    }
-                } else if (middleBall > thirdFifth) {
-                    if (middleBall > fourthFifth) {
-                        console.log('outside');
-                        tempAcceleartionX = 2;
-                        tempAcceleartionY = -1;
-                    } else {
-                        console.log('insideside');
-                        tempAcceleartionX = 1;
-                        tempAcceleartionY = -2;
-                    }
-                }
-                setAccelerationX(tempAcceleartionX);
+                console.log(accelerationY);
+
+                tempAcceleartionY = accelerationY * -1;
                 setAccelerationY(tempAcceleartionY);
             }
 
@@ -385,8 +278,6 @@ const BreakOut: React.FC = () => {
 
         setBallX(ballX + tempAcceleartionX);
         setBallY(ballY + tempAcceleartionY);
-        console.log({ballY});
-        
     }, [decaSeconds]);
     useEffect(() => {
         window.addEventListener('keydown', handlekey);
@@ -403,9 +294,9 @@ const BreakOut: React.FC = () => {
         if (keyPressed === 'd') {
             setPaddleX(paddleX + 10);
         }
-        if (keyPressed==='z') {
-            setDecaSeconds(decaSeconds+1)
-        }
+        /*  if (keyPressed === 'z') {
+            setDecaSeconds(decaSeconds + 1);
+        } */
         setkeyPressed('none');
     }, [keyPressed]);
 

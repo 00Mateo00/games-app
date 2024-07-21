@@ -19,7 +19,6 @@ import 'swiper/css/pagination';
 
 import 'swiper/css/effect-creative';
 import GlobalContext from '../../context/GlobalContext';
-import Conwey from '../games/conwey/Conwey';
 
 interface props {
     scrollRef: React.MutableRefObject<HTMLDivElement | null>;
@@ -33,7 +32,6 @@ const Main: React.FC<props> = ({ scrollRef }) => {
         { component: <MineSweeper />, image: 'image1.jpg' },
         { component: <Snake />, image: 'image1.jpg' },
         { component: <BreakOut />, image: 'image1.jpg' },
-        { component: <Conwey />, image: 'image1.jpg' },
     ];
 
     useEffect(() => {
