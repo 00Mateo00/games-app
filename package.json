@@ -23,7 +23,9 @@
         "eject": "react-scripts eject",
         "format": "prettier --write",
         "lint": "eslint --fix . --ext .js,.jsx,.ts,.tsx",
-        "preinstall": "npx only-allow pnpm"
+        "preinstall": "npx only-allow pnpm",
+        "deploy": "gh-pages -d build"
+
     },
     "eslintConfig": {
         "extends": [
@@ -53,6 +55,7 @@
         "eslint-plugin-n": "^15.6.0",
         "eslint-plugin-promise": "^6.1.1",
         "eslint-plugin-react": "^7.31.11",
+        "gh-pages": "^6.2.0",
         "prettier": "^2.8.1",
         "prettier-plugin-tailwindcss": "^0.2.1",
         "tailwindcss": "^3.2.4",

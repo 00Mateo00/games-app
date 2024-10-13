@@ -5,8 +5,8 @@ import { GameSettings } from '../components/games/mineSweeper/interfaces';
 interface Props {
     isSomeCardClicked: boolean;
     setIsSomeCardClicked: React.Dispatch<React.SetStateAction<boolean>>;
-    screenWidth: Number;
-    setScreenWidth: React.Dispatch<React.SetStateAction<Number>>;
+    screenWidth: number;
+    setScreenWidth: React.Dispatch<React.SetStateAction<number>>;
     settings: GameSettings;
     setSettings: React.Dispatch<React.SetStateAction<GameSettings>>;
     inGameView: boolean;

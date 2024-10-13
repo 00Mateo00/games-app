@@ -10,7 +10,7 @@ interface Props {
 
 export default function ContextWrapper({ children }: Props): JSX.Element {
     const [isSomeCardClicked, setIsSomeCardClicked] = useState(false);
-    const [screenWidth, setScreenWidth] = useState<Number>(window.innerWidth);
+    const [screenWidth, setScreenWidth] = useState<number>(window.innerWidth);
     const [settings, setSettings] = useState<GameSettings>({
         difficulty: 'easy',
     });

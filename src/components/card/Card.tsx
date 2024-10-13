@@ -2,7 +2,6 @@
 import React, { useState, useContext } from 'react';
 import Image from '../../assets/card-Images/tetris.png';
 import GlobalContext from '../../context/GlobalContext';
-import Games from '../games/Games';
 import './card.scss';
 
 interface Props {
