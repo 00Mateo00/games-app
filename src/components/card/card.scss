@@ -15,7 +15,8 @@
         @apply sm:w-full sm:grid-rows-[8fr_3fr] sm:transition-all  sm:duration-500;
 
         &::before {
-            @apply absolute left-0 top-0 z-[-1] h-full w-full bg-violet-600 opacity-0 transition-all delay-75 duration-500 content-[""];
+            content: '';
+            @apply absolute left-0 top-0 z-[-1] h-full w-full bg-violet-600 opacity-0 transition-all delay-75 duration-500;
         }
 
         &_FullSize {
@@ -26,17 +27,27 @@
             &:hover {
                 @apply sm:scale-x-[130%] sm:scale-y-[122.5%] sm:grid-rows-[8fr_4fr] sm:shadow-card;
                 .imagen {
-                    @apply sm:opacity-[95%];
+                    @media (min-width: 640px) {
+                        opacity: 0.95;
+                    }
                 }
+
                 .info-Wrapper {
                     &::before {
-                        @apply sm:opacity-100 sm:content-[""];
+                        @media (min-width: 640px) {
+                            content: '';
+                            opacity: 100%;
+                        }
                     }
                     .info-grid {
-                        @apply sm:grid-rows-[1fr_1fr_0fr];
-
+                        @media (min-width: 640px) {
+                            grid-template-rows: 1fr 1fr 0fr;
+                        }
                         .h1-wrapper {
-                            @apply sm:grid-cols-[auto_1fr] sm:p-2;
+                            @media (min-width: 640px) {
+                                grid-template-columns: auto 1fr;
+                                padding: 0.5rem;
+                            }
                             h1 {
                                 @apply sm:text-3xl sm:delay-75 sm:duration-500;
                             }
@@ -50,14 +61,17 @@
         }
 
         .imagen {
-            @apply h-full w-full overflow-hidden object-cover object-[50%_10%];
+            object-position: 50% 10%;
+            @apply h-full w-full overflow-hidden object-cover;
         }
 
         .info-Wrapper {
             @apply relative z-[1] grid h-full w-full grid-cols-[6fr_0fr] bg-purple-900;
 
             &_FullSize {
-                @apply sm:grid-cols-[6fr_5fr];
+                @media (min-width: 640px) {
+                    grid-template-columns: 6fr 5fr;
+                }
             }
 
             &_SmallSize {
@@ -75,7 +89,8 @@
                     @apply sm:flex sm:flex-col sm:justify-around sm:p-5;
                 }
                 &_SmallSize {
-                    @apply grid grid-rows-[1fr_0fr_0fr];
+                    display: grid;
+                    grid-template-rows: 1fr 0fr 0fr;
                 }
                 .h1-wrapper {
                     @apply grid h-full w-full grid-cols-[1fr_0fr] place-items-center transition-all;
@@ -137,9 +152,9 @@
 
     .isGameView {
         @apply border-8 border-opacity-100;
-        @apply grid-rows-[6fr_0fr];
+        grid-template-rows: 6fr 0fr;
         .imagen {
-            @apply translate-y-[100%];
+            transform: translateY(100%);
         }
         .info-Wrapper {
             @apply hidden;
